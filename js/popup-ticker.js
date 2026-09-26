@@ -5,14 +5,27 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   fetch('api/get_site_data.php')
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) throw new Error('PHP endpoint unavailable');
+      return res.json();
+    })
     .then(data => {
       if (data.status === 'success') {
         initEntrancePopup(data.popup);
         initNoticeTicker(data.ticker, data.notices);
       }
     })
-    .catch(err => console.log('Site Data API info:', err));
+    .catch(err => {
+      fetch('api/get_site_data.json')
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            initEntrancePopup(data.popup);
+            initNoticeTicker(data.ticker, data.notices);
+          }
+        })
+        .catch(e => console.log('Static site data fallback info:', e));
+    });
 
   // 1. Pure Image Entrance Popup Modal Engine
   function initEntrancePopup(popup) {

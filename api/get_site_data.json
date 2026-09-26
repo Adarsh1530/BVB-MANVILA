@@ -1,0 +1,71 @@
+{
+  "status": "success",
+  "popup": {
+    "id": 1,
+    "title": "Welcome to Bhavan's Vivekananda Vidya Mandir, Manvila",
+    "message": "Admissions are now open for LKG to Class XI Science & Commerce streams.",
+    "image_url": "images/main page popup/1.jpg",
+    "button_text": "ADMISSION INFO",
+    "button_url": "admissions.html",
+    "is_active": 1
+  },
+  "notices": [
+    {
+      "id": 1,
+      "title": "Admissions Open for Academic Session 2027–2028 (LKG to Class XI)",
+      "content": "Registration forms for admission to LKG, Class I, Class XI Science & Commerce streams are available online and at the school office.",
+      "category": "Admissions",
+      "notice_date": "2026-09-15",
+      "pdf_link": "images/Mandatory Disclosure/B. DOCUMENTS AND INFORMATION/Mandatory-Disclosure.pdf",
+      "is_ticker": 1
+    },
+    {
+      "id": 2,
+      "title": "Annual CBSE Board Examination Schedule & Guidelines Released",
+      "content": "Classes X and XII CBSE Board examination instructions, timetable, and admit card download notifications have been released.",
+      "category": "Academics",
+      "notice_date": "2026-09-10",
+      "pdf_link": "images/Mandatory Disclosure/C. RESULT AND ACADEMICS/Academic-Calendar.csv",
+      "is_ticker": 1
+    },
+    {
+      "id": 3,
+      "title": "Adharva Inter-School Cultural Fest Winners Announced",
+      "content": "Bhavan's Manvila won 1st Place overall champion trophy at the All Kerala Bhavan's Youth Festival.",
+      "category": "Achievements",
+      "notice_date": "2026-09-01",
+      "pdf_link": "",
+      "is_ticker": 1
+    }
+  ],
+  "ticker": [
+    {
+      "id": 1,
+      "title": "Admissions Open for Academic Session 2027–2028 (LKG to Class XI)",
+      "content": "Registration forms for admission to LKG, Class I, Class XI Science & Commerce streams are available online and at the school office.",
+      "category": "Admissions",
+      "notice_date": "2026-09-15",
+      "pdf_link": "images/Mandatory Disclosure/B. DOCUMENTS AND INFORMATION/Mandatory-Disclosure.pdf",
+      "is_ticker": 1
+    },
+    {
+      "id": 2,
+      "title": "Annual CBSE Board Examination Schedule & Guidelines Released",
+      "content": "Classes X and XII CBSE Board examination instructions, timetable, and admit card download notifications have been released.",
+      "category": "Academics",
+      "notice_date": "2026-09-10",
+      "pdf_link": "images/Mandatory Disclosure/C. RESULT AND ACADEMICS/Academic-Calendar.csv",
+      "is_ticker": 1
+    },
+    {
+      "id": 3,
+      "title": "Adharva Inter-School Cultural Fest Winners Announced",
+      "content": "Bhavan's Manvila won 1st Place overall champion trophy at the All Kerala Bhavan's Youth Festival.",
+      "category": "Achievements",
+      "notice_date": "2026-09-01",
+      "pdf_link": "",
+      "is_ticker": 1
+    }
+  ],
+  "mandatory_disclosures": []
+}
