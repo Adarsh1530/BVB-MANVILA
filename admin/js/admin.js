@@ -214,11 +214,12 @@ class AdminApp {
     }
 
     // File Explorer Pickers (HTML5 FileReader API)
-    const setupFilePicker = (inputId, targetTextId, previewImgId, previewWrapId) => {
+    const setupFilePicker = (inputId, targetTextId, previewImgId, previewWrapId, viewFullBtnId) => {
       const fileInput = document.getElementById(inputId);
       const textInput = document.getElementById(targetTextId);
       const previewImg = document.getElementById(previewImgId);
       const previewWrap = previewWrapId ? document.getElementById(previewWrapId) : null;
+      const viewFullBtn = viewFullBtnId ? document.getElementById(viewFullBtnId) : null;
 
       if (fileInput) {
         fileInput.addEventListener('change', (e) => {
@@ -231,6 +232,10 @@ class AdminApp {
                 previewImg.src = evt.target.result;
                 previewImg.style.display = 'block';
               }
+              if (viewFullBtn) {
+                viewFullBtn.href = evt.target.result;
+                viewFullBtn.style.display = 'inline-flex';
+              }
               if (previewWrap) previewWrap.style.display = 'block';
             };
             reader.readAsDataURL(file);
@@ -239,24 +244,30 @@ class AdminApp {
       }
     };
 
-    setupFilePicker('mainFileInput', 'mainImageUrl', 'mainImagePreview', 'mainPreviewWrap');
-    setupFilePicker('popupFileInput', 'popupImageUrlInput', 'popupImagePreview', 'popupPreviewWrap');
+    setupFilePicker('mainFileInput', 'mainImageUrl', 'mainImagePreview', 'mainPreviewWrap', 'mainViewFullBtn');
+    setupFilePicker('popupFileInput', 'popupImageUrlInput', 'popupImagePreview', 'popupPreviewWrap', 'popupViewFullBtn');
 
     // Sub Image File Pickers
     document.querySelectorAll('.sub-file-picker').forEach(picker => {
       picker.addEventListener('change', (e) => {
         const targetId = picker.getAttribute('data-target');
         const previewId = picker.getAttribute('data-preview');
+        const viewBtnId = picker.getAttribute('data-viewbtn');
         const file = e.target.files[0];
         if (file) {
           const reader = new FileReader();
           reader.onload = (evt) => {
             const txt = document.getElementById(targetId);
             const prev = document.getElementById(previewId);
+            const vBtn = document.getElementById(viewBtnId);
             if (txt) txt.value = evt.target.result;
             if (prev) {
               prev.src = evt.target.result;
               prev.style.display = 'block';
+            }
+            if (vBtn) {
+              vBtn.href = evt.target.result;
+              vBtn.style.display = 'inline-flex';
             }
           };
           reader.readAsDataURL(file);
@@ -448,6 +459,19 @@ class AdminApp {
     if (elImg) elImg.value = p.image_url || '';
     if (elBtnText) elBtnText.value = p.button_text || '';
     if (elBtnUrl) elBtnUrl.value = p.button_url || '';
+
+    const popupPrevWrap = document.getElementById('popupPreviewWrap');
+    const popupPrevImg = document.getElementById('popupImagePreview');
+    const popupFullBtn = document.getElementById('popupViewFullBtn');
+
+    if (p.image_url && popupPrevImg && popupPrevWrap) {
+      const src = p.image_url.startsWith('/') || p.image_url.startsWith('http') || p.image_url.startsWith('data:') ? p.image_url : '/' + p.image_url;
+      popupPrevImg.src = src;
+      if (popupFullBtn) popupFullBtn.href = src;
+      popupPrevWrap.style.display = 'block';
+    } else if (popupPrevWrap) {
+      popupPrevWrap.style.display = 'none';
+    }
   }
 
   savePopupConfig() {
@@ -626,9 +650,14 @@ class AdminApp {
 
         const mainPrev = document.getElementById('mainImagePreview');
         const mainWrap = document.getElementById('mainPreviewWrap');
+        const mainFullBtn = document.getElementById('mainViewFullBtn');
         if (mainPrev && p.main_image) {
-          mainPrev.src = p.main_image.startsWith('/') || p.main_image.startsWith('http') || p.main_image.startsWith('data:') ? p.main_image : '/' + p.main_image;
+          const src = p.main_image.startsWith('/') || p.main_image.startsWith('http') || p.main_image.startsWith('data:') ? p.main_image : '/' + p.main_image;
+          mainPrev.src = src;
+          if (mainFullBtn) mainFullBtn.href = src;
           if (mainWrap) mainWrap.style.display = 'block';
+        } else if (mainWrap) {
+          mainWrap.style.display = 'none';
         }
 
         const subs = p.sub_images || [];
@@ -636,13 +665,20 @@ class AdminApp {
           const val = subs[i - 1] || '';
           const inputEl = document.getElementById(`subImg${i}`);
           const prevEl = document.getElementById(`subPreview${i}`);
+          const vBtn = document.getElementById(`subViewBtn${i}`);
           if (inputEl) inputEl.value = val;
           if (prevEl) {
             if (val) {
-              prevEl.src = val.startsWith('/') || val.startsWith('http') || val.startsWith('data:') ? val : '/' + val;
+              const src = val.startsWith('/') || val.startsWith('http') || val.startsWith('data:') ? val : '/' + val;
+              prevEl.src = src;
               prevEl.style.display = 'block';
+              if (vBtn) {
+                vBtn.href = src;
+                vBtn.style.display = 'inline-flex';
+              }
             } else {
               prevEl.style.display = 'none';
+              if (vBtn) vBtn.style.display = 'none';
             }
           }
         }
