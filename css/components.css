@@ -807,16 +807,17 @@
 
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.75rem;
 }
 
 .gallery-item {
   position: relative;
   border-radius: var(--radius-md);
   overflow: hidden;
-  background-color: var(--color-light-blue);
-  aspect-ratio: 4 / 3;
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  aspect-ratio: 16 / 11;
   cursor: pointer;
   box-shadow: var(--shadow-sm);
   transition: transform var(--transition-base), box-shadow var(--transition-base), opacity var(--transition-base);
@@ -827,25 +828,27 @@
 }
 
 .gallery-item:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
   box-shadow: var(--shadow-lg);
+  border-color: var(--color-primary);
 }
 
 .gallery-item img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  background-color: #FFFFFF;
   transition: transform var(--transition-slow);
 }
 
 .gallery-item:hover img {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 .gallery-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(6, 43, 92, 0.85) 0%, rgba(6, 43, 92, 0.2) 60%, transparent 100%);
+  background: linear-gradient(to top, rgba(6, 43, 92, 0.9) 0%, rgba(6, 43, 92, 0.3) 60%, transparent 100%);
   opacity: 0;
   transition: opacity var(--transition-base);
   display: flex;
@@ -879,15 +882,16 @@
   position: absolute;
   top: 1rem;
   right: 1rem;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(11, 78, 162, 0.85);
   backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--color-white);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
 /* 7. Lightbox Modal */
@@ -895,8 +899,8 @@
   position: fixed;
   inset: 0;
   z-index: 2500;
-  background-color: rgba(6, 43, 92, 0.94);
-  backdrop-filter: blur(8px);
+  background-color: rgba(4, 27, 59, 0.94);
+  backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -913,31 +917,42 @@
 
 .lightbox-dialog {
   position: relative;
-  max-width: 90vw;
+  width: 92vw;
+  max-width: 920px;
   max-height: 88vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: auto;
 }
 
 .lightbox-img-wrap {
   position: relative;
-  max-width: 100%;
-  max-height: 75vh;
+  width: 100%;
+  min-height: 380px;
+  max-height: 72vh;
   overflow: hidden;
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-xl);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #FFFFFF;
+  padding: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .lightbox-img {
+  width: auto;
+  height: auto;
+  min-width: 340px;
+  min-height: 340px;
   max-width: 100%;
-  max-height: 75vh;
+  max-height: 68vh;
   object-fit: contain;
   transition: transform var(--transition-fast);
   cursor: zoom-in;
+  border-radius: var(--radius-xs);
 }
 
 .lightbox-img.zoomed {
@@ -946,33 +961,52 @@
 }
 
 .lightbox-info {
-  margin-top: 1rem;
+  margin-top: 1.25rem;
   text-align: center;
   color: var(--color-white);
 }
 
 .lightbox-caption {
   font-family: var(--font-heading);
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.25rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+  color: #FFFFFF;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
 .lightbox-counter {
-  font-size: 0.8125rem;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-accent-gold);
+  background: rgba(255, 255, 255, 0.12);
+  padding: 0.25rem 0.85rem;
+  border-radius: var(--radius-pill);
+  display: inline-block;
 }
 
 .lightbox-close {
   position: absolute;
-  top: -45px;
+  top: -50px;
   right: 0;
-  background: none;
-  border: none;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   color: var(--color-white);
-  font-size: 2rem;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  font-size: 1.5rem;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
+  transition: all var(--transition-fast);
+}
+
+.lightbox-close:hover {
+  background: #EF4444;
+  border-color: #EF4444;
 }
 
 .lightbox-nav {
