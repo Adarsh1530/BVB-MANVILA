@@ -235,8 +235,20 @@ body {
 }
 
 .sidebar-logo {
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
+  background: #FFFFFF;
+  padding: 4px;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  object-fit: contain;
+  flex-shrink: 0;
+  transition: transform var(--transition-fast);
+}
+
+.sidebar-logo:hover {
+  transform: scale(1.05);
 }
 
 .sidebar-brand-title {
