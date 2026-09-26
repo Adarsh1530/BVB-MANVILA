@@ -1,4 +1,20 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false
+  "functions": {
+    "admin/login.php": {
+      "runtime": "vercel-php@0.7.2"
+    },
+    "admin/index.php": {
+      "runtime": "vercel-php@0.7.2"
+    },
+    "admin/actions.php": {
+      "runtime": "vercel-php@0.7.2"
+    },
+    "api/get_images.php": {
+      "runtime": "vercel-php@0.7.2"
+    },
+    "api/get_site_data.php": {
+      "runtime": "vercel-php@0.7.2"
+    }
+  }
 }
