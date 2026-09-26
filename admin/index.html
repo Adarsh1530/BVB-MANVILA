@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Portal | Bhavan's Vivekananda Vidya Mandir, Manvila</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="icon" type="image/png" href="../assets/images/bvb-manvila-logo.png">
+</head>
+<body>
+  <!-- 1. TOP UTILITY BAR -->
+  <header class="top-bar">
+    <div class="container-wide top-bar-inner">
+      <div class="top-bar-left">
+        <div class="top-bar-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+          <span>Support: 0471 2594559</span>
+        </div>
+        <div class="top-bar-item">
+          <span class="top-bar-badge">CBSE Affiliation No: 930460</span>
+        </div>
+      </div>
+      <div class="top-bar-right">
+        <span class="top-bar-item" style="color: rgba(255,255,255,0.9);">
+          Logged in as: <strong id="portalUserDisplay">System Administrator</strong> <span class="badge badge-gold" id="portalRoleDisplay" style="font-size:0.7rem; padding: 2px 6px;">SUPERADMIN</span>
+        </span>
+        <a href="../index.html" target="_blank" class="top-bar-link">View Public Site ↗</a>
+        <a href="#" id="portalLogoutBtn" class="top-bar-link" style="color: var(--color-accent-gold);">Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. MAIN HEADER -->
+  <nav class="main-header" id="mainHeader">
+    <div class="container-wide header-container">
+      <a href="../index.html" class="header-logo" aria-label="Bhavan's Vivekananda Vidya Mandir Home">
+        <img src="../assets/images/bvb-manvila-logo.png" alt="Bhavan's Vivekananda Vidya Mandir Logo" width="60" height="60">
+        <div class="header-logo-text">
+          <span class="logo-title">BHAVAN'S VIVEKANANDA VIDYA MANDIR</span>
+          <span class="logo-sub">MANVILA, THIRUVANANTHAPURAM • SCHOOL MANAGEMENT PORTAL</span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <a href="../index.html" target="_blank" class="btn btn-primary btn-pill header-cta-desktop">VISIT WEBSITE</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 3. PAGE BANNER -->
+  <div class="page-banner">
+    <div class="container-wide">
+      <h1>Central Website Control Panel</h1>
+      <div class="breadcrumbs">
+        <a href="../index.html">Home</a>
+        <span class="divider">/</span>
+        <span class="current">Management Portal</span>
+      </div>
+    </div>
+  </div>
+
+  <main class="section-padding bg-white">
+    <div class="container-wide">
+
+      <!-- Notification Alert Box -->
+      <div id="adminAlert" class="admin-alert hidden"></div>
+
+      <!-- VERTICAL SIDEBAR LAYOUT -->
+      <div class="admin-dashboard-layout">
+
+        <!-- VERTICAL LEFT MENU BAR -->
+        <aside class="admin-sidebar">
+          <div class="admin-sidebar-header">MODULE MANAGEMENT</div>
+          <nav class="admin-sidebar-nav">
+            <button class="sidebar-nav-btn active" data-tab="tab-images">
+              <span class="nav-icon">🖼️</span> <span>IMAGE & SECTIONS</span>
+            </button>
+            <button class="sidebar-nav-btn" data-tab="tab-notices">
+              <span class="nav-icon">📢</span> <span>NOTICES & TICKER</span>
+            </button>
+            <button class="sidebar-nav-btn" data-tab="tab-disclosures">
+              <span class="nav-icon">📜</span> <span>MANDATORY DISCLOSURE</span>
+            </button>
+            <button class="sidebar-nav-btn" data-tab="tab-popup">
+              <span class="nav-icon">🔔</span> <span>ENTRANCE POPUP</span>
+            </button>
+            <button class="sidebar-nav-btn" data-tab="tab-users" id="navBtnUsers">
+              <span class="nav-icon">👥</span> <span>USER MANAGEMENT</span>
+            </button>
+          </nav>
+        </aside>
+
+        <!-- RIGHT MAIN CONTENT PANEL -->
+        <div class="admin-main-panel">
+
+          <!-- ========================================== -->
+          <!-- TAB 1: IMAGE & MULTI-LOCATION CHECKBOXES   -->
+          <!-- ========================================== -->
+          <section id="tab-images" class="tab-pane active">
+            <div class="card card-bordered admin-intro-banner">
+              <div>
+                <span class="badge badge-blue" style="margin-bottom: 0.5rem; display: inline-block;">IMAGE CONTROL MATRIX</span>
+                <h3 style="color: var(--color-deep-blue); margin-bottom: 0.35rem;">Category Image Upload & Multi-Section Checkboxes</h3>
+                <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;">
+                  Maximum 6 images per category (1 Main Image + 5 Sub Images). Click the <strong>+</strong> button on any slot to upload an image from file explorer.
+                </p>
+              </div>
+            </div>
+
+            <div class="categories-grid" style="display: flex; flex-direction: column; gap: 2rem; margin-top: 2rem;">
+              
+              <!-- Category 1: Campus & Infrastructure -->
+              <div class="card card-bordered category-card-block" style="padding: 0; overflow: hidden;">
+                <div class="category-header-bar">
+                  <div>
+                    <h4 style="color: var(--color-deep-blue); margin: 0 0 0.25rem 0; font-size: 1.15rem;">Campus & Infrastructure</h4>
+                    <span class="badge badge-blue">Used: 6 / 6 Max</span>
+                  </div>
+                </div>
+                <div class="slots-matrix-container">
+                  <div class="slot-box main-slot-box">
+                    <span class="badge badge-navy" style="margin-bottom: 0.5rem; display: inline-block;">MAIN IMAGE (1 MAX)</span>
+                    <div class="img-preview-box"><img src="../assets/images/campus/campus-view.jpg" alt="Campus View"></div>
+                    <div class="slot-info-text"><h5 style="color: var(--color-deep-blue); margin: 0.5rem 0 0.2rem 0;">3 Academic Blocks</h5></div>
+                    <form class="location-checkboxes-form" style="margin-top: 0.75rem;">
+                      <label class="checkbox-title">Select Website Display Sections:</label>
+                      <div class="checkbox-options-list">
+                        <label><input type="checkbox" name="loc" value="campus_discovery" checked> * A CAMPUS FOR DISCOVERY</label>
+                        <label><input type="checkbox" name="loc" value="whats_happening"> * WHAT'S HAPPENING</label>
+                        <label><input type="checkbox" name="loc" value="life_at_bhavans"> * LIFE AT BHAVAN'S</label>
+                        <label><input type="checkbox" name="loc" value="moments_at_bhavans" checked> * MOMENTS AT BHAVAN'S</label>
+                      </div>
+                      <div class="slot-action-buttons">
+                        <button type="submit" class="btn btn-primary btn-xs">Save Sections</button>
+                        <button type="button" class="btn btn-outline btn-xs btn-slot-upload-trigger">Replace (+)</button>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="sub-slots-matrix">
+                    <div class="slot-box sub-slot-box">
+                      <span class="badge badge-gold" style="margin-bottom: 0.5rem; display: inline-block;">SUB IMAGE 1</span>
+                      <div class="img-preview-box sm"><img src="../assets/images/campus/computer-lab.svg" alt="Computer Lab"></div>
+                      <form class="location-checkboxes-form" style="margin-top: 0.5rem;">
+                        <div class="checkbox-options-list">
+                          <label><input type="checkbox" name="loc" value="campus_discovery" checked> * A CAMPUS FOR DISCOVERY</label>
+                          <label><input type="checkbox" name="loc" value="whats_happening"> * WHAT'S HAPPENING</label>
+                          <label><input type="checkbox" name="loc" value="life_at_bhavans"> * LIFE AT BHAVAN'S</label>
+                          <label><input type="checkbox" name="loc" value="moments_at_bhavans"> * MOMENTS AT BHAVAN'S</label>
+                        </div>
+                        <div class="slot-action-buttons"><button type="submit" class="btn btn-primary btn-xs">Save</button></div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- TAB 2: NOTICES -->
+          <section id="tab-notices" class="tab-pane">
+            <div class="card card-bordered admin-intro-banner">
+              <div>
+                <span class="badge badge-gold" style="margin-bottom: 0.5rem; display: inline-block;">NOTICES & TICKER</span>
+                <h3 style="color: var(--color-deep-blue); margin-bottom: 0.35rem;">School Notices & Scrolling Ticker Control</h3>
+                <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;">Manage campus announcements and toggle notices to scroll in the site-wide scrolling ticker bar.</p>
+              </div>
+              <button class="btn btn-primary btn-pill" id="btnOpenNoticeModal">+ Create New Notice</button>
+            </div>
+            <div class="card card-bordered" style="padding: 0; overflow-x: auto; margin-top: 1.5rem;">
+              <table class="admin-data-table">
+                <thead>
+                  <tr><th>ID</th><th>Notice Title</th><th>Category</th><th>Notice Date</th><th>PDF Link</th><th>Scrolling Ticker</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>#1</td>
+                    <td><strong>Admissions Open for Academic Session 2027–2028 (LKG to Class XI)</strong></td>
+                    <td><span class="badge badge-blue">Admissions</span></td>
+                    <td>2026-09-15</td>
+                    <td><a href="../images/Mandatory Disclosure/B. DOCUMENTS AND INFORMATION/Mandatory-Disclosure.pdf" target="_blank" class="btn btn-outline btn-xs">View PDF</a></td>
+                    <td><button class="btn btn-xs btn-primary">✓ Active Ticker</button></td>
+                    <td><button class="btn btn-xs btn-outline" style="color:#DC2626; border-color:#FCA5A5;">Delete</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- TAB 3: MANDATORY DISCLOSURE -->
+          <section id="tab-disclosures" class="tab-pane">
+            <div class="card card-bordered admin-intro-banner">
+              <div>
+                <span class="badge badge-blue" style="margin-bottom: 0.5rem; display: inline-block;">CBSE SARAS DISCLOSURE</span>
+                <h3 style="color: var(--color-deep-blue); margin-bottom: 0.35rem;">Mandatory Public Disclosure Documents</h3>
+                <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;">Manage official DEO certificates, building safety, affiliation letters, and academic calendar documents.</p>
+              </div>
+            </div>
+            <div class="card card-bordered" style="padding: 0; overflow-x: auto; margin-top: 1.5rem;">
+              <table class="admin-data-table">
+                <thead>
+                  <tr><th>Category</th><th>Sl No</th><th>Document Type</th><th>Document Name</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="badge badge-navy">DOCUMENTS_INFO</span></td>
+                    <td>1</td>
+                    <td>Copies of Affiliation Letter</td>
+                    <td><strong>CBSE Affiliation Grant Letter (Affiliation No: 930460)</strong></td>
+                    <td><a href="../images/Mandatory Disclosure/B. DOCUMENTS AND INFORMATION/AFFILIATION LETTER.pdf" target="_blank" class="btn btn-outline btn-xs">Open Document</a></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- TAB 4: ENTRANCE POPUP -->
+          <section id="tab-popup" class="tab-pane">
+            <div class="card card-bordered admin-intro-banner">
+              <div>
+                <span class="badge badge-gold" style="margin-bottom: 0.5rem; display: inline-block;">ANNOUNCEMENT POPUP</span>
+                <h3 style="color: var(--color-deep-blue); margin-bottom: 0.35rem;">Site Entrance Popup Modal Settings</h3>
+                <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;">Enable or disable the entrance popup modal and upload pure announcement images.</p>
+              </div>
+            </div>
+            <div class="card card-bordered" style="max-width: 720px; margin-top: 1.5rem; padding: 2rem;">
+              <form id="popupSettingsForm">
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                  <label style="display: flex; align-items: center; gap: 0.6rem; font-weight: 700; color: var(--color-deep-blue); cursor: pointer;">
+                    <input type="checkbox" checked style="width: 18px; height: 18px;"> Enable Pure Image Entrance Announcement Popup
+                  </label>
+                </div>
+                <div class="form-group" style="margin-bottom: 1.25rem;">
+                  <label style="display: block; font-weight: 600; color: var(--color-deep-blue); margin-bottom: 0.4rem;">Current Popup Image</label>
+                  <div style="width: 100%; max-height: 240px; border-radius: 8px; overflow: hidden; border: 1px solid var(--color-border); background: #0f172a; display: flex; align-items: center; justify-content: center;">
+                    <img src="../images/main page popup/1.jpg" alt="Popup Image" style="max-height: 240px; width: auto; object-fit: contain;">
+                  </div>
+                </div>
+                <button type="button" class="btn btn-primary btn-pill btn-lg">Save Entrance Popup Settings</button>
+              </form>
+            </div>
+          </section>
+
+          <!-- TAB 5: USER MANAGEMENT -->
+          <section id="tab-users" class="tab-pane">
+            <div class="card card-bordered admin-intro-banner">
+              <div>
+                <span class="badge badge-blue" style="margin-bottom: 0.5rem; display: inline-block;">ADMIN SECURITY</span>
+                <h3 style="color: var(--color-deep-blue); margin-bottom: 0.35rem;">Admin User Accounts & Access Control</h3>
+                <p style="color: var(--color-text-secondary); margin: 0; font-size: 0.9375rem;">Manage authorized administrative and staff accounts.</p>
+              </div>
+            </div>
+            <div class="card card-bordered" style="padding: 0; overflow-x: auto; margin-top: 1.5rem;">
+              <table class="admin-data-table">
+                <thead>
+                  <tr><th>ID</th><th>Username</th><th>Full Name</th><th>Role</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>#1</td>
+                    <td><strong>admin</strong></td>
+                    <td>System Administrator</td>
+                    <td><span class="badge badge-gold">SUPERADMIN</span></td>
+                    <td><button class="btn btn-xs btn-outline">Change Password</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+        </div><!-- /.admin-main-panel -->
+      </div><!-- /.admin-dashboard-layout -->
+
+    </div>
+  </main>
+
+  <footer class="site-footer" style="margin-top: 4rem;">
+    <div class="container footer-bottom-inner" style="color: rgba(255,255,255,0.85); font-size: 0.875rem;">
+      <div><strong>Bhavan's Vivekananda Vidya Mandir</strong> | Manvila, Pangappara P.O., Thiruvananthapuram – 695581</div>
+      <div>Admin Control Panel System</div>
+    </div>
+  </footer>
+
+  <script src="js/admin.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Login check
+      if (sessionStorage.getItem('bvb_admin_logged_in') !== 'true') {
+        window.location.href = 'login.html';
+        return;
+      }
+      const u = sessionStorage.getItem('bvb_admin_user') || 'System Administrator';
+      const r = sessionStorage.getItem('bvb_admin_role') || 'SUPERADMIN';
+      document.getElementById('portalUserDisplay').textContent = u;
+      document.getElementById('portalRoleDisplay').textContent = r;
+
+      document.getElementById('portalLogoutBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        sessionStorage.removeItem('bvb_admin_logged_in');
+        window.location.href = 'login.html';
+      });
+    });
+  </script>
+</body>
+</html>

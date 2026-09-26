@@ -1,12 +1,7 @@
 RewriteEngine On
 
-# Remove .php extension from URL
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME}\.php -f
-RewriteRule ^(.*)$ $1.php [L,QSA]
+# Route /admin/login cleanly to admin/login.html
+RewriteRule ^admin/login$ admin/login.html [L,QSA]
 
-# Route /admin/login cleanly to admin/login.php
-RewriteRule ^admin/login$ admin/login.php [L,QSA]
-
-# Route /admin cleanly to admin/index.php
-RewriteRule ^admin/?$ admin/index.php [L,QSA]
+# Route /admin cleanly to admin/index.html
+RewriteRule ^admin/?$ admin/index.html [L,QSA]
