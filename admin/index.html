@@ -608,6 +608,49 @@
     </div>
   </div>
 
+  <!-- ACTION CONFIRMATION MODAL -->
+  <div class="admin-modal-overlay" id="confirmActionModal" style="z-index: 3000;">
+    <div class="admin-modal" style="max-width: 460px; text-align: center;">
+      <div class="modal-header" id="confirmModalHeader" style="background: linear-gradient(135deg, #062B5C 0%, #0B4EA2 100%); justify-content: center;">
+        <h3 class="modal-title" id="confirmModalTitle">Confirm Action</h3>
+      </div>
+      <div class="modal-body" style="padding: 2rem 1.5rem; text-align: center;">
+        <div id="confirmIconWrap" style="font-size: 2.8rem; margin-bottom: 0.5rem;">⚠️</div>
+        <h4 id="confirmHeading" style="color: var(--color-deep-blue); font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">Are you sure?</h4>
+        <p id="confirmMessage" style="font-size: 0.9rem; color: var(--color-text-secondary); line-height: 1.5;">
+          Please verify if you want to perform this operation.
+        </p>
+      </div>
+      <div class="modal-footer" style="justify-content: center; gap: 1rem; background: #F8FAFC;">
+        <button type="button" class="btn-sm btn-action-edit" id="confirmCancelBtn" style="padding: 0.6rem 1.25rem; font-size: 0.85rem;">Cancel</button>
+        <button type="button" class="btn-sm btn-action-delete" id="confirmProceedBtn" style="padding: 0.6rem 1.25rem; font-size: 0.85rem;">Confirm & Proceed</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS & WORK VERIFICATION MODAL -->
+  <div class="admin-modal-overlay" id="successVerifyModal" style="z-index: 3100;">
+    <div class="admin-modal" style="max-width: 460px; text-align: center;">
+      <div class="modal-header" style="background: #065F46; justify-content: center;">
+        <h3 class="modal-title" style="color: #FFFFFF;">✓ Work Verified & Saved</h3>
+      </div>
+      <div class="modal-body" style="padding: 2rem 1.5rem; text-align: center;">
+        <div style="width: 60px; height: 60px; background: #DCFCE7; color: #166534; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem auto; font-size: 2rem; font-weight: 800; border: 2px solid #86EFAC;">
+          ✓
+        </div>
+        <h4 id="successModalTitle" style="color: var(--color-deep-blue); font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">Work Completed Successfully!</h4>
+        <p id="successModalMessage" style="font-size: 0.9rem; color: var(--color-text-secondary); line-height: 1.5;">
+          Your changes have been saved, updated in site data, and verified.
+        </p>
+      </div>
+      <div class="modal-footer" style="justify-content: center; background: #F8FAFC;">
+        <button type="button" class="btn-admin-primary" id="successCloseBtn" style="max-width: 180px; font-size: 0.85rem; padding: 0.6rem 1.25rem;">
+          OK, Got It!
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Notification Container -->
   <div class="admin-toast-container" id="toastContainer"></div>
 

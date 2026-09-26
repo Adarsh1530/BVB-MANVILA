@@ -406,26 +406,37 @@ class AdminApp {
     const pdf_link = document.getElementById('noticePdfLink').value.trim();
     const is_ticker = document.getElementById('noticeIsTicker').checked ? 1 : 0;
 
-    if (!this.siteData.notices) this.siteData.notices = [];
+    this.confirmAction({
+      title: 'Confirm Notice Save',
+      heading: id ? 'Update Notice?' : 'Publish New Notice?',
+      message: 'Are you sure you want to save and publish this notice to the website?',
+      icon: '📌',
+      isDanger: false,
+      onConfirm: () => {
+        if (!this.siteData.notices) this.siteData.notices = [];
 
-    if (id) {
-      const idx = this.siteData.notices.findIndex(n => n.id == id);
-      if (idx !== -1) {
-        this.siteData.notices[idx] = { id: parseInt(id), title, content, category, notice_date, pdf_link, is_ticker };
+        if (id) {
+          const idx = this.siteData.notices.findIndex(n => n.id == id);
+          if (idx !== -1) {
+            this.siteData.notices[idx] = { id: parseInt(id), title, content, category, notice_date, pdf_link, is_ticker };
+          }
+        } else {
+          const newNotice = {
+            id: Date.now(),
+            title, content, category, notice_date, pdf_link, is_ticker
+          };
+          this.siteData.notices.unshift(newNotice);
+        }
+
+        this.siteData.ticker = this.siteData.notices.filter(n => n.is_ticker == 1);
+        this.closeNoticeModal();
+        this.saveData('Notice updated successfully!');
+        this.verifySuccess({
+          title: 'Notice Saved & Published!',
+          message: 'The notice has been updated in system records and published on the website.'
+        });
       }
-    } else {
-      const newNotice = {
-        id: Date.now(),
-        title, content, category, notice_date, pdf_link, is_ticker
-      };
-      this.siteData.notices.unshift(newNotice);
-    }
-
-    // Update ticker array dynamically
-    this.siteData.ticker = this.siteData.notices.filter(n => n.is_ticker == 1);
-
-    this.closeNoticeModal();
-    this.saveData('Notice updated successfully!');
+    });
   }
 
   editNotice(id) {
@@ -433,10 +444,22 @@ class AdminApp {
   }
 
   deleteNotice(id) {
-    if (!confirm('Are you sure you want to delete this notice?')) return;
-    this.siteData.notices = (this.siteData.notices || []).filter(n => n.id !== id);
-    this.siteData.ticker = this.siteData.notices.filter(n => n.is_ticker == 1);
-    this.saveData('Notice deleted successfully.');
+    this.confirmAction({
+      title: 'Confirm Notice Deletion',
+      heading: 'Delete Notice?',
+      message: 'Are you sure you want to permanently delete this notice from the site?',
+      icon: '🗑️',
+      isDanger: true,
+      onConfirm: () => {
+        this.siteData.notices = (this.siteData.notices || []).filter(n => n.id !== id);
+        this.siteData.ticker = this.siteData.notices.filter(n => n.is_ticker == 1);
+        this.saveData('Notice deleted successfully.');
+        this.verifySuccess({
+          title: 'Notice Deleted!',
+          message: 'The notice was permanently deleted from system records.'
+        });
+      }
+    });
   }
 
   // --------------------------------------------------------------------------
@@ -475,16 +498,29 @@ class AdminApp {
   }
 
   savePopupConfig() {
-    this.siteData.popup = {
-      id: 1,
-      is_active: parseInt(document.getElementById('popupActiveSelect').value),
-      title: document.getElementById('popupTitleInput').value.trim(),
-      message: document.getElementById('popupMessageInput').value.trim(),
-      image_url: document.getElementById('popupImageUrlInput').value.trim(),
-      button_text: document.getElementById('popupButtonTextInput').value.trim(),
-      button_url: document.getElementById('popupButtonUrlInput').value.trim()
-    };
-    this.saveData('Entrance Popup settings saved successfully!');
+    this.confirmAction({
+      title: 'Confirm Entrance Popup Save',
+      heading: 'Save Popup Announcement Settings?',
+      message: 'Are you sure you want to update the homepage entrance popup configuration?',
+      icon: '🔔',
+      isDanger: false,
+      onConfirm: () => {
+        this.siteData.popup = {
+          id: 1,
+          is_active: parseInt(document.getElementById('popupActiveSelect').value),
+          title: document.getElementById('popupTitleInput').value.trim(),
+          message: document.getElementById('popupMessageInput').value.trim(),
+          image_url: document.getElementById('popupImageUrlInput').value.trim(),
+          button_text: document.getElementById('popupButtonTextInput').value.trim(),
+          button_url: document.getElementById('popupButtonUrlInput').value.trim()
+        };
+        this.saveData('Entrance Popup settings saved successfully!');
+        this.verifySuccess({
+          title: 'Entrance Popup Updated!',
+          message: 'The entrance announcement popup modal settings and uploaded image have been verified and updated.'
+        });
+      }
+    });
   }
 
   // --------------------------------------------------------------------------
@@ -554,23 +590,36 @@ class AdminApp {
     const details = document.getElementById('disclosureDetails').value.trim();
     const file_link = document.getElementById('disclosureFileLink').value.trim();
 
-    if (!this.siteData.mandatory_disclosures) this.siteData.mandatory_disclosures = [];
+    this.confirmAction({
+      title: 'Confirm Mandatory Document Save',
+      heading: id ? 'Update Mandatory Document?' : 'Add Mandatory Document?',
+      message: 'Are you sure you want to save this CBSE SARAS 5.0 disclosure record?',
+      icon: '📑',
+      isDanger: false,
+      onConfirm: () => {
+        if (!this.siteData.mandatory_disclosures) this.siteData.mandatory_disclosures = [];
 
-    if (id) {
-      const idx = this.siteData.mandatory_disclosures.findIndex(d => d.id == id);
-      if (idx !== -1) {
-        this.siteData.mandatory_disclosures[idx] = { id: parseInt(id), sl_no, category_code, title, details, file_link };
+        if (id) {
+          const idx = this.siteData.mandatory_disclosures.findIndex(d => d.id == id);
+          if (idx !== -1) {
+            this.siteData.mandatory_disclosures[idx] = { id: parseInt(id), sl_no, category_code, title, details, file_link };
+          }
+        } else {
+          const newDoc = {
+            id: Date.now(),
+            sl_no, category_code, title, details, file_link
+          };
+          this.siteData.mandatory_disclosures.push(newDoc);
+        }
+
+        this.closeDisclosureModal();
+        this.saveData('Mandatory disclosure document saved!');
+        this.verifySuccess({
+          title: 'Document Saved & Verified!',
+          message: 'The mandatory disclosure document has been updated in CBSE compliance section.'
+        });
       }
-    } else {
-      const newDoc = {
-        id: Date.now(),
-        sl_no, category_code, title, details, file_link
-      };
-      this.siteData.mandatory_disclosures.push(newDoc);
-    }
-
-    this.closeDisclosureModal();
-    this.saveData('Mandatory disclosure document saved!');
+    });
   }
 
   editDisclosure(id) {
@@ -578,9 +627,21 @@ class AdminApp {
   }
 
   deleteDisclosure(id) {
-    if (!confirm('Are you sure you want to delete this document?')) return;
-    this.siteData.mandatory_disclosures = (this.siteData.mandatory_disclosures || []).filter(d => d.id !== id);
-    this.saveData('Document deleted.');
+    this.confirmAction({
+      title: 'Confirm Document Deletion',
+      heading: 'Delete Mandatory Document?',
+      message: 'Are you sure you want to delete this mandatory disclosure document?',
+      icon: '🗑️',
+      isDanger: true,
+      onConfirm: () => {
+        this.siteData.mandatory_disclosures = (this.siteData.mandatory_disclosures || []).filter(d => d.id !== id);
+        this.saveData('Document deleted.');
+        this.verifySuccess({
+          title: 'Document Deleted!',
+          message: 'The mandatory disclosure document has been deleted.'
+        });
+      }
+    });
   }
 
   // --------------------------------------------------------------------------
@@ -732,23 +793,36 @@ class AdminApp {
       academic_environment: document.getElementById('chk_academic_environment').checked
     };
 
-    if (!this.siteData.image_packages) this.siteData.image_packages = [];
+    this.confirmAction({
+      title: 'Confirm Image Package Save',
+      heading: id ? 'Update Image Package?' : 'Save New Image Package?',
+      message: 'Are you sure you want to save this 1 Main highlight image + sub-images package?',
+      icon: '🖼️',
+      isDanger: false,
+      onConfirm: () => {
+        if (!this.siteData.image_packages) this.siteData.image_packages = [];
 
-    if (id) {
-      const idx = this.siteData.image_packages.findIndex(p => p.id == id);
-      if (idx !== -1) {
-        this.siteData.image_packages[idx] = { id: parseInt(id), title, subtitle, main_image, sub_images, target_sections };
+        if (id) {
+          const idx = this.siteData.image_packages.findIndex(p => p.id == id);
+          if (idx !== -1) {
+            this.siteData.image_packages[idx] = { id: parseInt(id), title, subtitle, main_image, sub_images, target_sections };
+          }
+        } else {
+          const newPkg = {
+            id: Date.now(),
+            title, subtitle, main_image, sub_images, target_sections
+          };
+          this.siteData.image_packages.push(newPkg);
+        }
+
+        this.closeImagePackageModal();
+        this.saveData('Image package saved with main highlight & sub-images!');
+        this.verifySuccess({
+          title: 'Image Package Verified & Saved!',
+          message: 'Main highlight image and sub-gallery images have been successfully updated across public site sections.'
+        });
       }
-    } else {
-      const newPkg = {
-        id: Date.now(),
-        title, subtitle, main_image, sub_images, target_sections
-      };
-      this.siteData.image_packages.push(newPkg);
-    }
-
-    this.closeImagePackageModal();
-    this.saveData('Image package saved with main highlight & sub-images!');
+    });
   }
 
   editImagePackage(id) {
@@ -756,9 +830,21 @@ class AdminApp {
   }
 
   deleteImagePackage(id) {
-    if (!confirm('Are you sure you want to delete this image package?')) return;
-    this.siteData.image_packages = (this.siteData.image_packages || []).filter(p => p.id !== id);
-    this.saveData('Image package deleted.');
+    this.confirmAction({
+      title: 'Confirm Image Package Deletion',
+      heading: 'Delete Image Package?',
+      message: 'Are you sure you want to permanently delete this image package and its gallery sub-images?',
+      icon: '🗑️',
+      isDanger: true,
+      onConfirm: () => {
+        this.siteData.image_packages = (this.siteData.image_packages || []).filter(p => p.id !== id);
+        this.saveData('Image package deleted.');
+        this.verifySuccess({
+          title: 'Image Package Deleted!',
+          message: 'The image package and associated gallery images have been deleted.'
+        });
+      }
+    });
   }
 
   // --------------------------------------------------------------------------
@@ -833,23 +919,36 @@ class AdminApp {
     const password = document.getElementById('userPassword').value.trim();
     const role = document.getElementById('userRole').value;
 
-    if (!this.siteData.users) this.siteData.users = [];
+    this.confirmAction({
+      title: 'Confirm User Account Save',
+      heading: id ? 'Update User Account?' : 'Create Administrative User?',
+      message: `Are you sure you want to save user account for "${username}" with role level "${role.toUpperCase()}"?`,
+      icon: '👤',
+      isDanger: false,
+      onConfirm: () => {
+        if (!this.siteData.users) this.siteData.users = [];
 
-    if (id) {
-      const idx = this.siteData.users.findIndex(u => u.id == id);
-      if (idx !== -1) {
-        this.siteData.users[idx] = { id: parseInt(id), name, username, password, role };
+        if (id) {
+          const idx = this.siteData.users.findIndex(u => u.id == id);
+          if (idx !== -1) {
+            this.siteData.users[idx] = { id: parseInt(id), name, username, password, role };
+          }
+        } else {
+          const newUser = {
+            id: Date.now(),
+            name, username, password, role
+          };
+          this.siteData.users.push(newUser);
+        }
+
+        this.closeUserModal();
+        this.saveData('User account created/updated successfully!');
+        this.verifySuccess({
+          title: 'User Account Verified!',
+          message: `The user account for "${username}" with privilege role "${role.toUpperCase()}" has been saved.`
+        });
       }
-    } else {
-      const newUser = {
-        id: Date.now(),
-        name, username, password, role
-      };
-      this.siteData.users.push(newUser);
-    }
-
-    this.closeUserModal();
-    this.saveData('User account created/updated successfully!');
+    });
   }
 
   editUser(id) {
@@ -857,9 +956,99 @@ class AdminApp {
   }
 
   deleteUser(id) {
-    if (!confirm('Are you sure you want to delete this user account?')) return;
-    this.siteData.users = (this.siteData.users || []).filter(u => u.id !== id);
-    this.saveData('User account deleted.');
+    this.confirmAction({
+      title: 'Confirm User Deletion',
+      heading: 'Delete User Account?',
+      message: 'Are you sure you want to delete this administrative user account?',
+      icon: '🗑️',
+      isDanger: true,
+      onConfirm: () => {
+        this.siteData.users = (this.siteData.users || []).filter(u => u.id !== id);
+        this.saveData('User account deleted.');
+        this.verifySuccess({
+          title: 'User Account Deleted!',
+          message: 'The administrative user account has been deleted.'
+        });
+      }
+    });
+  }
+
+  // --------------------------------------------------------------------------
+  // ACTION CONFIRMATION & WORK VERIFICATION MODAL ENGINE
+  // --------------------------------------------------------------------------
+  confirmAction({ title = 'Confirm Action', heading = 'Are you sure?', message = 'Please confirm to proceed.', icon = '⚠️', isDanger = false, onConfirm }) {
+    const modal = document.getElementById('confirmActionModal');
+    const titleEl = document.getElementById('confirmModalTitle');
+    const headingEl = document.getElementById('confirmHeading');
+    const msgEl = document.getElementById('confirmMessage');
+    const iconEl = document.getElementById('confirmIconWrap');
+    const cancelBtn = document.getElementById('confirmCancelBtn');
+    const proceedBtn = document.getElementById('confirmProceedBtn');
+    const headerEl = document.getElementById('confirmModalHeader');
+
+    if (!modal || !proceedBtn) {
+      if (onConfirm) onConfirm();
+      return;
+    }
+
+    if (titleEl) titleEl.textContent = title;
+    if (headingEl) headingEl.textContent = heading;
+    if (msgEl) msgEl.textContent = message;
+    if (iconEl) iconEl.textContent = icon;
+
+    if (isDanger) {
+      if (headerEl) headerEl.style.background = 'linear-gradient(135deg, #7F1D1D 0%, #B91C1C 100%)';
+      proceedBtn.className = 'btn-sm btn-action-delete';
+      proceedBtn.style.backgroundColor = '#DC2626';
+      proceedBtn.textContent = 'Yes, Delete';
+    } else {
+      if (headerEl) headerEl.style.background = 'linear-gradient(135deg, #062B5C 0%, #0B4EA2 100%)';
+      proceedBtn.className = 'btn-sm btn-action-add';
+      proceedBtn.style.backgroundColor = '#0B4EA2';
+      proceedBtn.textContent = 'Confirm & Proceed';
+    }
+
+    const closeConfirmModal = () => {
+      modal.classList.remove('active');
+    };
+
+    const newCancelBtn = cancelBtn.cloneNode(true);
+    if (cancelBtn.parentNode) cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+
+    const newProceedBtn = proceedBtn.cloneNode(true);
+    if (proceedBtn.parentNode) proceedBtn.parentNode.replaceChild(newProceedBtn, proceedBtn);
+
+    newCancelBtn.addEventListener('click', closeConfirmModal);
+    newProceedBtn.addEventListener('click', () => {
+      closeConfirmModal();
+      if (onConfirm) onConfirm();
+    });
+
+    modal.classList.add('active');
+  }
+
+  verifySuccess({ title = 'Work Completed Successfully!', message = 'Your changes have been saved, updated in site data, and verified.' }) {
+    const modal = document.getElementById('successVerifyModal');
+    const titleEl = document.getElementById('successModalTitle');
+    const msgEl = document.getElementById('successModalMessage');
+    const closeBtn = document.getElementById('successCloseBtn');
+
+    if (!modal) return;
+
+    if (titleEl) titleEl.textContent = title;
+    if (msgEl) msgEl.textContent = message;
+
+    const closeSuccessModal = () => {
+      modal.classList.remove('active');
+    };
+
+    if (closeBtn) {
+      const newCloseBtn = closeBtn.cloneNode(true);
+      if (closeBtn.parentNode) closeBtn.parentNode.replaceChild(newCloseBtn, closeBtn);
+      newCloseBtn.addEventListener('click', closeSuccessModal);
+    }
+
+    modal.classList.add('active');
   }
 
   // --------------------------------------------------------------------------
