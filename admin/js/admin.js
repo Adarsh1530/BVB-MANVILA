@@ -289,11 +289,11 @@ class AdminApp {
 
     const titles = {
       overview: 'Dashboard Overview',
-      notices: '1. Latest Notice Updation Section',
-      popup: '2. Entrance Announcement Popup Image Updation',
-      disclosure: '3. Mandatory Disclosure Updation Section (CBSE SARAS 5.0)',
-      images: '5. Image Upload Section (1 Main + 5 Sub Images & Target Checkboxes)',
-      users: '4. Multi-Role User Creation & Privileges'
+      notices: 'Latest Notice Updation Section',
+      popup: 'Entrance Announcement Popup Image Updation',
+      disclosure: 'Mandatory Disclosure Updation Section (CBSE SARAS 5.0)',
+      images: 'Image Upload Section (1 Main + 5 Sub Images & Target Checkboxes)',
+      users: 'Multi-Role User Creation & Privileges'
     };
     if (pageTitle && titles[tabName]) pageTitle.textContent = titles[tabName];
 
