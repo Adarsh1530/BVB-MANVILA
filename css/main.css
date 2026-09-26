@@ -561,6 +561,28 @@ ul, ol {
   overflow: hidden;
 }
 
+.quick-access-img-banner {
+  display: block;
+  width: 100%;
+  max-width: 160px;
+  background-color: var(--color-white);
+  padding: 5px;
+  border-bottom: 2px solid var(--color-accent-gold);
+  transition: transform var(--transition-fast);
+  box-sizing: border-box;
+}
+
+.quick-access-img-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-xs);
+}
+
+.quick-access-img-banner:hover {
+  transform: translateX(-4px);
+}
+
 .quick-access-item {
   display: flex;
   align-items: center;
