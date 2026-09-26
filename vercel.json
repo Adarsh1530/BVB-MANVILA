@@ -1,5 +1,16 @@
 {
   "cleanUrls": true,
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/admin/login",
+      "destination": "/admin/login.php"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin/index.php"
+    }
+  ],
   "functions": {
     "admin/login.php": {
       "runtime": "vercel-php@0.7.2"
