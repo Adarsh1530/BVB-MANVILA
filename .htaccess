@@ -1,7 +1,0 @@
-RewriteEngine On
-
-# Route /admin/login cleanly to admin/login.html
-RewriteRule ^admin/login$ admin/login.html [L,QSA]
-
-# Route /admin cleanly to admin/index.html
-RewriteRule ^admin/?$ admin/index.html [L,QSA]
