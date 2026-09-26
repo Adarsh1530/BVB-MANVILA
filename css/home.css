@@ -1,0 +1,850 @@
+/* ==========================================================================
+   Bhavan's Vivekananda Vidya Mandir - Homepage Specific Styles
+   ========================================================================== */
+
+/* 1. Hero Section */
+.hero-section {
+  position: relative;
+  background: linear-gradient(135deg, #F6FAFF 0%, #EAF4FF 100%);
+  padding: 4.5rem 0 5.5rem;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(11, 78, 162, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: 3.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-content {
+  max-width: 640px;
+}
+
+.hero-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-heading);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-primary);
+  background: var(--color-white);
+  padding: 0.4rem 1.1rem;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(11, 78, 162, 0.1);
+}
+
+.hero-title {
+  font-size: clamp(2.4rem, 4.2vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--color-deep-blue);
+  margin-bottom: 1.25rem;
+}
+
+.hero-highlight {
+  position: relative;
+  display: inline-block;
+  color: var(--color-primary);
+}
+
+.hero-highlight .title-underline {
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 100%;
+  height: 14px;
+  pointer-events: none;
+}
+
+.hero-desc {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  margin-bottom: 2rem;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+/* Hero Media (Right Column) with EduBlink Floating Badges & Shapes */
+.hero-media-wrap {
+  position: relative;
+}
+
+.hero-img-box {
+  position: relative;
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+  border: 8px solid var(--color-white);
+  aspect-ratio: 4 / 3.4;
+  background-color: var(--color-deep-blue);
+  z-index: 2;
+}
+
+/* 5-Image Auto-Slider Container */
+.hero-slider {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+  transform: scale(1.04);
+}
+
+.hero-slide.active {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+  z-index: 1;
+}
+
+.hero-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Semi-transparent Slide Caption Overlay */
+.hero-slide-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.25rem 1rem 0.6rem 1rem;
+  background: linear-gradient(to top, rgba(15, 23, 42, 0.82) 0%, rgba(15, 23, 42, 0.4) 65%, transparent 100%);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  text-align: center;
+  z-index: 2;
+}
+
+/* Prev / Next Navigation Arrows */
+.hero-slider-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--color-deep-blue);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3;
+  opacity: 0;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.hero-img-box:hover .hero-slider-nav {
+  opacity: 1;
+}
+
+.hero-slider-nav:hover {
+  background: var(--color-primary-blue);
+  color: #ffffff;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.hero-slider-nav.prev {
+  left: 12px;
+}
+
+.hero-slider-nav.next {
+  right: 12px;
+}
+
+/* Dots Indicators */
+.hero-slider-dots {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 4;
+}
+
+.slider-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.55);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.slider-dot.active {
+  width: 22px;
+  background: var(--color-accent-amber, #FFB300);
+  box-shadow: 0 0 6px rgba(255, 179, 0, 0.8);
+}
+
+/* Floating Verification Stat Badges (EduBlink style) */
+.hero-stat-pill-bottom {
+  position: absolute;
+  bottom: -24px;
+  left: -20px;
+  background: var(--color-white);
+  padding: 0.9rem 1.4rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  z-index: 3;
+  animation: floatBob 5s ease-in-out infinite alternate;
+}
+
+.hero-stat-pill-top {
+  position: absolute;
+  top: -24px;
+  right: -20px;
+  background: var(--color-white);
+  padding: 0.9rem 1.4rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  z-index: 3;
+  animation: floatBob 5s ease-in-out infinite alternate-reverse;
+}
+
+.hero-stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--color-light-blue);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hero-stat-pill-bottom h6, .hero-stat-pill-top h6 {
+  font-size: 0.9375rem;
+  color: var(--color-deep-blue);
+  margin-bottom: 0.15rem;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.hero-stat-pill-bottom p, .hero-stat-pill-top p {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0;
+}
+
+/* 2. Welcome Section */
+.welcome-section {
+  background-color: var(--color-white);
+}
+
+.welcome-grid {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  align-items: center;
+  gap: 4rem;
+}
+
+.welcome-media {
+  position: relative;
+}
+
+.welcome-img-card {
+  position: relative;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  aspect-ratio: 4 / 3.3;
+}
+
+.welcome-img-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.welcome-accent-box {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  background-color: var(--color-deep-blue);
+  color: var(--color-white);
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  max-width: 220px;
+}
+
+.welcome-accent-box h3 {
+  color: var(--color-accent-gold);
+  font-size: 1.8rem;
+  margin-bottom: 0.25rem;
+}
+
+.welcome-accent-box p {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.8125rem;
+  margin-bottom: 0;
+  line-height: 1.4;
+}
+
+.welcome-content h2 {
+  margin-bottom: 1.25rem;
+}
+
+.welcome-quote {
+  border-left: 3px solid var(--color-primary);
+  padding-left: 1.25rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--color-deep-blue);
+  font-size: 1rem;
+}
+
+.welcome-highlights {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 1.75rem 0;
+}
+
+.highlight-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-deep-blue);
+}
+
+.highlight-item svg {
+  color: var(--color-primary);
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+/* 3. Why Bhavan's (6 Feature Cards Grid) */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+/* 4. Academic Journey & Streams Section */
+.academic-journey-bar {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-bottom: 3.5rem;
+}
+
+.journey-step-card {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem 1rem;
+  text-align: center;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-xs);
+}
+
+.journey-step-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-sm);
+}
+
+.journey-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--color-light-blue);
+  color: var(--color-primary);
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.75rem;
+}
+
+.journey-step-card h5 {
+  font-size: 0.95rem;
+  color: var(--color-deep-blue);
+  margin-bottom: 0.35rem;
+}
+
+.journey-step-card span {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.streams-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.humanities-verification-alert {
+  background-color: var(--color-white);
+  border-left: 4px solid var(--color-info);
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  box-shadow: var(--shadow-xs);
+  border: 1px solid var(--color-border);
+  border-left-width: 4px;
+}
+
+.humanities-verification-alert svg {
+  color: var(--color-info);
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+.humanities-verification-alert p {
+  font-size: 0.875rem;
+  margin-bottom: 0;
+}
+
+/* 5. Academic Environment Showcase (2 Columns) */
+.academic-env-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 3.5rem;
+}
+
+.env-features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin: 2rem 0;
+}
+
+.env-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.env-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-light-blue);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.env-text h5 {
+  font-size: 1.05rem;
+  margin-bottom: 0.25rem;
+  color: var(--color-deep-blue);
+}
+
+.env-text p {
+  font-size: 0.875rem;
+  margin-bottom: 0;
+}
+
+/* 6. Beyond the Classroom (Clubs & Activities Grid) */
+.clubs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.club-card {
+  background-color: var(--color-white);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  padding: 1.5rem;
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-xs);
+  display: flex;
+  flex-direction: column;
+}
+
+.club-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-secondary-blue);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.club-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-light-blue);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.club-card:hover .club-icon-wrap {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.club-card h5 {
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+  color: var(--color-deep-blue);
+}
+
+.club-card p {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+/* 7. Campus Infrastructure Grid */
+.campus-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+/* 8. Student Life Editorial Grid */
+.student-life-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.75rem;
+}
+
+/* 9. Events Grid */
+.events-columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+/* 10. Achievements & Statistics Bar */
+.achievements-stats-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 3.5rem;
+}
+
+.achievement-domains-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+}
+
+.achievement-domain-card {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  transition: all var(--transition-base);
+}
+
+.achievement-domain-card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.achievement-domain-card h4 {
+  color: var(--color-deep-blue);
+  margin-bottom: 0.75rem;
+}
+
+/* 11. Leadership Grid */
+.leadership-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+}
+
+/* 12. Principal's Message Section */
+.principal-section {
+  background: linear-gradient(135deg, var(--color-deep-blue) 0%, #0B4EA2 100%);
+  color: var(--color-white);
+  border-radius: var(--radius-xl);
+  padding: 4.5rem;
+  box-shadow: var(--shadow-xl);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: var(--space-4xl);
+}
+
+.principal-section::before {
+  content: '"';
+  position: absolute;
+  top: -60px;
+  left: 30px;
+  font-family: Georgia, serif;
+  font-size: 260px;
+  color: rgba(255, 255, 255, 0.05);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.principal-grid {
+  display: grid;
+  grid-template-columns: 0.7fr 1.3fr;
+  align-items: center;
+  gap: 4rem;
+  position: relative;
+  z-index: 2;
+}
+
+.principal-photo-col {
+  text-align: center;
+}
+
+.principal-avatar-wrap {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 6px solid rgba(255, 255, 255, 0.25);
+  box-shadow: var(--shadow-lg);
+  margin: 0 auto 1.5rem;
+  background-color: var(--color-white);
+}
+
+.principal-avatar-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.principal-content h2 {
+  color: var(--color-white);
+  margin-bottom: 1.25rem;
+  font-size: clamp(1.8rem, 2.8vw, 2.5rem);
+}
+
+.principal-quote {
+  font-size: 1.15rem;
+  font-weight: 500;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.95);
+  margin-bottom: 1.5rem;
+}
+
+.principal-excerpt {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 2rem;
+}
+
+/* 13. Admissions 2027–28 Call to Action Banner */
+.admission-cta-banner {
+  background: linear-gradient(135deg, var(--color-deep-blue) 0%, #073877 100%);
+  color: var(--color-white);
+  border-radius: var(--radius-xl);
+  padding: 4rem 3.5rem;
+  box-shadow: var(--shadow-xl);
+  position: relative;
+  overflow: hidden;
+}
+
+.admission-cta-banner::after {
+  content: '';
+  position: absolute;
+  right: -50px;
+  bottom: -50px;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 185, 66, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.admission-cta-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: center;
+  gap: 3rem;
+  position: relative;
+  z-index: 2;
+}
+
+.admission-cta-content h2 {
+  color: var(--color-white);
+  margin-bottom: 1rem;
+}
+
+.admission-cta-content p {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 1.05rem;
+  margin-bottom: 2rem;
+}
+
+.admission-cta-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* 14. Contact & Visit Section ("COME VISIT US") */
+.contact-section-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.5rem;
+}
+
+.contact-cards-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.contact-card-box {
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  box-shadow: var(--shadow-xs);
+  transition: all var(--transition-base);
+}
+
+.contact-card-box:hover {
+  border-color: var(--color-primary);
+  transform: translateX(4px);
+  box-shadow: var(--shadow-sm);
+}
+
+.contact-box-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: var(--radius-md);
+  background-color: var(--color-light-blue);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contact-box-details h5 {
+  font-size: 1rem;
+  margin-bottom: 0.35rem;
+  color: var(--color-deep-blue);
+}
+
+.contact-box-details p {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+/* Contact Form */
+.contact-form-card {
+  background-color: var(--color-white);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--color-border);
+  padding: 2.5rem;
+  box-shadow: var(--shadow-md);
+}
+
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-deep-blue);
+  margin-bottom: 0.4rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  color: var(--color-text-main);
+  background-color: #F8FAFC;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background-color: var(--color-white);
+  box-shadow: 0 0 0 3px rgba(11, 78, 162, 0.12);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 110px;
+}

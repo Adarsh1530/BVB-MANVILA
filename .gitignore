@@ -1,0 +1,14 @@
+# OS files
+.DS_Store
+Thumbs.db
+*.tmp
+
+# Vercel & IDE
+.vercel
+.vscode/
+.idea/
+
+# SQLite Journal Files
+database/*.db-journal
+database/*.db-wal
+database/*.db-shm
