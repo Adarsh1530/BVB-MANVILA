@@ -1161,9 +1161,11 @@
   display: flex;
   align-items: center;
   overflow: hidden;
-  height: 44px;
+  height: 48px;
   font-size: 0.875rem;
-  border-bottom: 2px solid var(--color-accent-gold);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 8px 24px rgba(6, 43, 92, 0.18);
+  border: 1px solid rgba(11, 78, 162, 0.2);
   z-index: 100;
 }
 
@@ -1181,6 +1183,8 @@
   gap: 0.5rem;
   white-space: nowrap;
   flex-shrink: 0;
+  border-top-left-radius: var(--radius-pill);
+  border-bottom-left-radius: var(--radius-pill);
 }
 
 .notice-ticker-track-wrap {
