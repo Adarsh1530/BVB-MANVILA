@@ -1,9 +1,32 @@
 {
   "status": "success",
+  "users": [
+    {
+      "id": 1,
+      "username": "superadmin",
+      "password": "superadmin123",
+      "name": "Principal / Director",
+      "role": "super admin"
+    },
+    {
+      "id": 2,
+      "username": "admin",
+      "password": "admin123",
+      "name": "Administrative Officer",
+      "role": "admin"
+    },
+    {
+      "id": 3,
+      "username": "school",
+      "password": "school123",
+      "name": "School Office Staff",
+      "role": "school"
+    }
+  ],
   "popup": {
     "id": 1,
     "title": "Welcome to Bhavan's Vivekananda Vidya Mandir, Manvila",
-    "message": "Admissions are now open for LKG to Class XI Science & Commerce streams.",
+    "message": "Admissions are now open for LKG to Class XI Science & Commerce streams for 2027–2028 session.",
     "image_url": "images/main page popup/1.jpg",
     "button_text": "ADMISSION INFO",
     "button_url": "admissions.html",
@@ -16,7 +39,7 @@
       "content": "Registration forms for admission to LKG, Class I, Class XI Science & Commerce streams are available online and at the school office.",
       "category": "Admissions",
       "notice_date": "2026-09-15",
-      "pdf_link": "images/Mandatory Disclosure/B. DOCUMENTS AND INFORMATION/Mandatory-Disclosure.pdf",
+      "pdf_link": "assets/documents/mandatory-disclosure/Mandatory-Disclosure.pdf",
       "is_ticker": 1
     },
     {
@@ -25,7 +48,7 @@
       "content": "Classes X and XII CBSE Board examination instructions, timetable, and admit card download notifications have been released.",
       "category": "Academics",
       "notice_date": "2026-09-10",
-      "pdf_link": "images/Mandatory Disclosure/C. RESULT AND ACADEMICS/Academic-Calendar.csv",
+      "pdf_link": "assets/documents/mandatory-disclosure/Academic-Calendar.csv",
       "is_ticker": 1
     },
     {
@@ -45,7 +68,7 @@
       "content": "Registration forms for admission to LKG, Class I, Class XI Science & Commerce streams are available online and at the school office.",
       "category": "Admissions",
       "notice_date": "2026-09-15",
-      "pdf_link": "images/Mandatory Disclosure/B. DOCUMENTS AND INFORMATION/Mandatory-Disclosure.pdf",
+      "pdf_link": "assets/documents/mandatory-disclosure/Mandatory-Disclosure.pdf",
       "is_ticker": 1
     },
     {
@@ -54,7 +77,7 @@
       "content": "Classes X and XII CBSE Board examination instructions, timetable, and admit card download notifications have been released.",
       "category": "Academics",
       "notice_date": "2026-09-10",
-      "pdf_link": "images/Mandatory Disclosure/C. RESULT AND ACADEMICS/Academic-Calendar.csv",
+      "pdf_link": "assets/documents/mandatory-disclosure/Academic-Calendar.csv",
       "is_ticker": 1
     },
     {
@@ -67,5 +90,86 @@
       "is_ticker": 1
     }
   ],
-  "mandatory_disclosures": []
+  "mandatory_disclosures": [
+    {
+      "id": 1,
+      "sl_no": "1",
+      "category_code": "B",
+      "category_name": "Documents & Compliance",
+      "title": "Copies of Affiliation / Upgradation Letter",
+      "details": "CBSE SARAS Affiliation Extension Letter",
+      "file_link": "assets/documents/mandatory-disclosure/AFFILIATION_LETTER.pdf"
+    },
+    {
+      "id": 2,
+      "sl_no": "2",
+      "category_code": "B",
+      "category_name": "Documents & Compliance",
+      "title": "Societies / Trust Registration Certificate",
+      "details": "Bharatiya Vidya Bhavan Kendra Trust Deed",
+      "file_link": "assets/documents/mandatory-disclosure/TRUST.pdf"
+    },
+    {
+      "id": 3,
+      "sl_no": "5",
+      "category_code": "B",
+      "category_name": "Documents & Compliance",
+      "title": "Valid Building Safety Certificate",
+      "details": "Public Works Department Fitness Certificate",
+      "file_link": "assets/documents/mandatory-disclosure/building-fitness.pdf"
+    },
+    {
+      "id": 4,
+      "sl_no": "6",
+      "category_code": "B",
+      "category_name": "Documents & Compliance",
+      "title": "Valid Fire Safety Certificate",
+      "details": "Kerala Fire and Rescue Services Clearance",
+      "file_link": "assets/documents/mandatory-disclosure/fire-safety.pdf"
+    }
+  ],
+  "image_packages": [
+    {
+      "id": 1,
+      "title": "Investiture Ceremony & Cabinet Swearing-In",
+      "subtitle": "Student Council Officers taking official oath on campus",
+      "main_image": "assets/images/events/investiture-1.jpg",
+      "sub_images": [
+        "assets/images/events/investiture-oath.jpg",
+        "assets/images/events/school-parliament.jpg",
+        "assets/images/events/adharva-fest.jpg",
+        "assets/images/events/cultural-fest.jpg",
+        "assets/images/student-life/adharva-dance.jpg"
+      ],
+      "target_sections": {
+        "welcome_section": true,
+        "whats_happening": true,
+        "life_at_bhavans": true,
+        "moments_at_bhavans": true,
+        "campus_discovery": false,
+        "academic_environment": false
+      }
+    },
+    {
+      "id": 2,
+      "title": "Green Serene Campus & Smart Infrastructure",
+      "subtitle": "A tranquil environment designed for holistic learning and scientific discovery",
+      "main_image": "assets/images/campus/campus-view.jpg",
+      "sub_images": [
+        "assets/images/campus/sports.svg",
+        "assets/images/school_buses_1789621728353.jpg",
+        "assets/images/campus_sports_1789621775783.jpg",
+        "assets/images/bvb-manvila-logo.png",
+        "assets/images/amserp-parent-portal.jpg"
+      ],
+      "target_sections": {
+        "welcome_section": false,
+        "whats_happening": false,
+        "life_at_bhavans": false,
+        "moments_at_bhavans": true,
+        "campus_discovery": true,
+        "academic_environment": true
+      }
+    }
+  ]
 }

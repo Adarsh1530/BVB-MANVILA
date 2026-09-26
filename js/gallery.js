@@ -1,7 +1,6 @@
 /**
  * Bhavan's Vivekananda Vidya Mandir - Interactive Gallery & Lightbox Engine
- * Category Filtering, Lightbox Zoom, Prev/Next, Keyboard Navigation, Mobile Swipe
- * Dynamic Counter Format: 1 / N
+ * Category Filtering, Lightbox Zoom, Sub-Images Lightbox Viewer (1 Main + 5 Sub Images)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -47,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 2. Lightbox Engine
+  // 2. Sub-Image Package Lightbox Engine
   if (!lightbox) return;
 
   const lightboxImg = lightbox.querySelector('.lightbox-img');
@@ -57,41 +56,34 @@ document.addEventListener('DOMContentLoaded', () => {
   const prevBtn = lightbox.querySelector('.lightbox-prev');
   const nextBtn = lightbox.querySelector('.lightbox-next');
 
-  let visibleItems = [];
-  let currentIndex = 0;
+  let currentPackageImages = [];
+  let currentSubIndex = 0;
 
-  const updateVisibleItems = () => {
-    const items = getGalleryItems();
-    visibleItems = items.filter(item => {
-      return !item.classList.contains('hidden') && getComputedStyle(item).display !== 'none';
-    });
-  };
+  const openPackageLightbox = (pkg, subIndex = 0) => {
+    // Package image sequence: Main Image first, followed by up to 5 sub-images
+    const allImages = [pkg.main_image, ...(pkg.sub_images || [])].filter(img => img && img.trim() !== '');
 
-  const openLightbox = (index) => {
-    updateVisibleItems();
-    if (!visibleItems.length) return;
+    currentPackageImages = allImages;
+    currentSubIndex = subIndex;
 
-    if (index < 0) index = visibleItems.length - 1;
-    if (index >= visibleItems.length) index = 0;
+    if (currentSubIndex < 0) currentSubIndex = currentPackageImages.length - 1;
+    if (currentSubIndex >= currentPackageImages.length) currentSubIndex = 0;
 
-    currentIndex = index;
-    const item = visibleItems[currentIndex];
-    const img = item.querySelector('img');
-    if (!img) return;
+    const imgSrc = currentPackageImages[currentSubIndex];
+    const isMain = currentSubIndex === 0;
+    const imgTypeLabel = isMain ? 'MAIN HIGHLIGHT' : `SUB IMAGE ${currentSubIndex} of ${currentPackageImages.length - 1}`;
 
-    const title = item.getAttribute('data-title') || img.getAttribute('alt') || 'Campus Moment';
-    const category = item.getAttribute('data-category-label') || 'Gallery';
+    lightboxImg.src = imgSrc.startsWith('http') || imgSrc.startsWith('/') || imgSrc.startsWith('assets') || imgSrc.startsWith('images') ? imgSrc : `../${imgSrc}`;
+    lightboxImg.alt = pkg.title;
 
-    lightboxImg.src = img.src;
-    lightboxImg.alt = title;
     if (lightboxCaption) {
-      lightboxCaption.textContent = `${category} — ${title}`;
+      lightboxCaption.textContent = `${pkg.title} (${imgTypeLabel})`;
     }
     if (lightboxCounter) {
-      lightboxCounter.textContent = `${currentIndex + 1} / ${visibleItems.length}`;
+      lightboxCounter.textContent = `${currentSubIndex + 1} / ${currentPackageImages.length}`;
     }
-    lightboxImg.classList.remove('zoomed');
 
+    lightboxImg.classList.remove('zoomed');
     lightbox.classList.add('active');
     document.body.style.overflow = 'hidden';
   };
@@ -103,84 +95,72 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const showNext = () => {
-    if (!visibleItems.length) return;
-    openLightbox(currentIndex + 1);
+    if (!currentPackageImages.length) return;
+    openPackageLightboxCurrent(currentSubIndex + 1);
   };
 
   const showPrev = () => {
-    if (!visibleItems.length) return;
-    openLightbox(currentIndex - 1);
+    if (!currentPackageImages.length) return;
+    openPackageLightboxCurrent(currentSubIndex - 1);
   };
 
-  // Event Delegation for clicking any gallery item (static or dynamically added)
+  const openPackageLightboxCurrent = (newIdx) => {
+    if (newIdx < 0) newIdx = currentPackageImages.length - 1;
+    if (newIdx >= currentPackageImages.length) newIdx = 0;
+
+    currentSubIndex = newIdx;
+    const imgSrc = currentPackageImages[currentSubIndex];
+    const isMain = currentSubIndex === 0;
+    const imgTypeLabel = isMain ? 'MAIN HIGHLIGHT' : `SUB GALLERY IMAGE ${currentSubIndex}`;
+
+    lightboxImg.src = imgSrc;
+    if (lightboxCounter) {
+      lightboxCounter.textContent = `${currentSubIndex + 1} / ${currentPackageImages.length}`;
+    }
+  };
+
+  // Event Delegation for gallery items
   document.addEventListener('click', (e) => {
     const item = e.target.closest('.gallery-grid .gallery-item');
     if (item) {
-      updateVisibleItems();
-      const idx = visibleItems.indexOf(item);
-      if (idx !== -1) {
-        openLightbox(idx);
+      const pkgId = item.getAttribute('data-package-id');
+      if (pkgId && window.bvbImagePackages) {
+        const pkg = window.bvbImagePackages.find(p => p.id == pkgId);
+        if (pkg) {
+          openPackageLightbox(pkg, 0);
+          return;
+        }
+      }
+
+      // Default fallback if non-packaged gallery item
+      const img = item.querySelector('img');
+      if (img) {
+        currentPackageImages = [img.src];
+        currentSubIndex = 0;
+        lightboxImg.src = img.src;
+        if (lightboxCaption) lightboxCaption.textContent = item.getAttribute('data-title') || 'Gallery Moment';
+        if (lightboxCounter) lightboxCounter.textContent = '1 / 1';
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
       }
     }
   });
 
-  // Lightbox Controls
   if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
   if (nextBtn) nextBtn.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
   if (prevBtn) prevBtn.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
 
-  // Close when clicking outside dialog
   lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) {
-      closeLightbox();
-    }
+    if (e.target === lightbox) closeLightbox();
   });
 
-  // Zoom on image click
-  if (lightboxImg) {
-    lightboxImg.addEventListener('click', (e) => {
-      e.stopPropagation();
-      lightboxImg.classList.toggle('zoomed');
-    });
-  }
-
-  // Keyboard navigation: Escape, ArrowLeft, ArrowRight
   document.addEventListener('keydown', (e) => {
     if (!lightbox.classList.contains('active')) return;
-
-    if (e.key === 'Escape') {
-      closeLightbox();
-    } else if (e.key === 'ArrowRight') {
-      showNext();
-    } else if (e.key === 'ArrowLeft') {
-      showPrev();
-    }
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowRight') showNext();
+    if (e.key === 'ArrowLeft') showPrev();
   });
 
-  // Mobile Touch Swipe Navigation
-  let touchStartX = 0;
-  let touchEndX = 0;
-
-  lightbox.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
-  }, { passive: true });
-
-  lightbox.addEventListener('touchend', (e) => {
-    touchEndX = e.changedTouches[0].screenX;
-    handleSwipe();
-  }, { passive: true });
-
-  const handleSwipe = () => {
-    const swipeThreshold = 50;
-    if (touchEndX < touchStartX - swipeThreshold) {
-      showNext();
-    }
-    if (touchEndX > touchStartX + swipeThreshold) {
-      showPrev();
-    }
-  };
-
-  // Listen for custom event when gallery grid is dynamically updated
   window.addEventListener('galleryUpdated', () => {
     applyFilter();
   });
