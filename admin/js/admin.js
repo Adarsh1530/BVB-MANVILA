@@ -212,6 +212,57 @@ class AdminApp {
         this.saveUser();
       });
     }
+
+    // File Explorer Pickers (HTML5 FileReader API)
+    const setupFilePicker = (inputId, targetTextId, previewImgId, previewWrapId) => {
+      const fileInput = document.getElementById(inputId);
+      const textInput = document.getElementById(targetTextId);
+      const previewImg = document.getElementById(previewImgId);
+      const previewWrap = previewWrapId ? document.getElementById(previewWrapId) : null;
+
+      if (fileInput) {
+        fileInput.addEventListener('change', (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+              if (textInput) textInput.value = evt.target.result;
+              if (previewImg) {
+                previewImg.src = evt.target.result;
+                previewImg.style.display = 'block';
+              }
+              if (previewWrap) previewWrap.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      }
+    };
+
+    setupFilePicker('mainFileInput', 'mainImageUrl', 'mainImagePreview', 'mainPreviewWrap');
+    setupFilePicker('popupFileInput', 'popupImageUrlInput', 'popupImagePreview', 'popupPreviewWrap');
+
+    // Sub Image File Pickers
+    document.querySelectorAll('.sub-file-picker').forEach(picker => {
+      picker.addEventListener('change', (e) => {
+        const targetId = picker.getAttribute('data-target');
+        const previewId = picker.getAttribute('data-preview');
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (evt) => {
+            const txt = document.getElementById(targetId);
+            const prev = document.getElementById(previewId);
+            if (txt) txt.value = evt.target.result;
+            if (prev) {
+              prev.src = evt.target.result;
+              prev.style.display = 'block';
+            }
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    });
   }
 
   switchTab(tabName) {
@@ -573,12 +624,28 @@ class AdminApp {
         document.getElementById('packageSubtitle').value = p.subtitle || '';
         document.getElementById('mainImageUrl').value = p.main_image || '';
 
+        const mainPrev = document.getElementById('mainImagePreview');
+        const mainWrap = document.getElementById('mainPreviewWrap');
+        if (mainPrev && p.main_image) {
+          mainPrev.src = p.main_image.startsWith('/') || p.main_image.startsWith('http') || p.main_image.startsWith('data:') ? p.main_image : '/' + p.main_image;
+          if (mainWrap) mainWrap.style.display = 'block';
+        }
+
         const subs = p.sub_images || [];
-        document.getElementById('subImg1').value = subs[0] || '';
-        document.getElementById('subImg2').value = subs[1] || '';
-        document.getElementById('subImg3').value = subs[2] || '';
-        document.getElementById('subImg4').value = subs[3] || '';
-        document.getElementById('subImg5').value = subs[4] || '';
+        for (let i = 1; i <= 5; i++) {
+          const val = subs[i - 1] || '';
+          const inputEl = document.getElementById(`subImg${i}`);
+          const prevEl = document.getElementById(`subPreview${i}`);
+          if (inputEl) inputEl.value = val;
+          if (prevEl) {
+            if (val) {
+              prevEl.src = val.startsWith('/') || val.startsWith('http') || val.startsWith('data:') ? val : '/' + val;
+              prevEl.style.display = 'block';
+            } else {
+              prevEl.style.display = 'none';
+            }
+          }
+        }
 
         const t = p.target_sections || {};
         document.getElementById('chk_welcome').checked = !!t.welcome_section;
@@ -591,6 +658,12 @@ class AdminApp {
     } else {
       titleEl.textContent = 'Upload Image Package (1 Main + 5 Sub Images)';
       document.getElementById('chk_moments_at_bhavans').checked = true;
+      const mainWrap = document.getElementById('mainPreviewWrap');
+      if (mainWrap) mainWrap.style.display = 'none';
+      for (let i = 1; i <= 5; i++) {
+        const prevEl = document.getElementById(`subPreview${i}`);
+        if (prevEl) prevEl.style.display = 'none';
+      }
     }
 
     modal.classList.add('active');

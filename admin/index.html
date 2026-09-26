@@ -207,8 +207,15 @@
               </div>
 
               <div class="form-group">
-                <label class="form-label">Popup Image URL / Path</label>
-                <input type="text" id="popupImageUrlInput" class="form-control" placeholder="e.g. images/main page popup/1.jpg">
+                <label class="form-label">Popup Image (Choose from Computer or Enter URL)</label>
+                <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+                  <input type="file" id="popupFileInput" accept="image/*" class="form-control" style="max-width: 260px;">
+                  <span style="font-size: 0.8rem; font-weight: 700; color: var(--color-text-secondary);">OR Enter Path:</span>
+                  <input type="text" id="popupImageUrlInput" class="form-control" style="flex: 1; min-width: 200px;" placeholder="e.g. images/main page popup/1.jpg">
+                </div>
+                <div id="popupPreviewWrap" style="margin-top: 0.75rem; display: none;">
+                  <img id="popupImagePreview" src="" alt="Popup Preview" style="max-height: 120px; border-radius: 6px; border: 1px solid var(--color-border); object-fit: cover;">
+                </div>
               </div>
 
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
@@ -260,15 +267,15 @@
         <div class="tab-panel" id="tab-images">
           <div class="panel-card">
             <div class="panel-header">
-              <div class="panel-title">5. Image Upload Section (1 Main + 5 Sub Images & Target Section Checkboxes)</div>
+              <div class="panel-title">5. Image Upload Section (File Explorer Uploads: 1 Main + 5 Sub Images & Target Checkboxes)</div>
               <button class="btn-sm btn-action-add" onclick="adminApp.openImagePackageModal()">+ Upload New Image Package</button>
             </div>
 
             <div style="margin-bottom: 1.5rem; background: var(--color-light-blue); padding: 1.25rem; border-radius: var(--radius-sm); border-left: 4px solid var(--color-primary);">
               <h4 style="color: var(--color-deep-blue); margin-bottom: 0.35rem; font-size: 0.95rem;">📸 Image Package System Architecture Rules:</h4>
               <ul style="font-size: 0.8125rem; color: var(--color-text-secondary); margin-left: 1.25rem; line-height: 1.6;">
-                <li><strong>1 Main Image:</strong> Serves as the primary highlight in each public site section checked below.</li>
-                <li><strong>5 Sub Images:</strong> Display <em>only</em> inside the Gallery Lightbox modal when clicking the main image.</li>
+                <li><strong>1 Main Image:</strong> Upload via File Explorer. Serves as the primary highlight in each public site section checked below.</li>
+                <li><strong>5 Sub Images:</strong> Upload via File Explorer. Display <em>only</em> inside the Gallery Lightbox modal when clicking the main image.</li>
                 <li><strong>Section Placement Checkboxes:</strong> Select which public website sections display the main image highlight!</li>
               </ul>
             </div>
@@ -420,11 +427,11 @@
     </div>
   </div>
 
-  <!-- IMAGE PACKAGE MODAL (1 Main + 5 Sub & Target Checkboxes) -->
+  <!-- IMAGE PACKAGE MODAL (File Explorer Uploader: 1 Main + 5 Sub & Target Checkboxes) -->
   <div class="admin-modal-overlay" id="imagePackageModal">
-    <div class="admin-modal" style="max-width: 800px;">
+    <div class="admin-modal" style="max-width: 840px;">
       <div class="modal-header">
-        <h3 class="modal-title" id="imageModalTitle">Upload Image Package (1 Main + 5 Sub Images)</h3>
+        <h3 class="modal-title" id="imageModalTitle">Upload Image Package (File Explorer Uploader: 1 Main + 5 Sub Images)</h3>
         <button class="modal-close" onclick="adminApp.closeImagePackageModal()">&times;</button>
       </div>
       <form id="imagePackageForm">
@@ -470,39 +477,65 @@
           </div>
 
           <!-- Main Image Upload -->
-          <div class="form-group" style="background: #F8FAFC; padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+          <div class="form-group" style="background: #F8FAFC; padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
             <label class="form-label" style="color: var(--color-deep-blue); font-size: 0.875rem;">
-              📸 1. Main Highlight Image (Displays across selected sections)
+              📸 1. Main Highlight Image (Upload via File Explorer or enter Path)
             </label>
-            <input type="text" id="mainImageUrl" class="form-control" required placeholder="Image path, e.g. assets/images/events/investiture-1.jpg">
+            <div style="display: flex; gap: 1rem; align-items: center; margin-top: 0.5rem; flex-wrap: wrap;">
+              <input type="file" id="mainFileInput" accept="image/*" class="form-control" style="max-width: 260px;">
+              <span style="font-size: 0.8rem; font-weight: 700; color: var(--color-text-secondary);">OR Path:</span>
+              <input type="text" id="mainImageUrl" class="form-control" style="flex: 1; min-width: 200px;" required placeholder="Image path or file explorer URL">
+            </div>
+            <div id="mainPreviewWrap" style="margin-top: 0.75rem; display: none;">
+              <img id="mainImagePreview" src="" alt="Main Preview" style="max-height: 120px; border-radius: 6px; border: 1px solid var(--color-border); object-fit: cover;">
+            </div>
           </div>
 
           <!-- 5 Sub Images Upload -->
-          <div class="form-group" style="background: var(--color-ultra-light-blue); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border); margin-top: 1rem;">
+          <div class="form-group" style="background: var(--color-ultra-light-blue); padding: 1.25rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border); margin-top: 1rem;">
             <label class="form-label" style="color: var(--color-deep-blue); font-size: 0.875rem;">
-              🖼 2. Sub Images (5 Gallery Sub-Images — Displayed ONLY in Gallery Lightbox when clicking Main Image)
+              🖼 2. Sub Images (5 Gallery Sub-Images — Upload via File Explorer)
             </label>
 
             <div class="sub-images-grid">
+              <!-- Sub 1 -->
               <div class="sub-image-card">
-                <span style="font-size: 0.7rem; font-weight: 700;">Sub Image 1</span>
-                <input type="text" id="subImg1" class="form-control" style="font-size: 0.75rem; padding: 0.4rem;" placeholder="Path 1">
+                <span style="font-size: 0.75rem; font-weight: 700; color: var(--color-deep-blue);">Sub Image 1</span>
+                <img id="subPreview1" src="" alt="P1" style="width: 100%; height: 60px; object-fit: cover; border-radius: 4px; display: none; margin: 0.35rem 0;">
+                <input type="file" accept="image/*" class="sub-file-picker" data-target="subImg1" data-preview="subPreview1" style="font-size: 0.7rem; width: 100%; margin-bottom: 0.35rem;">
+                <input type="text" id="subImg1" class="form-control" style="font-size: 0.75rem; padding: 0.3rem;" placeholder="Path 1">
               </div>
+
+              <!-- Sub 2 -->
               <div class="sub-image-card">
-                <span style="font-size: 0.7rem; font-weight: 700;">Sub Image 2</span>
-                <input type="text" id="subImg2" class="form-control" style="font-size: 0.75rem; padding: 0.4rem;" placeholder="Path 2">
+                <span style="font-size: 0.75rem; font-weight: 700; color: var(--color-deep-blue);">Sub Image 2</span>
+                <img id="subPreview2" src="" alt="P2" style="width: 100%; height: 60px; object-fit: cover; border-radius: 4px; display: none; margin: 0.35rem 0;">
+                <input type="file" accept="image/*" class="sub-file-picker" data-target="subImg2" data-preview="subPreview2" style="font-size: 0.7rem; width: 100%; margin-bottom: 0.35rem;">
+                <input type="text" id="subImg2" class="form-control" style="font-size: 0.75rem; padding: 0.3rem;" placeholder="Path 2">
               </div>
+
+              <!-- Sub 3 -->
               <div class="sub-image-card">
-                <span style="font-size: 0.7rem; font-weight: 700;">Sub Image 3</span>
-                <input type="text" id="subImg3" class="form-control" style="font-size: 0.75rem; padding: 0.4rem;" placeholder="Path 3">
+                <span style="font-size: 0.75rem; font-weight: 700; color: var(--color-deep-blue);">Sub Image 3</span>
+                <img id="subPreview3" src="" alt="P3" style="width: 100%; height: 60px; object-fit: cover; border-radius: 4px; display: none; margin: 0.35rem 0;">
+                <input type="file" accept="image/*" class="sub-file-picker" data-target="subImg3" data-preview="subPreview3" style="font-size: 0.7rem; width: 100%; margin-bottom: 0.35rem;">
+                <input type="text" id="subImg3" class="form-control" style="font-size: 0.75rem; padding: 0.3rem;" placeholder="Path 3">
               </div>
+
+              <!-- Sub 4 -->
               <div class="sub-image-card">
-                <span style="font-size: 0.7rem; font-weight: 700;">Sub Image 4</span>
-                <input type="text" id="subImg4" class="form-control" style="font-size: 0.75rem; padding: 0.4rem;" placeholder="Path 4">
+                <span style="font-size: 0.75rem; font-weight: 700; color: var(--color-deep-blue);">Sub Image 4</span>
+                <img id="subPreview4" src="" alt="P4" style="width: 100%; height: 60px; object-fit: cover; border-radius: 4px; display: none; margin: 0.35rem 0;">
+                <input type="file" accept="image/*" class="sub-file-picker" data-target="subImg4" data-preview="subPreview4" style="font-size: 0.7rem; width: 100%; margin-bottom: 0.35rem;">
+                <input type="text" id="subImg4" class="form-control" style="font-size: 0.75rem; padding: 0.3rem;" placeholder="Path 4">
               </div>
+
+              <!-- Sub 5 -->
               <div class="sub-image-card">
-                <span style="font-size: 0.7rem; font-weight: 700;">Sub Image 5</span>
-                <input type="text" id="subImg5" class="form-control" style="font-size: 0.75rem; padding: 0.4rem;" placeholder="Path 5">
+                <span style="font-size: 0.75rem; font-weight: 700; color: var(--color-deep-blue);">Sub Image 5</span>
+                <img id="subPreview5" src="" alt="P5" style="width: 100%; height: 60px; object-fit: cover; border-radius: 4px; display: none; margin: 0.35rem 0;">
+                <input type="file" accept="image/*" class="sub-file-picker" data-target="subImg5" data-preview="subPreview5" style="font-size: 0.7rem; width: 100%; margin-bottom: 0.35rem;">
+                <input type="text" id="subImg5" class="form-control" style="font-size: 0.75rem; padding: 0.3rem;" placeholder="Path 5">
               </div>
             </div>
           </div>
