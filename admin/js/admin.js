@@ -17,12 +17,12 @@ class AdminApp {
     const isLoginPage = window.location.pathname.endsWith('login.html') || window.location.pathname.endsWith('login');
 
     if (!this.currentUser && !isLoginPage) {
-      window.location.href = 'login.html';
+      window.location.href = '/admin/login.html';
       return;
     }
 
     if (this.currentUser && isLoginPage) {
-      window.location.href = 'index.html';
+      window.location.href = '/admin/index.html';
       return;
     }
 
@@ -51,7 +51,7 @@ class AdminApp {
     }
 
     try {
-      const res = await fetch('../api/get_site_data.json');
+      const res = await fetch('/api/get_site_data.json');
       if (res.ok) {
         this.siteData = await res.json();
         localStorage.setItem('bvb_site_data', JSON.stringify(this.siteData));
@@ -65,7 +65,7 @@ class AdminApp {
     localStorage.setItem('bvb_site_data', JSON.stringify(this.siteData));
     
     // Also post to backend PHP endpoint if available on server
-    fetch('../api/admin_api.php', {
+    fetch('/api/admin_api.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'sync_data', data: this.siteData })
@@ -98,7 +98,7 @@ class AdminApp {
         matchedUser.role = role; 
         sessionStorage.setItem('bvb_active_user', JSON.stringify(matchedUser));
         localStorage.setItem('bvb_active_user', JSON.stringify(matchedUser));
-        window.location.href = 'index.html';
+        window.location.href = '/admin/index.html';
       } else {
         // Demo Fallback Login
         if (username && password) {
@@ -110,7 +110,7 @@ class AdminApp {
           };
           sessionStorage.setItem('bvb_active_user', JSON.stringify(newUser));
           localStorage.setItem('bvb_active_user', JSON.stringify(newUser));
-          window.location.href = 'index.html';
+          window.location.href = '/admin/index.html';
         } else {
           alertBox.style.display = 'block';
           alertBox.style.backgroundColor = '#FEE2E2';
@@ -124,7 +124,7 @@ class AdminApp {
   logout() {
     sessionStorage.removeItem('bvb_active_user');
     localStorage.removeItem('bvb_active_user');
-    window.location.href = 'login.html';
+    window.location.href = '/admin/login.html';
   }
 
   // --------------------------------------------------------------------------
@@ -292,7 +292,7 @@ class AdminApp {
         <td><strong>${this.escapeHtml(n.notice_date)}</strong></td>
         <td><span class="role-badge-preview badge-admin">${this.escapeHtml(n.category || 'General')}</span></td>
         <td style="font-weight: 600;">${this.escapeHtml(n.title)}</td>
-        <td>${n.pdf_link ? `<a href="../${this.escapeHtml(n.pdf_link)}" target="_blank" style="color: var(--color-primary); font-weight: 600;">View PDF</a>` : '<span style="color: #94A3B8;">None</span>'}</td>
+        <td>${n.pdf_link ? `<a href="/${this.escapeHtml(n.pdf_link)}" target="_blank" style="color: var(--color-primary); font-weight: 600;">View PDF</a>` : '<span style="color: #94A3B8;">None</span>'}</td>
         <td>${n.is_ticker == 1 ? '<span class="role-badge-preview badge-school">Ticker Active</span>' : '<span style="color: #94A3B8;">Off</span>'}</td>
         <td>
           <button class="btn-sm btn-action-edit" onclick="adminApp.editNotice(${n.id})">Edit</button>
@@ -432,7 +432,7 @@ class AdminApp {
         <td><span class="role-badge-preview badge-super-admin">Section ${this.escapeHtml(d.category_code || 'B')}</span></td>
         <td style="font-weight: 600;">${this.escapeHtml(d.title)}</td>
         <td style="font-size: 0.8125rem; color: var(--color-text-secondary);">${this.escapeHtml(d.details || '-')}</td>
-        <td><a href="../${this.escapeHtml(d.file_link)}" target="_blank" style="color: var(--color-primary); font-weight: 600;">Open Document</a></td>
+        <td><a href="/${this.escapeHtml(d.file_link)}" target="_blank" style="color: var(--color-primary); font-weight: 600;">Open Document</a></td>
         <td>
           <button class="btn-sm btn-action-edit" onclick="adminApp.editDisclosure(${d.id})">Edit</button>
           <button class="btn-sm btn-action-delete" onclick="adminApp.deleteDisclosure(${d.id})">Delete</button>
@@ -539,7 +539,7 @@ class AdminApp {
       return `
         <tr>
           <td>
-            <img src="../${this.escapeHtml(p.main_image)}" alt="Main Image" style="width: 70px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid var(--color-border);">
+            <img src="/${this.escapeHtml(p.main_image)}" alt="Main Image" style="width: 70px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid var(--color-border);">
           </td>
           <td>
             <strong style="color: var(--color-deep-blue);">${this.escapeHtml(p.title)}</strong>
