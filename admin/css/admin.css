@@ -702,7 +702,8 @@ body {
   opacity: 0;
   visibility: hidden;
   transition: all var(--transition-fast);
-  padding: 1rem;
+  padding: 1.5rem 1rem;
+  overflow-y: auto;
 }
 
 .admin-modal-overlay.active {
@@ -716,11 +717,20 @@ body {
   background: #FFFFFF;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-xl);
-  max-height: 90vh;
+  max-height: calc(100vh - 3rem);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  margin: auto;
   animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.admin-modal form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
 }
 
 @keyframes modalPop {
@@ -735,6 +745,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-shrink: 0;
 }
 
 .modal-title {
@@ -756,6 +767,8 @@ body {
   padding: 1.5rem;
   overflow-y: auto;
   flex: 1;
+  min-height: 0;
+  -webkit-overflow-scrolling: touch;
 }
 
 .modal-footer {
@@ -765,6 +778,7 @@ body {
   justify-content: flex-end;
   gap: 0.75rem;
   background-color: #F8FAFC;
+  flex-shrink: 0;
 }
 
 /* Toast Notification */
