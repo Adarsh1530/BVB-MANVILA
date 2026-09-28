@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Raphael';
+  src: url('../../assets/fonts/raphael.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ==========================================================================
    Bhavan's Vivekananda Vidya Mandir - Admin Panel Stylesheet
    Matching Public Site Theme, Glassmorphism, Responsive Dashboard & Layout
@@ -864,4 +872,18 @@ body {
   .mobile-sidebar-toggle {
     display: block;
   }
+}
+
+
+.logo-top-text {
+  font-family: 'Raphael', 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.logo-title-bhavan {
+  font-family: 'Raphael', serif;
+  font-weight: 800;
+  line-height: 0.95;
+  letter-spacing: 0.02em;
 }
