@@ -32,8 +32,6 @@
         "button_url": "admissions.html",
         "is_active": 0
     },
-    "popup_history": [],
-    "auto_slides": [],
     "notices": [],
     "ticker": [],
     "mandatory_disclosures": [
@@ -200,5 +198,7 @@
             "file_link": ""
         }
     ],
-    "image_packages": []
+    "image_packages": [],
+    "auto_slides": [],
+    "popup_history": []
 }

@@ -7,19 +7,26 @@
 header('Content-Type: application/json; charset=UTF-8');
 header('Access-Control-Allow-Origin: *');
 
-$gallery = [
-    'status' => 'success',
-    'total' => 8,
-    'data' => [
-        ['id' => 1, 'category' => 'events', 'title' => 'Investiture Ceremony Stage Assembly', 'src' => 'assets/images/events/investiture-1.jpg'],
-        ['id' => 2, 'category' => 'student-life', 'title' => 'School Parliament Cabinet', 'src' => 'assets/images/events/school-parliament.jpg'],
-        ['id' => 3, 'category' => 'culture', 'title' => 'Adharva Inter-School Fest Inauguration', 'src' => 'assets/images/events/adharva-fest.jpg'],
-        ['id' => 4, 'category' => 'culture', 'title' => 'Classical Dance Drama', 'src' => 'assets/images/student-life/adharva-dance.jpg'],
-        ['id' => 5, 'category' => 'events', 'title' => 'Investiture Oath Taking', 'src' => 'assets/images/events/investiture-oath.jpg'],
-        ['id' => 6, 'category' => 'culture', 'title' => 'All Kerala Bhavan\'s Cultural Fest', 'src' => 'assets/images/events/cultural-fest.jpg'],
-        ['id' => 7, 'category' => 'campus', 'title' => 'Manvila Campus Facade', 'src' => 'assets/images/campus/campus-view.jpg'],
-        ['id' => 8, 'category' => 'sports', 'title' => 'Annual Sports Meet Athletics', 'src' => 'assets/images/campus/sports.svg']
-    ]
-];
+require_once __DIR__ . '/../admin/config/db.php';
 
-echo json_encode($gallery, JSON_PRETTY_PRINT);
+$galleryItems = [];
+
+if ($pdo) {
+    try {
+        $pkgs = $pdo->query("SELECT id, title, main_image FROM image_packages ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($pkgs as $p) {
+            $galleryItems[] = [
+                'id' => (int)$p['id'],
+                'category' => 'events',
+                'title' => $p['title'],
+                'src' => $p['main_image']
+            ];
+        }
+    } catch (Exception $e) {}
+}
+
+echo json_encode([
+    'status' => 'success',
+    'total' => count($galleryItems),
+    'data' => $galleryItems
+], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
