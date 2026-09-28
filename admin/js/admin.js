@@ -30,8 +30,8 @@ const BVB_DEFAULT_SEED_DATA = {
     { id: 1, title: "EDUCATION ROOTED IN VALUES. DRIVEN BY EXCELLENCE", subtitle: "Main School Building • Manvila Campus", image_url: "assets/images/campus/campus-view.jpg", is_active: 1 },
     { id: 2, title: "Serene 2.89 Acres Campus Grounds", subtitle: "Campus Assembly & Sports Grounds", image_url: "assets/images/events/investiture-1.jpg", is_active: 1 },
     { id: 3, title: "Bhishma & Vyasa Academic Blocks", subtitle: "State-of-the-Art Science & Digital Labs", image_url: "assets/images/events/investiture-2.jpg", is_active: 1 },
-    { id: 4, title: "Investiture & Leadership Ceremonies", subtitle: "Empowering Student Leaders", image_url: "assets/images/events/investiture-3.jpg", is_active: 1 },
-    { id: 5, title: "All Kerala Bhavan's Youth & Cultural Fest", subtitle: "Celebrating Cultural Heritage", image_url: "assets/images/events/investiture-4.jpg", is_active: 1 }
+    { id: 4, title: "Investiture & Leadership Ceremonies", subtitle: "Empowering Student Leaders", image_url: "assets/images/events/investiture-oath.jpg", is_active: 1 },
+    { id: 5, title: "All Kerala Bhavan's Youth & Cultural Fest", subtitle: "Celebrating Cultural Heritage", image_url: "assets/images/events/cultural-fest.jpg", is_active: 1 }
   ],
   notices: [
     { id: 1, title: "Admissions Open for Academic Session 2027–2028 (LKG to Class XI)", content: "Registration forms for admission to LKG, Class I, Class XI Science & Commerce streams are available online and at the school office.", category: "Admissions", notice_date: "2026-09-15", pdf_link: "assets/documents/mandatory-disclosure/Mandatory-Disclosure.pdf", is_ticker: 1 },
@@ -63,10 +63,10 @@ const BVB_DEFAULT_SEED_DATA = {
       id: 1,
       title: "Annual Sports & Athletic Meet Highlights",
       subtitle: "Celebrated at Manvila Campus Grounds",
-      main_image: "assets/images/events/sports-day-1.jpg",
+      main_image: "assets/images/events/school-parliament.jpg",
       sub_images: [
-        "assets/images/events/sports-day-1.jpg",
-        "assets/images/events/annual-day-1.jpg"
+        "assets/images/events/school-parliament.jpg",
+        "assets/images/events/adharva-fest.jpg"
       ],
       target_sections: { welcome_section: true, whats_happening: true, life_at_bhavans: true, moments_at_bhavans: true, campus_discovery: true, academic_environment: true }
     },
@@ -78,8 +78,8 @@ const BVB_DEFAULT_SEED_DATA = {
       sub_images: [
         "assets/images/events/investiture-1.jpg",
         "assets/images/events/investiture-2.jpg",
-        "assets/images/events/investiture-3.jpg",
-        "assets/images/events/investiture-4.jpg"
+        "assets/images/events/investiture-oath.jpg",
+        "assets/images/events/cultural-fest.jpg"
       ],
       target_sections: { welcome_section: true, whats_happening: true, life_at_bhavans: true, moments_at_bhavans: true, campus_discovery: true, academic_environment: true }
     }
@@ -222,6 +222,30 @@ class AdminApp {
     if (!this.siteData.auto_slides || this.siteData.auto_slides.length === 0) this.siteData.auto_slides = JSON.parse(JSON.stringify(BVB_DEFAULT_SEED_DATA.auto_slides));
     if (!this.siteData.users || this.siteData.users.length === 0) this.siteData.users = JSON.parse(JSON.stringify(BVB_DEFAULT_SEED_DATA.users));
     if (!this.siteData.popup) this.siteData.popup = JSON.parse(JSON.stringify(BVB_DEFAULT_SEED_DATA.popup));
+
+    // Auto-fix any stale broken image paths in site data
+    const fixBrokenPath = (str) => {
+      if (!str || typeof str !== 'string') return str;
+      return str
+        .replace(/investiture-3\.jpg/g, 'investiture-oath.jpg')
+        .replace(/investiture-4\.jpg/g, 'cultural-fest.jpg')
+        .replace(/sports-day-1\.jpg/g, 'school-parliament.jpg')
+        .replace(/annual-day-1\.jpg/g, 'adharva-fest.jpg');
+    };
+
+    if (this.siteData.auto_slides) {
+      this.siteData.auto_slides.forEach(s => { if (s) s.image_url = fixBrokenPath(s.image_url); });
+    }
+    if (this.siteData.image_packages) {
+      this.siteData.image_packages.forEach(p => {
+        if (p) {
+          p.main_image = fixBrokenPath(p.main_image);
+          if (Array.isArray(p.sub_images)) {
+            p.sub_images = p.sub_images.map(fixBrokenPath);
+          }
+        }
+      });
+    }
 
     localStorage.setItem('bvb_site_data', JSON.stringify(this.siteData));
   }
@@ -585,12 +609,15 @@ class AdminApp {
   }
 
   formatImgSrc(url) {
-    if (!url || typeof url !== 'string' || !url.trim()) return '/assets/images/bvb-manvila-logo.png';
+    if (!url || typeof url !== 'string' || !url.trim()) return '../assets/images/bvb-manvila-logo.png';
     const trimmed = url.trim();
     if (trimmed.startsWith('data:') || trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
       return trimmed;
     }
-    return trimmed.startsWith('/') ? trimmed : '/' + trimmed;
+    if (trimmed.startsWith('../')) return trimmed;
+    if (trimmed.startsWith('./')) return '../' + trimmed.substring(2);
+    if (trimmed.startsWith('/')) return '..' + trimmed;
+    return '../' + trimmed;
   }
 
   switchTab(tabName) {
@@ -873,7 +900,7 @@ class AdminApp {
     tbody.innerHTML = history.map(item => `
       <tr>
         <td>
-          <img src="${this.formatImgSrc(item.image_url)}" alt="Popup" style="width: 60px; height: 45px; object-fit: cover; border-radius: 6px; border: 1px solid var(--color-border);">
+          <img src="${this.formatImgSrc(item.image_url)}" onerror="this.onerror=null; this.src='../assets/images/bvb-manvila-logo.png';" alt="Popup" style="width: 60px; height: 45px; object-fit: cover; border-radius: 6px; border: 1px solid var(--color-border);">
         </td>
         <td><strong style="color: var(--color-deep-blue);">${this.escapeHtml(item.title)}</strong></td>
         <td style="font-size: 0.8125rem; color: var(--color-text-secondary); max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${this.escapeHtml(item.message)}</td>
@@ -1135,7 +1162,7 @@ class AdminApp {
         <tr>
           <td>
             <div style="display: flex; align-items: center; gap: 0.75rem;">
-              <img src="${this.formatImgSrc(p.main_image)}" alt="Main Image" style="width: 75px; height: 55px; object-fit: cover; border-radius: 6px; border: 1.5px solid var(--color-border); box-shadow: var(--shadow-xs);">
+              <img src="${this.formatImgSrc(p.main_image)}" onerror="this.onerror=null; this.src='../assets/images/bvb-manvila-logo.png';" alt="Main Image" style="width: 75px; height: 55px; object-fit: cover; border-radius: 6px; border: 1.5px solid var(--color-border); box-shadow: var(--shadow-xs);">
             </div>
           </td>
           <td>
@@ -1329,7 +1356,7 @@ class AdminApp {
     tbody.innerHTML = slides.map(s => `
       <tr>
         <td>
-          <img src="${this.formatImgSrc(s.image_url)}" alt="Slide Image" style="width: 80px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid var(--color-border);">
+          <img src="${this.formatImgSrc(s.image_url)}" onerror="this.onerror=null; this.src='../assets/images/bvb-manvila-logo.png';" alt="Slide Image" style="width: 80px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid var(--color-border);">
         </td>
         <td><strong style="color: var(--color-deep-blue);">${this.escapeHtml(s.title)}</strong></td>
         <td style="font-size: 0.8125rem; color: var(--color-text-secondary);">${this.escapeHtml(s.subtitle || '-')}</td>

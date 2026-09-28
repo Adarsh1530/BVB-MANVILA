@@ -272,8 +272,8 @@
             "sub_images": [
                 "assets/images/events/investiture-1.jpg",
                 "assets/images/events/investiture-2.jpg",
-                "assets/images/events/investiture-3.jpg",
-                "assets/images/events/investiture-4.jpg"
+                "assets/images/events/investiture-oath.jpg",
+                "assets/images/events/cultural-fest.jpg"
             ],
             "target_sections": {
                 "welcome_section": true,
@@ -288,10 +288,10 @@
             "id": 1,
             "title": "Annual Sports & Athletic Meet Highlights",
             "subtitle": "Celebrated at Manvila Campus Grounds",
-            "main_image": "assets/images/events/sports-day-1.jpg",
+            "main_image": "assets/images/events/school-parliament.jpg",
             "sub_images": [
-                "assets/images/events/sports-day-1.jpg",
-                "assets/images/events/annual-day-1.jpg"
+                "assets/images/events/school-parliament.jpg",
+                "assets/images/events/adharva-fest.jpg"
             ],
             "target_sections": {
                 "welcome_section": true,
@@ -329,14 +329,14 @@
             "id": 4,
             "title": "Investiture & Student Leadership Ceremonies",
             "subtitle": "Developing confidence, discipline, and ethical leadership",
-            "image_url": "assets/images/events/investiture-3.jpg",
+            "image_url": "assets/images/events/investiture-oath.jpg",
             "is_active": 1
         },
         {
             "id": 5,
             "title": "All Kerala Bhavan's Youth & Cultural Fest",
             "subtitle": "Celebrating artistic talents and cultural excellence",
-            "image_url": "assets/images/events/investiture-4.jpg",
+            "image_url": "assets/images/events/cultural-fest.jpg",
             "is_active": 1
         }
     ],

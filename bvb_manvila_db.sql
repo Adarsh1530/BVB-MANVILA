@@ -135,8 +135,8 @@ CREATE TABLE IF NOT EXISTS `image_packages` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 INSERT INTO `image_packages` (`id`, `title`, `subtitle`, `main_image`, `sub_images`, `target_sections`) VALUES
-(1, 'Annual Sports & Athletic Meet Highlights', 'Celebrated at Manvila Campus Grounds', 'assets/images/events/sports-day-1.jpg', '["assets/images/events/sports-day-1.jpg","assets/images/events/annual-day-1.jpg"]', '{"welcome_section":true,"whats_happening":true,"life_at_bhavans":true,"moments_at_bhavans":true,"campus_discovery":true,"academic_environment":true}'),
-(2, 'Investiture & Student Council Leadership Ceremony', 'Empowering Student Leaders', 'assets/images/events/investiture-1.jpg', '["assets/images/events/investiture-1.jpg","assets/images/events/investiture-2.jpg","assets/images/events/investiture-3.jpg","assets/images/events/investiture-4.jpg"]', '{"welcome_section":true,"whats_happening":true,"life_at_bhavans":true,"moments_at_bhavans":true,"campus_discovery":true,"academic_environment":true}')
+(1, 'Annual Sports & Athletic Meet Highlights', 'Celebrated at Manvila Campus Grounds', 'assets/images/events/school-parliament.jpg', '["assets/images/events/school-parliament.jpg","assets/images/events/adharva-fest.jpg"]', '{"welcome_section":true,"whats_happening":true,"life_at_bhavans":true,"moments_at_bhavans":true,"campus_discovery":true,"academic_environment":true}'),
+(2, 'Investiture & Student Council Leadership Ceremony', 'Empowering Student Leaders', 'assets/images/events/investiture-1.jpg', '["assets/images/events/investiture-1.jpg","assets/images/events/investiture-2.jpg","assets/images/events/investiture-oath.jpg","assets/images/events/cultural-fest.jpg"]', '{"welcome_section":true,"whats_happening":true,"life_at_bhavans":true,"moments_at_bhavans":true,"campus_discovery":true,"academic_environment":true}')
 ON DUPLICATE KEY UPDATE `id`=`id`;
 
 -- --------------------------------------------------------
@@ -155,8 +155,8 @@ INSERT INTO `auto_slides` (`id`, `title`, `subtitle`, `image_url`, `is_active`) 
 (1, 'EDUCATION ROOTED IN VALUES. DRIVEN BY EXCELLENCE', 'Nurturing Future Leaders with Academic Rigor and Indian Cultural Heritage', 'assets/images/campus/campus-view.jpg', 1),
 (2, 'State-of-the-Art Science & Digital Learning Labs', 'Empowering students through hands-on discovery and modern technology', 'assets/images/events/investiture-1.jpg', 1),
 (3, 'Serene 2.89 Acres Campus Grounds', 'Safe, green, and inspiring environment for holistic child development', 'assets/images/events/investiture-2.jpg', 1),
-(4, 'Investiture & Student Leadership Ceremonies', 'Developing confidence, discipline, and ethical leadership', 'assets/images/events/investiture-3.jpg', 1),
-(5, 'All Kerala Bhavan\'s Youth & Cultural Fest', 'Celebrating artistic talents and cultural excellence', 'assets/images/events/investiture-4.jpg', 1)
+(4, 'Investiture & Student Leadership Ceremonies', 'Developing confidence, discipline, and ethical leadership', 'assets/images/events/investiture-oath.jpg', 1),
+(5, 'All Kerala Bhavan\'s Youth & Cultural Fest', 'Celebrating artistic talents and cultural excellence', 'assets/images/events/cultural-fest.jpg', 1)
 ON DUPLICATE KEY UPDATE `id`=`id`;
 
 COMMIT;
