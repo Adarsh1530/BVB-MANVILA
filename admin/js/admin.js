@@ -93,6 +93,16 @@ class AdminApp {
     this.init();
   }
 
+  getAdminPath(file) {
+    const pathname = window.location.pathname;
+    if (pathname.includes('/admin/')) {
+      return pathname.substring(0, pathname.indexOf('/admin/') + 7) + file;
+    } else if (pathname.endsWith('/admin')) {
+      return pathname + '/' + file;
+    }
+    return file;
+  }
+
   async init() {
     // 1. Check Authentication State
     this.currentUser = JSON.parse(sessionStorage.getItem('bvb_active_user') || localStorage.getItem('bvb_active_user') || 'null');
@@ -100,12 +110,12 @@ class AdminApp {
     const isLoginPage = window.location.pathname.endsWith('login.html') || window.location.pathname.endsWith('login');
 
     if (!this.currentUser && !isLoginPage) {
-      window.location.href = 'login.html';
+      window.location.href = this.getAdminPath('login.html');
       return;
     }
 
     if (this.currentUser && isLoginPage) {
-      window.location.href = 'index.html';
+      window.location.href = this.getAdminPath('index.html');
       return;
     }
 
@@ -245,7 +255,7 @@ class AdminApp {
         matchedUser.role = role; 
         sessionStorage.setItem('bvb_active_user', JSON.stringify(matchedUser));
         localStorage.setItem('bvb_active_user', JSON.stringify(matchedUser));
-        window.location.href = 'index.html';
+        window.location.href = this.getAdminPath('index.html');
       } else {
         if (username && password) {
           const newUser = {
@@ -256,7 +266,7 @@ class AdminApp {
           };
           sessionStorage.setItem('bvb_active_user', JSON.stringify(newUser));
           localStorage.setItem('bvb_active_user', JSON.stringify(newUser));
-          window.location.href = 'index.html';
+          window.location.href = this.getAdminPath('index.html');
         } else {
           if (alertBox) {
             alertBox.style.display = 'block';
@@ -272,7 +282,7 @@ class AdminApp {
   logout() {
     sessionStorage.removeItem('bvb_active_user');
     localStorage.removeItem('bvb_active_user');
-    window.location.href = 'login.html';
+    window.location.href = this.getAdminPath('login.html');
   }
 
   // --------------------------------------------------------------------------
