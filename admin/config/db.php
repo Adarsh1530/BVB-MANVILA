@@ -6,31 +6,53 @@
 
 $db_host = getenv('DB_HOST') ?: '127.0.0.1';
 $db_port = getenv('DB_PORT') ?: '3306';
-$db_user = getenv('DB_USER') ?: 'root';
-$db_pass = getenv('DB_PASS') !== false ? getenv('DB_PASS') : '';
-$db_name = getenv('DB_NAME') ?: 'bvb_manvila_db';
+
+// Multi-environment database connection candidates (cPanel Live DB first, then Local XAMPP)
+$db_candidates = [
+    [
+        'name' => getenv('DB_NAME') ?: 'vmsprosparkitts_bvb_manvila_db',
+        'user' => getenv('DB_USER') ?: 'vmsprosparkitts_bvb_user',
+        'pass' => getenv('DB_PASS') !== false ? getenv('DB_PASS') : 'H5YhT5@mspark'
+    ],
+    [
+        'name' => 'bvb_manvila_db',
+        'user' => 'root',
+        'pass' => ''
+    ]
+];
 
 $pdo = null;
+$db_name = 'bvb_manvila_db';
 
-try {
-    // 1. Direct connection to the specified database
-    $pdo = new PDO("mysql:host={$db_host};port={$db_port};dbname={$db_name};charset=utf8mb4", $db_user, $db_pass, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-    ]);
-} catch (Exception $e) {
-    // 2. If database doesn't exist yet (e.g. local XAMPP first run), attempt host connection & auto-creation
+foreach ($db_candidates as $cand) {
     try {
-        $init_pdo = new PDO("mysql:host={$db_host};port={$db_port};charset=utf8mb4", $db_user, $db_pass, [
+        $pdo = new PDO("mysql:host={$db_host};port={$db_port};dbname={$cand['name']};charset=utf8mb4", $cand['user'], $cand['pass'], [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
         ]);
-        $init_pdo->exec("CREATE DATABASE IF NOT EXISTS `{$db_name}` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
+        if ($pdo) {
+            $db_name = $cand['name'];
+            break;
+        }
+    } catch (Exception $e) {
+        // Try next connection candidate
+    }
+}
+
+if (!$pdo) {
+    // If database doesn't exist yet, attempt host connection & auto-creation
+    try {
+        $init_pdo = new PDO("mysql:host={$db_host};port={$db_port};charset=utf8mb4", 'root', '', [
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+        ]);
+        $init_pdo->exec("CREATE DATABASE IF NOT EXISTS `bvb_manvila_db` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
         
-        $pdo = new PDO("mysql:host={$db_host};port={$db_port};dbname={$db_name};charset=utf8mb4", $db_user, $db_pass, [
+        $pdo = new PDO("mysql:host={$db_host};port={$db_port};dbname=bvb_manvila_db;charset=utf8mb4", 'root', '', [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
         ]);
+        $db_name = 'bvb_manvila_db';
     } catch (Exception $ex) {
         error_log("Database connection notice: " . $ex->getMessage());
     }
