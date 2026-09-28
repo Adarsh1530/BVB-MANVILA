@@ -1,7 +1,90 @@
-/**
- * Bhavan's Vivekananda Vidya Mandir, Manvila
- * Admin Panel Application Engine & Multi-Role State Controller
- */
+const BVB_DEFAULT_SEED_DATA = {
+  status: "success",
+  users: [
+    { id: 1, username: "superadmin", password: "superadmin123", name: "Principal / Director", role: "super admin" },
+    { id: 2, username: "admin", password: "admin123", name: "Administrative Officer", role: "admin" },
+    { id: 3, username: "school", password: "school123", name: "School Office Staff", role: "school" }
+  ],
+  popup: {
+    id: 1,
+    title: "Welcome to Bhavan's Vivekananda Vidya Mandir, Manvila",
+    message: "Admissions are now open for LKG to Class XI Science & Commerce streams for 2027–2028 session.",
+    image_url: "images/main page popup/1.jpg",
+    button_text: "ADMISSION INFO",
+    button_url: "admissions.html",
+    is_active: 1
+  },
+  popup_history: [
+    {
+      id: 1,
+      title: "Welcome to Bhavan's Vivekananda Vidya Mandir, Manvila",
+      message: "Admissions are now open for LKG to Class XI Science & Commerce streams for 2027–2028 session.",
+      image_url: "images/main page popup/1.jpg",
+      button_text: "ADMISSION INFO",
+      button_url: "admissions.html",
+      is_active: 1,
+      created_at: "2026-09-25 10:00:00"
+    }
+  ],
+  auto_slides: [
+    { id: 1, title: "EDUCATION ROOTED IN VALUES. DRIVEN BY EXCELLENCE", subtitle: "Main School Building • Manvila Campus", image_url: "assets/images/campus/campus-view.jpg", is_active: 1 },
+    { id: 2, title: "Serene 2.89 Acres Campus Grounds", subtitle: "Campus Assembly & Sports Grounds", image_url: "assets/images/events/investiture-1.jpg", is_active: 1 },
+    { id: 3, title: "Bhishma & Vyasa Academic Blocks", subtitle: "State-of-the-Art Science & Digital Labs", image_url: "assets/images/events/investiture-2.jpg", is_active: 1 },
+    { id: 4, title: "Investiture & Leadership Ceremonies", subtitle: "Empowering Student Leaders", image_url: "assets/images/events/investiture-3.jpg", is_active: 1 },
+    { id: 5, title: "All Kerala Bhavan's Youth & Cultural Fest", subtitle: "Celebrating Cultural Heritage", image_url: "assets/images/events/investiture-4.jpg", is_active: 1 }
+  ],
+  notices: [
+    { id: 1, title: "Admissions Open for Academic Session 2027–2028 (LKG to Class XI)", content: "Registration forms for admission to LKG, Class I, Class XI Science & Commerce streams are available online and at the school office.", category: "Admissions", notice_date: "2026-09-15", pdf_link: "assets/documents/mandatory-disclosure/Mandatory-Disclosure.pdf", is_ticker: 1 },
+    { id: 2, title: "Annual CBSE Board Examination Schedule & Guidelines Released", content: "Classes X and XII CBSE Board examination instructions, timetable, and admit card download notifications have been released.", category: "Academics", notice_date: "2026-09-10", pdf_link: "assets/documents/mandatory-disclosure/Academic-Calendar.csv", is_ticker: 1 },
+    { id: 3, title: "Adharva Inter-School Cultural Fest Winners Announced", content: "Bhavan's Manvila won 1st Place overall champion trophy at the All Kerala Bhavan's Youth Festival.", category: "Achievements", notice_date: "2026-09-01", pdf_link: "", is_ticker: 1 }
+  ],
+  mandatory_disclosures: [
+    { id: 1, sl_no: "1", category_code: "A", category_name: "General Information", title: "NAME OF THE SCHOOL", details: "BHAVANS VIVEKANANDA VIDYA MANDIR MANVILA TRIVANDRUM KERALA", file_link: "" },
+    { id: 2, sl_no: "2", category_code: "A", category_name: "General Information", title: "AFFILIATION NO. (IF APPLICABLE)", details: "930776", file_link: "" },
+    { id: 3, sl_no: "3", category_code: "A", category_name: "General Information", title: "SCHOOL CODE (IF APPLICABLE)", details: "75738", file_link: "" },
+    { id: 4, sl_no: "4", category_code: "A", category_name: "General Information", title: "COMPLETE ADDRESS WITH PIN CODE", details: "BHAVANS VIVEKANANDA VIDYA MANDIR, MANVILA, PANGAPPARA P.O., TRIVANDRUM - 695581", file_link: "" },
+    { id: 5, sl_no: "5", category_code: "A", category_name: "General Information", title: "PRINCIPAL NAME & QUALIFICATION", details: "MS. DEEPA CHANDRAN (M.Sc., B.Ed.)", file_link: "" },
+    { id: 6, sl_no: "6", category_code: "A", category_name: "General Information", title: "SCHOOL EMAIL ID", details: "bhavansvvm@gmail.com", file_link: "" },
+    { id: 7, sl_no: "7", category_code: "A", category_name: "General Information", title: "CONTACT DETAILS (LANDLINE/MOBILE)", details: "0471 2594559", file_link: "" },
+    { id: 8, sl_no: "1", category_code: "B", category_name: "Documents & Compliance", title: "COPIES OF AFFILIATION/UPGRADATION LETTER AND RECENT EXTENSION OF AFFILIATION", details: "Valid CBSE Affiliation Extension up to 2028", file_link: "assets/documents/mandatory-disclosure/CBSE-Affiliation-Extension.pdf" },
+    { id: 9, sl_no: "2", category_code: "B", category_name: "Documents & Compliance", title: "COPIES OF SOCIETIES/TRUST/COMPANY REGISTRATION/RENEWAL CERTIFICATE", details: "Bharatiya Vidya Bhavan Society Registration", file_link: "assets/documents/mandatory-disclosure/Trust-Registration.pdf" },
+    { id: 10, sl_no: "3", category_code: "B", category_name: "Documents & Compliance", title: "COPY OF NO OBJECTION CERTIFICATE (NOC) ISSUED, IF APPLICABLE, BY THE STATE GOVT./UT", details: "NOC Issued by Govt. of Kerala General Education Dept.", file_link: "assets/documents/mandatory-disclosure/Govt-NOC.pdf" },
+    { id: 11, sl_no: "4", category_code: "B", category_name: "Documents & Compliance", title: "COPIES OF RECOGNITION CERTIFICATE UNDER RTE ACT, 2009, AND IT'S RENEWAL IF APPLICABLE", details: "RTE Recognition Certificate", file_link: "assets/documents/mandatory-disclosure/RTE-Recognition.pdf" },
+    { id: 12, sl_no: "5", category_code: "B", category_name: "Documents & Compliance", title: "COPY OF VALID BUILDING SAFETY CERTIFICATE AS PER THE NATIONAL BUILDING CODE", details: "Approved PWD Building Safety Certificate", file_link: "assets/documents/mandatory-disclosure/Building-Safety-Certificate.pdf" },
+    { id: 13, sl_no: "6", category_code: "B", category_name: "Documents & Compliance", title: "COPY OF VALID FIRE SAFETY CERTIFICATE ISSUED BY THE COMPETENT AUTHORITY", details: "Kerala Fire & Rescue Services Safety Clearance", file_link: "assets/documents/mandatory-disclosure/Fire-Safety-Certificate.pdf" },
+    { id: 14, sl_no: "7", category_code: "B", category_name: "Documents & Compliance", title: "COPY OF THE DEO CERTIFICATE SUBMITTED BY THE SCHOOL FOR AFFILIATION", details: "DEO Verification & Inspection Report", file_link: "assets/documents/mandatory-disclosure/DEO-Certificate.pdf" },
+    { id: 15, sl_no: "8", category_code: "B", category_name: "Documents & Compliance", title: "COPIES OF VALID WATER, HEALTH AND SANITATION CERTIFICATES", details: "Water Fitness & Sanitation Clearance Certificate", file_link: "assets/documents/mandatory-disclosure/Sanitation-Certificate.pdf" },
+    { id: 16, sl_no: "11", category_code: "B", category_name: "Documents & Compliance", title: "COMPLETE MANDATORY DISCLOSURE (CBSE SARAS 5.0)", details: "Full Verified SARAS 5.0 Disclosure Document", file_link: "assets/documents/mandatory-disclosure/Mandatory-Disclosure.pdf" },
+    { id: 17, sl_no: "1", category_code: "C", category_name: "Result & Academics", title: "FEE STRUCTURE OF THE SCHOOL", details: "Annual Academic Fee Structure 2027-28", file_link: "assets/documents/mandatory-disclosure/Fee-Structure.pdf" },
+    { id: 18, sl_no: "2", category_code: "C", category_name: "Result & Academics", title: "ANNUAL ACADEMIC CALENDER", details: "School Academic Calendar & Activity Schedule", file_link: "assets/documents/mandatory-disclosure/Academic-Calendar.csv" }
+  ],
+  image_packages: [
+    {
+      id: 1,
+      title: "Annual Sports & Athletic Meet Highlights",
+      subtitle: "Celebrated at Manvila Campus Grounds",
+      main_image: "assets/images/events/sports-day-1.jpg",
+      sub_images: [
+        "assets/images/events/sports-day-1.jpg",
+        "assets/images/events/annual-day-1.jpg"
+      ],
+      target_sections: { welcome_section: true, whats_happening: true, life_at_bhavans: true, moments_at_bhavans: true, campus_discovery: true, academic_environment: true }
+    },
+    {
+      id: 2,
+      title: "Investiture & Student Council Leadership Ceremony",
+      subtitle: "Empowering Student Leaders",
+      main_image: "assets/images/events/investiture-1.jpg",
+      sub_images: [
+        "assets/images/events/investiture-1.jpg",
+        "assets/images/events/investiture-2.jpg",
+        "assets/images/events/investiture-3.jpg",
+        "assets/images/events/investiture-4.jpg"
+      ],
+      target_sections: { welcome_section: true, whats_happening: true, life_at_bhavans: true, moments_at_bhavans: true, campus_discovery: true, academic_environment: true }
+    }
+  ]
+};
 
 class AdminApp {
   constructor() {
@@ -81,7 +164,9 @@ class AdminApp {
         }
         if (res && res.ok) {
           const json = await res.json();
-          if (json) data = json;
+          if (isValidData(json)) {
+            data = json;
+          }
         }
       } catch (e) {
         console.log('JSON fetch notice:', e);
@@ -93,7 +178,7 @@ class AdminApp {
     if (existingLocal) {
       try {
         const parsedLocal = JSON.parse(existingLocal);
-        if (!data || isValidData(parsedLocal)) {
+        if (isValidData(parsedLocal)) {
           data = parsedLocal;
         }
       } catch (e) {
@@ -101,7 +186,12 @@ class AdminApp {
       }
     }
 
-    this.siteData = data || {};
+    // 4. Fallback to hardcoded default seed data if no valid data is available
+    if (!isValidData(data)) {
+      data = JSON.parse(JSON.stringify(BVB_DEFAULT_SEED_DATA));
+    }
+
+    this.siteData = data;
     if (!this.siteData.notices) this.siteData.notices = [];
     if (!this.siteData.mandatory_disclosures) this.siteData.mandatory_disclosures = [];
     if (!this.siteData.image_packages) this.siteData.image_packages = [];
