@@ -429,8 +429,8 @@ class AdminApp {
       });
     }
 
-    // File Explorer Pickers (HTML5 FileReader API & File Validation)
-    const setupFilePicker = (inputId, targetTextId, previewImgId, previewWrapId, viewFullBtnId) => {
+    // File Explorer Pickers (HTML5 FileReader API & Categorized cPanel File Uploads)
+    const setupFilePicker = (inputId, targetTextId, previewImgId, previewWrapId, viewFullBtnId, category = 'general') => {
       const fileInput = document.getElementById(inputId);
       const textInput = document.getElementById(targetTextId);
       const previewImg = document.getElementById(previewImgId);
@@ -438,7 +438,7 @@ class AdminApp {
       const viewFullBtn = viewFullBtnId ? document.getElementById(viewFullBtnId) : null;
 
       if (fileInput) {
-        fileInput.addEventListener('change', (e) => {
+        fileInput.addEventListener('change', async (e) => {
           const file = e.target.files[0];
           if (file) {
             if (!this.validateImageFile(file)) {
@@ -446,7 +446,7 @@ class AdminApp {
               return;
             }
             const reader = new FileReader();
-            reader.onload = (evt) => {
+            reader.onload = async (evt) => {
               if (textInput) textInput.value = evt.target.result;
               if (previewImg) {
                 previewImg.src = evt.target.result;
@@ -457,6 +457,12 @@ class AdminApp {
                 viewFullBtn.style.display = 'inline-flex';
               }
               if (previewWrap) previewWrap.style.display = 'block';
+
+              const fileUrl = await this.uploadFileApi(file, category);
+              if (fileUrl && textInput) {
+                textInput.value = fileUrl;
+                if (viewFullBtn) viewFullBtn.href = this.formatImgSrc(fileUrl);
+              }
             };
             reader.readAsDataURL(file);
           }
@@ -464,9 +470,9 @@ class AdminApp {
       }
     };
 
-    setupFilePicker('mainFileInput', 'mainImageUrl', 'mainImagePreview', 'mainPreviewWrap', 'mainViewFullBtn');
-    setupFilePicker('popupFileInput', 'popupImageUrlInput', 'popupImagePreview', 'popupPreviewWrap', 'popupViewFullBtn');
-    setupFilePicker('slideFileInput', 'slideImageUrl', 'slideImagePreview', 'slidePreviewWrap', 'slideViewFullBtn');
+    setupFilePicker('mainFileInput', 'mainImageUrl', 'mainImagePreview', 'mainPreviewWrap', 'mainViewFullBtn', 'gallery');
+    setupFilePicker('popupFileInput', 'popupImageUrlInput', 'popupImagePreview', 'popupPreviewWrap', 'popupViewFullBtn', 'popup');
+    setupFilePicker('slideFileInput', 'slideImageUrl', 'slideImagePreview', 'slidePreviewWrap', 'slideViewFullBtn', 'auto_slides');
 
     // Batch 5 Auto Slides Multi-File Picker Listener
     const batch5Picker = document.getElementById('batch5FilesPicker');
@@ -578,14 +584,47 @@ class AdminApp {
           }
 
           const reader = new FileReader();
-          reader.onload = (evt) => {
+          reader.onload = async (evt) => {
             const linkInput = document.getElementById('disclosureFileLink');
             if (linkInput) linkInput.value = evt.target.result;
+
+            const fileUrl = await this.uploadFileApi(file, 'mandatory_disclosures');
+            if (fileUrl && linkInput) linkInput.value = fileUrl;
           };
           reader.readAsDataURL(file);
         }
       });
     }
+  }
+
+  async uploadFileApi(file, category = 'general') {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('category', category);
+
+      let res = await fetch('../api/upload_api.php', {
+        method: 'POST',
+        body: formData
+      }).catch(() => null);
+
+      if (!res || !res.ok) {
+        res = await fetch('api/upload_api.php', {
+          method: 'POST',
+          body: formData
+        }).catch(() => null);
+      }
+
+      if (res && res.ok) {
+        const json = await res.json();
+        if (json && json.status === 'success' && json.file_url) {
+          return json.file_url;
+        }
+      }
+    } catch (e) {
+      console.error('File upload API notice:', e);
+    }
+    return null;
   }
 
   validateImageFile(file) {
