@@ -327,6 +327,38 @@ class AdminApp {
           reader.readAsDataURL(file);
         }
       });
+    // Sub-Images Individual File Pickers (Slots 1 to 10 in Image Package Modal)
+    document.querySelectorAll('.sub-file-picker').forEach(picker => {
+      picker.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        const targetId = picker.getAttribute('data-target');
+        const prevId = picker.getAttribute('data-preview');
+        const viewBtnId = picker.getAttribute('data-viewbtn');
+
+        if (file && targetId) {
+          if (!this.validateImageFile(file)) {
+            picker.value = '';
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = (evt) => {
+            const hiddenInput = document.getElementById(targetId);
+            const prevImg = document.getElementById(prevId);
+            const viewBtn = document.getElementById(viewBtnId);
+
+            if (hiddenInput) hiddenInput.value = evt.target.result;
+            if (prevImg) {
+              prevImg.src = evt.target.result;
+              prevImg.style.display = 'block';
+            }
+            if (viewBtn) {
+              viewBtn.href = evt.target.result;
+              viewBtn.style.display = 'inline-flex';
+            }
+          };
+          reader.readAsDataURL(file);
+        }
+      });
     });
 
     // Disclosure PDF / JPEG File Picker (PDF or JPEG format under 1 MB limit)

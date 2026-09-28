@@ -30,7 +30,7 @@ try {
     // 3. Auto-Create Required Tables
     $pdo->exec("
         CREATE TABLE IF NOT EXISTS `users` (
-            `id` INT AUTO_INCREMENT PRIMARY KEY,
+            `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
             `username` VARCHAR(50) NOT NULL UNIQUE,
             `password` VARCHAR(255) NOT NULL,
             `name` VARCHAR(100) NOT NULL,
@@ -39,7 +39,7 @@ try {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
         CREATE TABLE IF NOT EXISTS `notices` (
-            `id` INT AUTO_INCREMENT PRIMARY KEY,
+            `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
             `title` VARCHAR(255) NOT NULL,
             `content` TEXT,
             `category` VARCHAR(50) DEFAULT 'General',
@@ -51,10 +51,10 @@ try {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
         CREATE TABLE IF NOT EXISTS `popups` (
-            `id` INT AUTO_INCREMENT PRIMARY KEY,
+            `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
             `title` VARCHAR(255) NOT NULL,
             `message` TEXT,
-            `image_url` TEXT,
+            `image_url` LONGTEXT,
             `button_text` VARCHAR(100) DEFAULT 'ADMISSION INFO',
             `button_url` VARCHAR(255) DEFAULT 'admissions.html',
             `is_active` TINYINT(1) DEFAULT 1,
@@ -62,10 +62,10 @@ try {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
         CREATE TABLE IF NOT EXISTS `popup_history` (
-            `id` INT AUTO_INCREMENT PRIMARY KEY,
+            `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
             `title` VARCHAR(255) NOT NULL,
             `message` TEXT,
-            `image_url` TEXT,
+            `image_url` LONGTEXT,
             `button_text` VARCHAR(100) DEFAULT 'ADMISSION INFO',
             `button_url` VARCHAR(255) DEFAULT 'admissions.html',
             `is_active` TINYINT(1) DEFAULT 1,
@@ -73,18 +73,18 @@ try {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
         CREATE TABLE IF NOT EXISTS `mandatory_disclosures` (
-            `id` INT AUTO_INCREMENT PRIMARY KEY,
+            `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
             `sl_no` VARCHAR(20) NOT NULL,
             `category_code` CHAR(1) NOT NULL DEFAULT 'B',
             `category_name` VARCHAR(100) DEFAULT 'Documents & Compliance',
             `title` VARCHAR(255) NOT NULL,
             `details` TEXT,
-            `file_link` VARCHAR(255) DEFAULT '',
+            `file_link` LONGTEXT,
             `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
         CREATE TABLE IF NOT EXISTS `image_packages` (
-            `id` INT AUTO_INCREMENT PRIMARY KEY,
+            `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
             `title` VARCHAR(255) NOT NULL,
             `subtitle` VARCHAR(255) DEFAULT '',
             `main_image` LONGTEXT NOT NULL,
@@ -94,7 +94,7 @@ try {
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
         CREATE TABLE IF NOT EXISTS `auto_slides` (
-            `id` INT AUTO_INCREMENT PRIMARY KEY,
+            `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
             `title` VARCHAR(255) NOT NULL,
             `subtitle` VARCHAR(255) DEFAULT '',
             `image_url` LONGTEXT NOT NULL,
@@ -102,6 +102,19 @@ try {
             `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     ");
+
+    // Upgrade existing columns if already created with shorter lengths or INT data types
+    try {
+        $pdo->exec("ALTER TABLE `users` MODIFY `id` BIGINT AUTO_INCREMENT");
+        $pdo->exec("ALTER TABLE `notices` MODIFY `id` BIGINT AUTO_INCREMENT");
+        $pdo->exec("ALTER TABLE `mandatory_disclosures` MODIFY `id` BIGINT AUTO_INCREMENT, MODIFY `file_link` LONGTEXT");
+        $pdo->exec("ALTER TABLE `image_packages` MODIFY `id` BIGINT AUTO_INCREMENT");
+        $pdo->exec("ALTER TABLE `auto_slides` MODIFY `id` BIGINT AUTO_INCREMENT");
+        $pdo->exec("ALTER TABLE `popups` MODIFY `id` BIGINT AUTO_INCREMENT, MODIFY `image_url` LONGTEXT");
+        $pdo->exec("ALTER TABLE `popup_history` MODIFY `id` BIGINT AUTO_INCREMENT, MODIFY `image_url` LONGTEXT");
+    } catch (Exception $ex) {
+        // Ignore alter notice if already updated
+    }
 
     // 4. Seed initial default users if users table is empty
     $user_check = $pdo->query("SELECT COUNT(*) FROM `users`")->fetchColumn();

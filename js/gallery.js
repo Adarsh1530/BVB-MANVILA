@@ -73,7 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const isMain = currentSubIndex === 0;
     const imgTypeLabel = isMain ? 'MAIN HIGHLIGHT' : `SUB IMAGE ${currentSubIndex} of ${currentPackageImages.length - 1}`;
 
-    lightboxImg.src = imgSrc.startsWith('http') || imgSrc.startsWith('/') || imgSrc.startsWith('assets') || imgSrc.startsWith('images') ? imgSrc : `../${imgSrc}`;
+    const isDirectPath = imgSrc.startsWith('http') || imgSrc.startsWith('/') || imgSrc.startsWith('assets') || imgSrc.startsWith('images') || imgSrc.startsWith('data:');
+    lightboxImg.src = isDirectPath ? imgSrc : `/${imgSrc}`;
     lightboxImg.alt = pkg.title;
 
     if (lightboxCaption) {
