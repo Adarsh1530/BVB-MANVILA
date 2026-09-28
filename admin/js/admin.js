@@ -270,37 +270,26 @@ class AdminApp {
     setupFilePicker('popupFileInput', 'popupImageUrlInput', 'popupImagePreview', 'popupPreviewWrap', 'popupViewFullBtn');
     setupFilePicker('slideFileInput', 'slideImageUrl', 'slideImagePreview', 'slidePreviewWrap', 'slideViewFullBtn');
 
-    // Sub Image File Pickers
-    document.querySelectorAll('.sub-file-picker').forEach(picker => {
-      picker.addEventListener('change', (e) => {
-        const targetId = picker.getAttribute('data-target');
-        const previewId = picker.getAttribute('data-preview');
-        const viewBtnId = picker.getAttribute('data-viewbtn');
+    // Disclosure PDF File Picker
+    const discFilePicker = document.getElementById('disclosureFileInput');
+    if (discFilePicker) {
+      discFilePicker.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (file) {
-          if (!this.validateImageFile(file)) {
-            picker.value = '';
+          if (file.size > 5242880) { // 5 MB limit
+            alert('⚠️ File size exceeds 5 MB limit! Please choose a smaller document file.');
+            discFilePicker.value = '';
             return;
           }
           const reader = new FileReader();
           reader.onload = (evt) => {
-            const txt = document.getElementById(targetId);
-            const prev = document.getElementById(previewId);
-            const vBtn = document.getElementById(viewBtnId);
-            if (txt) txt.value = evt.target.result;
-            if (prev) {
-              prev.src = evt.target.result;
-              prev.style.display = 'block';
-            }
-            if (vBtn) {
-              vBtn.href = evt.target.result;
-              vBtn.style.display = 'inline-flex';
-            }
+            const linkInput = document.getElementById('disclosureFileLink');
+            if (linkInput) linkInput.value = evt.target.result;
           };
           reader.readAsDataURL(file);
         }
       });
-    });
+    }
   }
 
   validateImageFile(file) {
@@ -665,30 +654,74 @@ class AdminApp {
   // --------------------------------------------------------------------------
   // 4. MANDATORY DISCLOSURE SECTION (SARAS Categories A, B, C, D, E)
   // --------------------------------------------------------------------------
+  currentDisclosureFilter: 'ALL',
+
+  filterDisclosures(secCode) {
+    this.currentDisclosureFilter = secCode;
+    const btns = document.querySelectorAll('.disclosure-filter-btn');
+    btns.forEach(btn => {
+      if (btn.getAttribute('data-sec') === secCode) {
+        btn.classList.add('active');
+        btn.style.backgroundColor = 'var(--color-primary)';
+        btn.style.color = '#ffffff';
+      } else {
+        btn.classList.remove('active');
+        btn.style.backgroundColor = '';
+        btn.style.color = '';
+      }
+    });
+    this.renderDisclosuresTable();
+  },
+
   renderDisclosuresTable() {
     const tbody = document.getElementById('disclosuresTableBody');
     if (!tbody || !this.siteData) return;
 
-    const docs = this.siteData.mandatory_disclosures || [];
+    let docs = this.siteData.mandatory_disclosures || [];
+
+    if (this.currentDisclosureFilter && this.currentDisclosureFilter !== 'ALL') {
+      docs = docs.filter(d => (d.category_code || 'B') === this.currentDisclosureFilter);
+    }
 
     if (docs.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--color-text-secondary); padding: 2rem;">No disclosures added yet. Click "+ Add Mandatory Document" to add one.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--color-text-secondary); padding: 2rem;">No disclosures found for Section ${this.currentDisclosureFilter}. Click "+ Add Mandatory Document" to add one.</td></tr>`;
       return;
     }
 
-    tbody.innerHTML = docs.map(d => `
+    const catBadgeClass = {
+      'A': 'badge-admin',
+      'B': 'badge-super-admin',
+      'C': 'badge-school',
+      'D': 'badge-admin',
+      'E': 'badge-super-admin'
+    };
+
+    tbody.innerHTML = docs.map(d => {
+      const secCode = d.category_code || 'B';
+      const badgeClass = catBadgeClass[secCode] || 'badge-super-admin';
+      const fileUrl = this.formatImgSrc(d.file_link);
+      const hasFile = d.file_link && d.file_link.trim() !== '';
+
+      return `
       <tr>
         <td><strong>${this.escapeHtml(d.sl_no)}</strong></td>
-        <td><span class="role-badge-preview badge-super-admin">Section ${this.escapeHtml(d.category_code || 'B')}</span></td>
-        <td style="font-weight: 600;">${this.escapeHtml(d.title)}</td>
-        <td style="font-size: 0.8125rem; color: var(--color-text-secondary);">${this.escapeHtml(d.details || '-')}</td>
-        <td>${d.file_link ? `<a href="${this.formatImgSrc(d.file_link)}" target="_blank" style="color: var(--color-primary); font-weight: 600;">Open Document</a>` : '<span style="color: #94A3B8;">Text Record</span>'}</td>
+        <td><span class="role-badge-preview ${badgeClass}">Section ${secCode}: ${this.escapeHtml(d.category_name || 'Disclosure')}</span></td>
+        <td style="font-weight: 600; color: var(--color-deep-blue);">${this.escapeHtml(d.title)}</td>
+        <td style="font-size: 0.8125rem; color: var(--color-text-secondary); max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${this.escapeHtml(d.details || '-')}</td>
+        <td>
+          ${hasFile ? `
+            <a href="${fileUrl}" target="_blank" class="btn-sm btn-action-edit" style="text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.75rem; background: var(--color-ultra-light-blue); color: var(--color-primary); border: 1px solid var(--color-border); font-weight: 600;">
+              👁️ View Document
+            </a>
+          ` : '<span style="color: #94A3B8; font-size: 0.8125rem;">Text Record</span>'}
+        </td>
         <td>
           <button class="btn-sm btn-action-edit" onclick="adminApp.editDisclosure(${d.id})">Edit</button>
           <button class="btn-sm btn-action-delete" onclick="adminApp.deleteDisclosure(${d.id})">Delete</button>
         </td>
       </tr>
-    `).join('');
+    `;
+    }).join('');
   }
 
   openDisclosureModal(id = null) {

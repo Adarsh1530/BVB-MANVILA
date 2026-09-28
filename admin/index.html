@@ -273,15 +273,26 @@
               <div class="panel-title">Mandatory Disclosure Updation Section (CBSE SARAS 5.0)</div>
               <button class="btn-sm btn-action-add" onclick="adminApp.openDisclosureModal()">+ Add Mandatory Document</button>
             </div>
+
+            <!-- Category Section Filter Bar -->
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
+              <button class="btn-sm disclosure-filter-btn active" data-sec="ALL" onclick="adminApp.filterDisclosures('ALL')">All Sections</button>
+              <button class="btn-sm disclosure-filter-btn" data-sec="A" onclick="adminApp.filterDisclosures('A')">Section A: General Info</button>
+              <button class="btn-sm disclosure-filter-btn" data-sec="B" onclick="adminApp.filterDisclosures('B')">Section B: Documents & Compliance</button>
+              <button class="btn-sm disclosure-filter-btn" data-sec="C" onclick="adminApp.filterDisclosures('C')">Section C: Result & Academics</button>
+              <button class="btn-sm disclosure-filter-btn" data-sec="D" onclick="adminApp.filterDisclosures('D')">Section D: Staff Details</button>
+              <button class="btn-sm disclosure-filter-btn" data-sec="E" onclick="adminApp.filterDisclosures('E')">Section E: Infrastructure</button>
+            </div>
+
             <div class="admin-table-wrap">
               <table class="admin-table">
                 <thead>
                   <tr>
                     <th>Sl. No.</th>
-                    <th>Category</th>
+                    <th>Category Section</th>
                     <th>Document Title</th>
                     <th>Details</th>
-                    <th>Document File / Link</th>
+                    <th>Document File / Preview Link</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -479,8 +490,9 @@
             <input type="text" id="disclosureDetails" class="form-control" placeholder="e.g. Approved by Public Works Dept.">
           </div>
           <div class="form-group">
-            <label class="form-label">Document PDF / Link Path</label>
-            <input type="text" id="disclosureFileLink" class="form-control" required placeholder="assets/documents/mandatory-disclosure/building-fitness.pdf">
+            <label class="form-label">Document PDF / File (Choose File from Computer or Enter Link Path)</label>
+            <input type="file" id="disclosureFileInput" accept=".pdf,.doc,.docx,.csv" class="form-control" style="margin-bottom: 0.5rem;">
+            <input type="text" id="disclosureFileLink" class="form-control" placeholder="assets/documents/mandatory-disclosure/building-fitness.pdf">
           </div>
         </div>
         <div class="modal-footer">
