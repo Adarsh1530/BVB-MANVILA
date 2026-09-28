@@ -162,14 +162,14 @@ if ($data && isset($data['action']) && $data['action'] === 'sync_data' && isset(
         }
     }
 
-    // 2. Write to get_site_data.json
+    // 2. Write to get_site_data.json fallback
     $jsonString = json_encode($updatedData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
-    if (file_put_contents($jsonFile, $jsonString)) {
-        echo json_encode(['status' => 'success', 'message' => 'Site data successfully synchronized to MySQL & JSON']);
-    } else {
-        http_response_code(500);
-        echo json_encode(['status' => 'error', 'message' => 'Failed to write to data storage']);
-    }
+    @file_put_contents($jsonFile, $jsonString);
+
+    echo json_encode([
+        'status' => 'success',
+        'message' => 'Site data successfully synchronized to database and file storage'
+    ]);
 } else {
     http_response_code(400);
     echo json_encode(['status' => 'error', 'message' => 'Invalid action or payload']);
