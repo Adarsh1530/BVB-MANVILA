@@ -686,8 +686,10 @@ class AdminApp {
         <td>${n.pdf_link ? `<a href="${this.formatImgSrc(n.pdf_link)}" target="_blank" style="color: var(--color-primary); font-weight: 600;">View PDF</a>` : '<span style="color: #94A3B8;">None</span>'}</td>
         <td>${n.is_ticker == 1 ? '<span class="role-badge-preview badge-school">Ticker Active</span>' : '<span style="color: #94A3B8;">Off</span>'}</td>
         <td>
-          <button class="btn-sm btn-action-edit" onclick="adminApp.editNotice(${n.id})">Edit</button>
-          <button class="btn-sm btn-action-delete" onclick="adminApp.deleteNotice(${n.id})">Delete</button>
+          <div class="action-btn-group">
+            <button class="btn-sm btn-action-edit" onclick="adminApp.editNotice(${n.id})">Edit</button>
+            <button class="btn-sm btn-action-delete" onclick="adminApp.deleteNotice(${n.id})">Delete</button>
+          </div>
         </td>
       </tr>
     `).join('');
@@ -879,9 +881,11 @@ class AdminApp {
           ${item.is_active == 1 ? '<span class="role-badge-preview badge-school">ACTIVE</span>' : '<span class="role-badge-preview badge-super-admin" style="background: #FEE2E2; color: #991B1B;">INACTIVE</span>'}
         </td>
         <td>
-          <button class="btn-sm btn-action-edit" onclick="adminApp.togglePopupHistoryStatus(${item.id})">${item.is_active == 1 ? 'Deactivate' : 'Activate'}</button>
-          <button class="btn-sm btn-action-edit" onclick="adminApp.editPopupHistory(${item.id})">Edit</button>
-          <button class="btn-sm btn-action-delete" onclick="adminApp.deletePopupHistory(${item.id})">Delete</button>
+          <div class="action-btn-group">
+            <button class="btn-sm btn-action-edit" onclick="adminApp.togglePopupHistoryStatus(${item.id})">${item.is_active == 1 ? 'Disable' : 'Enable'}</button>
+            <button class="btn-sm btn-action-edit" onclick="adminApp.editPopupHistory(${item.id})">Edit</button>
+            <button class="btn-sm btn-action-delete" onclick="adminApp.deletePopupHistory(${item.id})">Delete</button>
+          </div>
         </td>
       </tr>
     `).join('');
@@ -987,8 +991,10 @@ class AdminApp {
           ` : '<span style="color: #94A3B8; font-size: 0.8125rem;">Text Record</span>'}
         </td>
         <td>
-          <button class="btn-sm btn-action-edit" onclick="adminApp.editDisclosure(${d.id})">Edit</button>
-          <button class="btn-sm btn-action-delete" onclick="adminApp.deleteDisclosure(${d.id})">Delete</button>
+          <div class="action-btn-group">
+            <button class="btn-sm btn-action-edit" onclick="adminApp.editDisclosure(${d.id})">Edit</button>
+            <button class="btn-sm btn-action-delete" onclick="adminApp.deleteDisclosure(${d.id})">Delete</button>
+          </div>
         </td>
       </tr>
     `;
@@ -1141,8 +1147,10 @@ class AdminApp {
           </td>
           <td>${targetBadges || '<span style="color: #94A3B8;">None</span>'}</td>
           <td>
-            <button class="btn-sm btn-action-edit" onclick="adminApp.editImagePackage(${p.id})">Edit</button>
-            <button class="btn-sm btn-action-delete" onclick="adminApp.deleteImagePackage(${p.id})">Delete</button>
+            <div class="action-btn-group">
+              <button class="btn-sm btn-action-edit" onclick="adminApp.editImagePackage(${p.id})">Edit</button>
+              <button class="btn-sm btn-action-delete" onclick="adminApp.deleteImagePackage(${p.id})">Delete</button>
+            </div>
           </td>
         </tr>
       `;
@@ -1329,9 +1337,11 @@ class AdminApp {
           ${s.is_active == 1 ? '<span class="role-badge-preview badge-school">ACTIVE</span>' : '<span class="role-badge-preview badge-super-admin" style="background: #FEE2E2; color: #991B1B;">OFF</span>'}
         </td>
         <td>
-          <button class="btn-sm btn-action-edit" onclick="adminApp.toggleSlideStatus(${s.id})">${s.is_active == 1 ? 'Disable' : 'Enable'}</button>
-          <button class="btn-sm btn-action-edit" onclick="adminApp.editSlide(${s.id})">Edit</button>
-          <button class="btn-sm btn-action-delete" onclick="adminApp.deleteSlide(${s.id})">Delete</button>
+          <div class="action-btn-group">
+            <button class="btn-sm btn-action-edit" onclick="adminApp.toggleSlideStatus(${s.id})">${s.is_active == 1 ? 'Disable' : 'Enable'}</button>
+            <button class="btn-sm btn-action-edit" onclick="adminApp.editSlide(${s.id})">Edit</button>
+            <button class="btn-sm btn-action-delete" onclick="adminApp.deleteSlide(${s.id})">Delete</button>
+          </div>
         </td>
       </tr>
     `).join('');
@@ -1557,8 +1567,10 @@ class AdminApp {
           <td><span class="role-badge-preview ${badgeClass}">${this.escapeHtml(u.role).toUpperCase()}</span></td>
           <td style="font-size: 0.8125rem; color: var(--color-text-secondary);">${privs}</td>
           <td>
-            <button class="btn-sm btn-action-edit" onclick="adminApp.editUser(${u.id})">Edit</button>
-            <button class="btn-sm btn-action-delete" onclick="adminApp.deleteUser(${u.id})">Delete</button>
+            <div class="action-btn-group">
+              <button class="btn-sm btn-action-edit" onclick="adminApp.editUser(${u.id})">Edit</button>
+              <button class="btn-sm btn-action-delete" onclick="adminApp.deleteUser(${u.id})">Delete</button>
+            </div>
           </td>
         </tr>
       `;

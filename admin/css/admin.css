@@ -577,6 +577,19 @@ body {
 }
 
 /* Action Buttons */
+.admin-table td:last-child,
+.admin-table th:last-child {
+  white-space: nowrap;
+}
+
+.action-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+}
+
 .btn-sm {
   padding: 0.35rem 0.75rem;
   font-size: 0.75rem;
