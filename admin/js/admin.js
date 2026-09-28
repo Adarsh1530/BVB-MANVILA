@@ -223,6 +223,14 @@ class AdminApp {
       });
     }
 
+    const slideBatchForm = document.getElementById('slideBatchForm');
+    if (slideBatchForm) {
+      slideBatchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        this.save5Slides();
+      });
+    }
+
     const userForm = document.getElementById('userForm');
     if (userForm) {
       userForm.addEventListener('submit', (e) => {
@@ -269,6 +277,57 @@ class AdminApp {
     setupFilePicker('mainFileInput', 'mainImageUrl', 'mainImagePreview', 'mainPreviewWrap', 'mainViewFullBtn');
     setupFilePicker('popupFileInput', 'popupImageUrlInput', 'popupImagePreview', 'popupPreviewWrap', 'popupViewFullBtn');
     setupFilePicker('slideFileInput', 'slideImageUrl', 'slideImagePreview', 'slidePreviewWrap', 'slideViewFullBtn');
+
+    // Batch 5 Auto Slides Multi-File Picker Listener
+    const batch5Picker = document.getElementById('batch5FilesPicker');
+    if (batch5Picker) {
+      batch5Picker.addEventListener('change', (e) => {
+        const files = Array.from(e.target.files).slice(0, 5);
+        if (files.length === 0) return;
+
+        files.forEach((file, index) => {
+          const slotIdx = index + 1;
+          if (!this.validateImageFile(file)) return;
+
+          const reader = new FileReader();
+          reader.onload = (evt) => {
+            const urlInput = document.getElementById(`batchImgUrl${slotIdx}`);
+            const prevWrap = document.getElementById(`batchPrevWrap${slotIdx}`);
+            const prevImg = document.getElementById(`batchPrev${slotIdx}`);
+
+            if (urlInput) urlInput.value = evt.target.result;
+            if (prevImg) prevImg.src = evt.target.result;
+            if (prevWrap) prevWrap.style.display = 'block';
+          };
+          reader.readAsDataURL(file);
+        });
+      });
+    }
+
+    // Individual Batch Slide File Pickers (Slots 1 to 5)
+    document.querySelectorAll('.batch-slide-file').forEach(input => {
+      input.addEventListener('change', (e) => {
+        const idx = e.target.getAttribute('data-idx');
+        const file = e.target.files[0];
+        if (file && idx) {
+          if (!this.validateImageFile(file)) {
+            e.target.value = '';
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = (evt) => {
+            const urlInput = document.getElementById(`batchImgUrl${idx}`);
+            const prevWrap = document.getElementById(`batchPrevWrap${idx}`);
+            const prevImg = document.getElementById(`batchPrev${idx}`);
+
+            if (urlInput) urlInput.value = evt.target.result;
+            if (prevImg) prevImg.src = evt.target.result;
+            if (prevWrap) prevWrap.style.display = 'block';
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    });
 
     // Disclosure PDF File Picker
     const discFilePicker = document.getElementById('disclosureFileInput');
@@ -1171,6 +1230,88 @@ class AdminApp {
         this.verifySuccess({
           title: 'Slide Deleted!',
           message: 'The auto slide image has been removed.'
+        });
+      }
+    });
+  }
+
+  openSlideBatchModal() {
+    const modal = document.getElementById('slideBatchModal');
+    const form = document.getElementById('slideBatchForm');
+    if (form) form.reset();
+
+    const slides = this.siteData.auto_slides || [];
+    for (let i = 1; i <= 5; i++) {
+      const titleEl = document.getElementById(`batchTitle${i}`);
+      const subEl = document.getElementById(`batchSubtitle${i}`);
+      const urlEl = document.getElementById(`batchImgUrl${i}`);
+      const prevWrap = document.getElementById(`batchPrevWrap${i}`);
+      const prevImg = document.getElementById(`batchPrev${i}`);
+
+      const existingSlide = slides[i - 1];
+      if (existingSlide) {
+        if (titleEl) titleEl.value = existingSlide.title || '';
+        if (subEl) subEl.value = existingSlide.subtitle || '';
+        if (urlEl) urlEl.value = existingSlide.image_url || '';
+        if (existingSlide.image_url && prevImg) {
+          prevImg.src = this.formatImgSrc(existingSlide.image_url);
+          if (prevWrap) prevWrap.style.display = 'block';
+        } else if (prevWrap) {
+          prevWrap.style.display = 'none';
+        }
+      } else {
+        if (urlEl) urlEl.value = '';
+        if (prevWrap) prevWrap.style.display = 'none';
+      }
+    }
+
+    if (modal) modal.classList.add('active');
+  }
+
+  closeSlideBatchModal() {
+    const modal = document.getElementById('slideBatchModal');
+    if (modal) modal.classList.remove('active');
+  }
+
+  save5Slides() {
+    const newBatch = [];
+    let count = 0;
+
+    for (let i = 1; i <= 5; i++) {
+      const title = (document.getElementById(`batchTitle${i}`)?.value || '').trim();
+      const subtitle = (document.getElementById(`batchSubtitle${i}`)?.value || '').trim();
+      const image_url = (document.getElementById(`batchImgUrl${i}`)?.value || '').trim();
+
+      if (image_url) {
+        newBatch.push({
+          id: Date.now() + i,
+          title: title || 'EDUCATION ROOTED IN VALUES. DRIVEN BY EXCELLENCE',
+          subtitle: subtitle || 'Bhavan\'s Vivekananda Vidya Mandir',
+          image_url: image_url,
+          is_active: 1
+        });
+        count++;
+      }
+    }
+
+    if (count === 0) {
+      alert('⚠️ Please select at least 1 image file before saving auto slides.');
+      return;
+    }
+
+    this.confirmAction({
+      title: 'Confirm 5 Auto Slides Batch Upload',
+      heading: 'Save All 5 Auto Slides?',
+      message: `Are you sure you want to save ${count} auto slide image(s) for the Education Rooted in Values banner on the public site?`,
+      icon: '🚀',
+      isDanger: false,
+      onConfirm: () => {
+        this.siteData.auto_slides = newBatch;
+        this.closeSlideBatchModal();
+        this.saveData(`${count} Auto Slides uploaded and saved successfully!`);
+        this.verifySuccess({
+          title: '5 Auto Slides Batch Save Verified!',
+          message: `${count} auto slides have been updated and are live on the public site homepage hero slider.`
         });
       }
     });

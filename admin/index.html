@@ -345,7 +345,10 @@
           <div class="panel-card">
             <div class="panel-header">
               <div class="panel-title">Education Rooted in Values - Auto Slides Management</div>
-              <button class="btn-sm btn-action-add" onclick="adminApp.openSlideModal()">+ Add New Auto Slide</button>
+              <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <button class="btn-sm btn-action-add" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); font-weight: 700;" onclick="adminApp.openSlideBatchModal()">+ Upload 5 Auto Slides at Once</button>
+                <button class="btn-sm btn-action-add" onclick="adminApp.openSlideModal()">+ Add Single Slide</button>
+              </div>
             </div>
 
             <div style="margin-bottom: 1.5rem; background: var(--color-ultra-light-blue); padding: 1.25rem; border-radius: var(--radius-sm); border-left: 4px solid var(--color-primary);">
@@ -718,6 +721,96 @@
         <div class="modal-footer">
           <button type="button" class="btn-sm btn-action-delete" onclick="adminApp.closeSlideModal()">Cancel</button>
           <button type="submit" class="btn-sm btn-action-add">Save Auto Slide</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- BATCH 5 AUTO SLIDES UPLOAD MODAL -->
+  <div class="admin-modal-overlay" id="slideBatchModal">
+    <div class="admin-modal" style="max-width: 850px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Upload 5 Auto Slides at Once (Education Rooted in Values)</h3>
+        <button class="modal-close" onclick="adminApp.closeSlideBatchModal()">&times;</button>
+      </div>
+      <form id="slideBatchForm">
+        <div class="modal-body">
+          <div style="margin-bottom: 1rem; background: var(--color-ultra-light-blue); padding: 1rem; border-radius: var(--radius-sm); border-left: 4px solid var(--color-primary);">
+            <div style="font-size: 0.875rem; font-weight: 700; color: var(--color-deep-blue); margin-bottom: 0.25rem;">
+              🚀 Select 5 Files at Once OR Choose Files Individually below:
+            </div>
+            <p style="font-size: 0.8125rem; color: var(--color-text-secondary); margin: 0 0 0.5rem 0;">
+              Click 'Choose Files' to select 5 JPEG images (< 1 MB each) directly from File Explorer. They will automatically fill the 5 slide slots below.
+            </p>
+            <input type="file" id="batch5FilesPicker" accept="image/jpeg,image/jpg" multiple class="form-control" style="max-width: 320px;">
+          </div>
+
+          <!-- 5 Slide Slots Grid -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1rem;">
+            <!-- Slide Slot 1 -->
+            <div class="sub-image-card" style="padding: 1rem; background: #FFFFFF; border: 1.5px solid var(--color-border); border-radius: 8px;">
+              <div style="font-weight: 800; color: var(--color-primary); font-size: 0.875rem; margin-bottom: 0.5rem;">📸 AUTO SLIDE 1</div>
+              <input type="text" id="batchTitle1" class="form-control" placeholder="Slide Title 1" value="EDUCATION ROOTED IN VALUES. DRIVEN BY EXCELLENCE" style="margin-bottom: 0.5rem; font-size: 0.8125rem;">
+              <input type="text" id="batchSubtitle1" class="form-control" placeholder="Slide Subtitle 1" value="Main School Building • Manvila Campus" style="margin-bottom: 0.5rem; font-size: 0.8125rem;">
+              <input type="file" accept="image/jpeg,image/jpg" class="batch-slide-file" data-idx="1" style="font-size: 0.75rem; width: 100%; margin-bottom: 0.5rem;">
+              <input type="hidden" id="batchImgUrl1">
+              <div id="batchPrevWrap1" style="display: none; margin-top: 0.35rem;">
+                <img id="batchPrev1" src="" style="max-height: 90px; width: 100%; object-fit: cover; border-radius: 4px; border: 1px solid var(--color-border);">
+              </div>
+            </div>
+
+            <!-- Slide Slot 2 -->
+            <div class="sub-image-card" style="padding: 1rem; background: #FFFFFF; border: 1.5px solid var(--color-border); border-radius: 8px;">
+              <div style="font-weight: 800; color: var(--color-primary); font-size: 0.875rem; margin-bottom: 0.5rem;">📸 AUTO SLIDE 2</div>
+              <input type="text" id="batchTitle2" class="form-control" placeholder="Slide Title 2" value="Serene 2.89 Acres Campus Grounds" style="margin-bottom: 0.5rem; font-size: 0.8125rem;">
+              <input type="text" id="batchSubtitle2" class="form-control" placeholder="Slide Subtitle 2" value="Campus Assembly & Sports Grounds" style="margin-bottom: 0.5rem; font-size: 0.8125rem;">
+              <input type="file" accept="image/jpeg,image/jpg" class="batch-slide-file" data-idx="2" style="font-size: 0.75rem; width: 100%; margin-bottom: 0.5rem;">
+              <input type="hidden" id="batchImgUrl2">
+              <div id="batchPrevWrap2" style="display: none; margin-top: 0.35rem;">
+                <img id="batchPrev2" src="" style="max-height: 90px; width: 100%; object-fit: cover; border-radius: 4px; border: 1px solid var(--color-border);">
+              </div>
+            </div>
+
+            <!-- Slide Slot 3 -->
+            <div class="sub-image-card" style="padding: 1rem; background: #FFFFFF; border: 1.5px solid var(--color-border); border-radius: 8px;">
+              <div style="font-weight: 800; color: var(--color-primary); font-size: 0.875rem; margin-bottom: 0.5rem;">📸 AUTO SLIDE 3</div>
+              <input type="text" id="batchTitle3" class="form-control" placeholder="Slide Title 3" value="Bhishma & Vyasa Academic Blocks" style="margin-bottom: 0.5rem; font-size: 0.8125rem;">
+              <input type="text" id="batchSubtitle3" class="form-control" placeholder="Slide Subtitle 3" value="State-of-the-Art Science & Digital Labs" style="margin-bottom: 0.5rem; font-size: 0.8125rem;">
+              <input type="file" accept="image/jpeg,image/jpg" class="batch-slide-file" data-idx="3" style="font-size: 0.75rem; width: 100%; margin-bottom: 0.5rem;">
+              <input type="hidden" id="batchImgUrl3">
+              <div id="batchPrevWrap3" style="display: none; margin-top: 0.35rem;">
+                <img id="batchPrev3" src="" style="max-height: 90px; width: 100%; object-fit: cover; border-radius: 4px; border: 1px solid var(--color-border);">
+              </div>
+            </div>
+
+            <!-- Slide Slot 4 -->
+            <div class="sub-image-card" style="padding: 1rem; background: #FFFFFF; border: 1.5px solid var(--color-border); border-radius: 8px;">
+              <div style="font-weight: 800; color: var(--color-primary); font-size: 0.875rem; margin-bottom: 0.5rem;">📸 AUTO SLIDE 4</div>
+              <input type="text" id="batchTitle4" class="form-control" placeholder="Slide Title 4" value="Investiture & Leadership Ceremonies" style="margin-bottom: 0.5rem; font-size: 0.8125rem;">
+              <input type="text" id="batchSubtitle4" class="form-control" placeholder="Slide Subtitle 4" value="Empowering Student Leaders" style="margin-bottom: 0.5rem; font-size: 0.8125rem;">
+              <input type="file" accept="image/jpeg,image/jpg" class="batch-slide-file" data-idx="4" style="font-size: 0.75rem; width: 100%; margin-bottom: 0.5rem;">
+              <input type="hidden" id="batchImgUrl4">
+              <div id="batchPrevWrap4" style="display: none; margin-top: 0.35rem;">
+                <img id="batchPrev4" src="" style="max-height: 90px; width: 100%; object-fit: cover; border-radius: 4px; border: 1px solid var(--color-border);">
+              </div>
+            </div>
+
+            <!-- Slide Slot 5 -->
+            <div class="sub-image-card" style="padding: 1rem; background: #FFFFFF; border: 1.5px solid var(--color-border); border-radius: 8px;">
+              <div style="font-weight: 800; color: var(--color-primary); font-size: 0.875rem; margin-bottom: 0.5rem;">📸 AUTO SLIDE 5</div>
+              <input type="text" id="batchTitle5" class="form-control" placeholder="Slide Title 5" value="All Kerala Bhavan's Youth & Cultural Fest" style="margin-bottom: 0.5rem; font-size: 0.8125rem;">
+              <input type="text" id="batchSubtitle5" class="form-control" placeholder="Slide Subtitle 5" value="Celebrating Cultural Heritage" style="margin-bottom: 0.5rem; font-size: 0.8125rem;">
+              <input type="file" accept="image/jpeg,image/jpg" class="batch-slide-file" data-idx="5" style="font-size: 0.75rem; width: 100%; margin-bottom: 0.5rem;">
+              <input type="hidden" id="batchImgUrl5">
+              <div id="batchPrevWrap5" style="display: none; margin-top: 0.35rem;">
+                <img id="batchPrev5" src="" style="max-height: 90px; width: 100%; object-fit: cover; border-radius: 4px; border: 1px solid var(--color-border);">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-sm btn-action-delete" onclick="adminApp.closeSlideBatchModal()">Cancel</button>
+          <button type="submit" class="btn-sm btn-action-add" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); font-weight: 700;">Save All 5 Auto Slides</button>
         </div>
       </form>
     </div>
