@@ -21,7 +21,7 @@ if ($pdo) {
 
         // Notices
         $notices = $pdo->query("SELECT id, title, content, category, notice_date, pdf_link, is_ticker FROM notices WHERE status = 'active' ORDER BY notice_date DESC, id DESC")->fetchAll();
-        $ticker = array_values(array_filter($notices, function($n) { return (int)$n['is_ticker'] === 1; }));
+        $ticker = array_values(array_filter($notices ?: [], function($n) { return (int)$n['is_ticker'] === 1; }));
 
         // Mandatory Disclosures
         $disclosures = $pdo->query("SELECT id, sl_no, category_code, category_name, title, details, file_link FROM mandatory_disclosures ORDER BY category_code ASC, CAST(sl_no AS UNSIGNED) ASC, id ASC")->fetchAll();
@@ -37,7 +37,7 @@ if ($pdo) {
                 'sub_images' => json_decode($p['sub_images'], true) ?: [],
                 'target_sections' => json_decode($p['target_sections'], true) ?: []
             ];
-        }, $packages_raw);
+        }, $packages_raw ?: []);
 
         // Auto Slides
         $slides = $pdo->query("SELECT id, title, subtitle, image_url, is_active FROM auto_slides ORDER BY id ASC")->fetchAll();
@@ -45,7 +45,8 @@ if ($pdo) {
         // Popup History
         $popup_history = $pdo->query("SELECT id, title, message, image_url, button_text, button_url, is_active, created_at FROM popup_history ORDER BY id DESC")->fetchAll();
 
-        if ($users || $notices || $disclosures || $image_packages) {
+        // Only return MySQL data if site content records (notices, disclosures, or packages) actually exist
+        if (!empty($notices) || !empty($disclosures) || !empty($image_packages) || !empty($slides)) {
             echo json_encode([
                 'status' => 'success',
                 'users' => $users ?: [],

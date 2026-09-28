@@ -183,16 +183,18 @@ class AdminApp {
       }
     }
 
-    // 3. Check LocalStorage fallback or custom edited state
-    const existingLocal = localStorage.getItem('bvb_site_data');
-    if (existingLocal) {
-      try {
-        const parsedLocal = JSON.parse(existingLocal);
-        if (isValidData(parsedLocal)) {
-          data = parsedLocal;
+    // 3. Check LocalStorage fallback only if live server data was not retrieved
+    if (!data) {
+      const existingLocal = localStorage.getItem('bvb_site_data');
+      if (existingLocal) {
+        try {
+          const parsedLocal = JSON.parse(existingLocal);
+          if (isValidData(parsedLocal)) {
+            data = parsedLocal;
+          }
+        } catch (e) {
+          console.error('Local state parse error:', e);
         }
-      } catch (e) {
-        console.error('Local state parse error:', e);
       }
     }
 
