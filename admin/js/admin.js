@@ -854,10 +854,6 @@ class AdminApp {
 
       const targetBadges = activeTargets.map(name => `<span class="role-badge-preview badge-admin" style="margin-right: 4px; margin-bottom: 4px; font-size: 0.65rem;">${name}</span>`).join('');
 
-      const subThumbnails = subs.slice(0, 5).map(imgUrl => `
-        <img src="${this.formatImgSrc(imgUrl)}" style="width: 28px; height: 28px; object-fit: cover; border-radius: 4px; border: 1px solid #CBD5E1;">
-      `).join('');
-
       return `
         <tr>
           <td>
@@ -870,8 +866,7 @@ class AdminApp {
             <div style="font-size: 0.75rem; color: var(--color-text-secondary); margin-top: 2px;">${this.escapeHtml(p.subtitle || '')}</div>
           </td>
           <td>
-            <span class="role-badge-preview badge-school" style="margin-bottom: 4px; display: inline-block;">${subCount} Sub Images</span>
-            <div style="display: flex; gap: 3px; margin-top: 4px;">${subThumbnails}</div>
+            <span class="role-badge-preview badge-school" style="display: inline-block;">${subCount} Sub Images</span>
           </td>
           <td>${targetBadges || '<span style="color: #94A3B8;">None</span>'}</td>
           <td>
