@@ -40,6 +40,18 @@ class AdminApp {
   }
 
   async loadData() {
+    // Attempt fetching live PHP/MySQL endpoint first
+    try {
+      const res = await fetch('/api/get_site_data.php');
+      if (res.ok) {
+        this.siteData = await res.json();
+        localStorage.setItem('bvb_site_data', JSON.stringify(this.siteData));
+        return;
+      }
+    } catch (err) {
+      console.log('MySQL API fetch notice (fallback to static JSON):', err);
+    }
+
     const localData = localStorage.getItem('bvb_site_data');
     if (localData) {
       try {
@@ -64,12 +76,12 @@ class AdminApp {
   saveData(message = 'Changes saved successfully!') {
     localStorage.setItem('bvb_site_data', JSON.stringify(this.siteData));
     
-    // Also post to backend PHP endpoint if available on server
+    // Synchronize to MySQL API endpoint
     fetch('/api/admin_api.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'sync_data', data: this.siteData })
-    }).catch(e => console.log('PHP sync notice (Static fallback active):', e));
+    }).catch(e => console.log('PHP MySQL sync notice:', e));
 
     this.showToast(message, 'success');
     this.renderAll();
@@ -94,13 +106,11 @@ class AdminApp {
       const alertBox = document.getElementById('loginAlert');
 
       if (matchedUser) {
-        // Enforce chosen role privilege if user has permissions
         matchedUser.role = role; 
         sessionStorage.setItem('bvb_active_user', JSON.stringify(matchedUser));
         localStorage.setItem('bvb_active_user', JSON.stringify(matchedUser));
         window.location.href = '/admin/index.html';
       } else {
-        // Demo Fallback Login
         if (username && password) {
           const newUser = {
             id: Date.now(),
@@ -205,6 +215,14 @@ class AdminApp {
       });
     }
 
+    const slideForm = document.getElementById('slideForm');
+    if (slideForm) {
+      slideForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        this.saveSlide();
+      });
+    }
+
     const userForm = document.getElementById('userForm');
     if (userForm) {
       userForm.addEventListener('submit', (e) => {
@@ -213,7 +231,7 @@ class AdminApp {
       });
     }
 
-    // File Explorer Pickers (HTML5 FileReader API)
+    // File Explorer Pickers (HTML5 FileReader API & File Validation)
     const setupFilePicker = (inputId, targetTextId, previewImgId, previewWrapId, viewFullBtnId) => {
       const fileInput = document.getElementById(inputId);
       const textInput = document.getElementById(targetTextId);
@@ -225,6 +243,10 @@ class AdminApp {
         fileInput.addEventListener('change', (e) => {
           const file = e.target.files[0];
           if (file) {
+            if (!this.validateImageFile(file)) {
+              fileInput.value = '';
+              return;
+            }
             const reader = new FileReader();
             reader.onload = (evt) => {
               if (textInput) textInput.value = evt.target.result;
@@ -246,6 +268,7 @@ class AdminApp {
 
     setupFilePicker('mainFileInput', 'mainImageUrl', 'mainImagePreview', 'mainPreviewWrap', 'mainViewFullBtn');
     setupFilePicker('popupFileInput', 'popupImageUrlInput', 'popupImagePreview', 'popupPreviewWrap', 'popupViewFullBtn');
+    setupFilePicker('slideFileInput', 'slideImageUrl', 'slideImagePreview', 'slidePreviewWrap', 'slideViewFullBtn');
 
     // Sub Image File Pickers
     document.querySelectorAll('.sub-file-picker').forEach(picker => {
@@ -255,6 +278,10 @@ class AdminApp {
         const viewBtnId = picker.getAttribute('data-viewbtn');
         const file = e.target.files[0];
         if (file) {
+          if (!this.validateImageFile(file)) {
+            picker.value = '';
+            return;
+          }
           const reader = new FileReader();
           reader.onload = (evt) => {
             const txt = document.getElementById(targetId);
@@ -276,7 +303,45 @@ class AdminApp {
     });
   }
 
+  validateImageFile(file) {
+    if (!file) return false;
+    const maxSize = 1048576; // 1 MB limit
+    const isJpeg = file.type === 'image/jpeg' || file.type === 'image/jpg' || file.name.toLowerCase().endsWith('.jpg') || file.name.toLowerCase().endsWith('.jpeg');
+
+    if (!isJpeg) {
+      alert('⚠️ Invalid image format! Only JPEG (.jpg, .jpeg) images are allowed.');
+      this.showToast('Only JPEG (.jpg, .jpeg) images are allowed.', 'error');
+      return false;
+    }
+
+    if (file.size > maxSize) {
+      alert('⚠️ File size exceeds 1 MB limit! Please choose a smaller JPEG image.');
+      this.showToast('Image size exceeds 1 MB limit!', 'error');
+      return false;
+    }
+
+    return true;
+  }
+
+  formatImgSrc(url) {
+    if (!url || typeof url !== 'string' || !url.trim()) return '/assets/images/bvb-manvila-logo.png';
+    const trimmed = url.trim();
+    if (trimmed.startsWith('data:') || trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+      return trimmed;
+    }
+    return trimmed.startsWith('/') ? trimmed : '/' + trimmed;
+  }
+
   switchTab(tabName) {
+    const userRole = (this.currentUser.role || 'school').toLowerCase();
+    
+    // RBAC: Block non-super admin users from accessing user management tab
+    if (tabName === 'users' && userRole !== 'super admin') {
+      this.showToast('Access Denied: User Management is restricted to Super Admin.', 'error');
+      alert('⚠️ Access Denied: User Management module is restricted to Super Admin privilege level.');
+      return;
+    }
+
     document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
 
@@ -292,7 +357,8 @@ class AdminApp {
       notices: 'Latest Notice Updation Section',
       popup: 'Entrance Announcement Popup Image Updation',
       disclosure: 'Mandatory Disclosure Updation Section (CBSE SARAS 5.0)',
-      images: 'Image Upload Section (1 Main + 5 Sub Images & Target Checkboxes)',
+      images: 'Image Upload Section (1 Main + 10 Sub Images & Target Checkboxes)',
+      slides: 'Education Rooted in Values - Auto Slides Management',
       users: 'Multi-Role User Creation & Privileges'
     };
     if (pageTitle && titles[tabName]) pageTitle.textContent = titles[tabName];
@@ -305,8 +371,10 @@ class AdminApp {
     this.renderStats();
     this.renderNoticesTable();
     this.renderPopupForm();
+    this.renderPopupHistoryTable();
     this.renderDisclosuresTable();
     this.renderImagePackagesTable();
+    this.renderSlidesTable();
     this.renderUsersTable();
   }
 
@@ -354,7 +422,7 @@ class AdminApp {
         <td><strong>${this.escapeHtml(n.notice_date)}</strong></td>
         <td><span class="role-badge-preview badge-admin">${this.escapeHtml(n.category || 'General')}</span></td>
         <td style="font-weight: 600;">${this.escapeHtml(n.title)}</td>
-        <td>${n.pdf_link ? `<a href="/${this.escapeHtml(n.pdf_link)}" target="_blank" style="color: var(--color-primary); font-weight: 600;">View PDF</a>` : '<span style="color: #94A3B8;">None</span>'}</td>
+        <td>${n.pdf_link ? `<a href="${this.formatImgSrc(n.pdf_link)}" target="_blank" style="color: var(--color-primary); font-weight: 600;">View PDF</a>` : '<span style="color: #94A3B8;">None</span>'}</td>
         <td>${n.is_ticker == 1 ? '<span class="role-badge-preview badge-school">Ticker Active</span>' : '<span style="color: #94A3B8;">Off</span>'}</td>
         <td>
           <button class="btn-sm btn-action-edit" onclick="adminApp.editNotice(${n.id})">Edit</button>
@@ -463,7 +531,7 @@ class AdminApp {
   }
 
   // --------------------------------------------------------------------------
-  // 3. ENTRANCE POPUP SECTION
+  // 3. ENTRANCE POPUP SECTION & LOG HISTORY
   // --------------------------------------------------------------------------
   renderPopupForm() {
     if (!this.siteData || !this.siteData.popup) return;
@@ -488,7 +556,7 @@ class AdminApp {
     const popupFullBtn = document.getElementById('popupViewFullBtn');
 
     if (p.image_url && popupPrevImg && popupPrevWrap) {
-      const src = p.image_url.startsWith('/') || p.image_url.startsWith('http') || p.image_url.startsWith('data:') ? p.image_url : '/' + p.image_url;
+      const src = this.formatImgSrc(p.image_url);
       popupPrevImg.src = src;
       if (popupFullBtn) popupFullBtn.href = src;
       popupPrevWrap.style.display = 'block';
@@ -501,30 +569,104 @@ class AdminApp {
     this.confirmAction({
       title: 'Confirm Entrance Popup Save',
       heading: 'Save Popup Announcement Settings?',
-      message: 'Are you sure you want to update the homepage entrance popup configuration?',
+      message: 'Are you sure you want to update the homepage entrance popup configuration and history log?',
       icon: '🔔',
       isDanger: false,
       onConfirm: () => {
-        this.siteData.popup = {
-          id: 1,
+        const newPopup = {
+          id: Date.now(),
           is_active: parseInt(document.getElementById('popupActiveSelect').value),
           title: document.getElementById('popupTitleInput').value.trim(),
           message: document.getElementById('popupMessageInput').value.trim(),
           image_url: document.getElementById('popupImageUrlInput').value.trim(),
           button_text: document.getElementById('popupButtonTextInput').value.trim(),
-          button_url: document.getElementById('popupButtonUrlInput').value.trim()
+          button_url: document.getElementById('popupButtonUrlInput').value.trim(),
+          created_at: new Date().toISOString().replace('T', ' ').split('.')[0]
         };
-        this.saveData('Entrance Popup settings saved successfully!');
+
+        this.siteData.popup = newPopup;
+
+        if (!this.siteData.popup_history) this.siteData.popup_history = [];
+        this.siteData.popup_history.unshift(newPopup);
+
+        this.saveData('Entrance Popup settings saved and logged!');
         this.verifySuccess({
-          title: 'Entrance Popup Updated!',
-          message: 'The entrance announcement popup modal settings and uploaded image have been verified and updated.'
+          title: 'Entrance Popup Updated & Logged!',
+          message: 'The entrance announcement popup modal settings and uploaded image log have been updated.'
         });
       }
     });
   }
 
+  renderPopupHistoryTable() {
+    const tbody = document.getElementById('popupHistoryTableBody');
+    if (!tbody || !this.siteData) return;
+
+    const history = this.siteData.popup_history || [];
+
+    if (history.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--color-text-secondary); padding: 1.5rem;">No popup history logs found yet.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = history.map(item => `
+      <tr>
+        <td>
+          <img src="${this.formatImgSrc(item.image_url)}" alt="Popup" style="width: 60px; height: 45px; object-fit: cover; border-radius: 6px; border: 1px solid var(--color-border);">
+        </td>
+        <td><strong style="color: var(--color-deep-blue);">${this.escapeHtml(item.title)}</strong></td>
+        <td style="font-size: 0.8125rem; color: var(--color-text-secondary); max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${this.escapeHtml(item.message)}</td>
+        <td><a href="${this.escapeHtml(item.button_url || '#')}" target="_blank" style="color: var(--color-primary); font-weight: 600;">${this.escapeHtml(item.button_text || 'Link')}</a></td>
+        <td>
+          ${item.is_active == 1 ? '<span class="role-badge-preview badge-school">ACTIVE</span>' : '<span class="role-badge-preview badge-super-admin" style="background: #FEE2E2; color: #991B1B;">INACTIVE</span>'}
+        </td>
+        <td>
+          <button class="btn-sm btn-action-edit" onclick="adminApp.togglePopupHistoryStatus(${item.id})">${item.is_active == 1 ? 'Deactivate' : 'Activate'}</button>
+          <button class="btn-sm btn-action-edit" onclick="adminApp.editPopupHistory(${item.id})">Edit</button>
+          <button class="btn-sm btn-action-delete" onclick="adminApp.deletePopupHistory(${item.id})">Delete</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  togglePopupHistoryStatus(id) {
+    const item = (this.siteData.popup_history || []).find(p => p.id === id);
+    if (!item) return;
+    item.is_active = item.is_active == 1 ? 0 : 1;
+
+    // If activated, set as active popup
+    if (item.is_active == 1) {
+      this.siteData.popup = item;
+    }
+
+    this.saveData('Popup status updated.');
+  }
+
+  editPopupHistory(id) {
+    const item = (this.siteData.popup_history || []).find(p => p.id === id);
+    if (!item) return;
+    this.siteData.popup = item;
+    this.renderPopupForm();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    this.showToast('Popup settings loaded into form.', 'success');
+  }
+
+  deletePopupHistory(id) {
+    this.confirmAction({
+      title: 'Confirm Popup Log Deletion',
+      heading: 'Delete Popup Log Entry?',
+      message: 'Are you sure you want to delete this popup announcement log entry?',
+      icon: '🗑️',
+      isDanger: true,
+      onConfirm: () => {
+        this.siteData.popup_history = (this.siteData.popup_history || []).filter(p => p.id !== id);
+        this.saveData('Popup log entry deleted.');
+      }
+    });
+  }
+
   // --------------------------------------------------------------------------
-  // 4. MANDATORY DISCLOSURE SECTION
+  // 4. MANDATORY DISCLOSURE SECTION (SARAS Categories A, B, C, D, E)
   // --------------------------------------------------------------------------
   renderDisclosuresTable() {
     const tbody = document.getElementById('disclosuresTableBody');
@@ -543,7 +685,7 @@ class AdminApp {
         <td><span class="role-badge-preview badge-super-admin">Section ${this.escapeHtml(d.category_code || 'B')}</span></td>
         <td style="font-weight: 600;">${this.escapeHtml(d.title)}</td>
         <td style="font-size: 0.8125rem; color: var(--color-text-secondary);">${this.escapeHtml(d.details || '-')}</td>
-        <td><a href="/${this.escapeHtml(d.file_link)}" target="_blank" style="color: var(--color-primary); font-weight: 600;">Open Document</a></td>
+        <td>${d.file_link ? `<a href="${this.formatImgSrc(d.file_link)}" target="_blank" style="color: var(--color-primary); font-weight: 600;">Open Document</a>` : '<span style="color: #94A3B8;">Text Record</span>'}</td>
         <td>
           <button class="btn-sm btn-action-edit" onclick="adminApp.editDisclosure(${d.id})">Edit</button>
           <button class="btn-sm btn-action-delete" onclick="adminApp.deleteDisclosure(${d.id})">Delete</button>
@@ -590,6 +732,15 @@ class AdminApp {
     const details = document.getElementById('disclosureDetails').value.trim();
     const file_link = document.getElementById('disclosureFileLink').value.trim();
 
+    const catMap = {
+      'A': 'General Information',
+      'B': 'Documents & Compliance',
+      'C': 'Result & Academics',
+      'D': 'Staff & Teaching',
+      'E': 'School Infrastructure'
+    };
+    const category_name = catMap[category_code] || 'Documents & Compliance';
+
     this.confirmAction({
       title: 'Confirm Mandatory Document Save',
       heading: id ? 'Update Mandatory Document?' : 'Add Mandatory Document?',
@@ -602,12 +753,12 @@ class AdminApp {
         if (id) {
           const idx = this.siteData.mandatory_disclosures.findIndex(d => d.id == id);
           if (idx !== -1) {
-            this.siteData.mandatory_disclosures[idx] = { id: parseInt(id), sl_no, category_code, title, details, file_link };
+            this.siteData.mandatory_disclosures[idx] = { id: parseInt(id), sl_no, category_code, category_name, title, details, file_link };
           }
         } else {
           const newDoc = {
             id: Date.now(),
-            sl_no, category_code, title, details, file_link
+            sl_no, category_code, category_name, title, details, file_link
           };
           this.siteData.mandatory_disclosures.push(newDoc);
         }
@@ -645,7 +796,7 @@ class AdminApp {
   }
 
   // --------------------------------------------------------------------------
-  // 5. IMAGE UPLOAD PACKAGE SECTION (1 Main + 5 Sub & Target Checkboxes)
+  // 5. IMAGE UPLOAD PACKAGE SECTION (1 Main + 10 Sub & Target Checkboxes)
   // --------------------------------------------------------------------------
   renderImagePackagesTable() {
     const tbody = document.getElementById('imagePackagesTableBody');
@@ -659,7 +810,8 @@ class AdminApp {
     }
 
     tbody.innerHTML = pkgs.map(p => {
-      const subCount = (p.sub_images || []).filter(s => s && s.trim() !== '').length;
+      const subs = (p.sub_images || []).filter(s => s && s.trim() !== '');
+      const subCount = subs.length;
       
       const activeTargets = [];
       const t = p.target_sections || {};
@@ -672,16 +824,25 @@ class AdminApp {
 
       const targetBadges = activeTargets.map(name => `<span class="role-badge-preview badge-admin" style="margin-right: 4px; margin-bottom: 4px; font-size: 0.65rem;">${name}</span>`).join('');
 
+      const subThumbnails = subs.slice(0, 5).map(imgUrl => `
+        <img src="${this.formatImgSrc(imgUrl)}" style="width: 28px; height: 28px; object-fit: cover; border-radius: 4px; border: 1px solid #CBD5E1;">
+      `).join('');
+
       return `
         <tr>
           <td>
-            <img src="/${this.escapeHtml(p.main_image)}" alt="Main Image" style="width: 70px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid var(--color-border);">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <img src="${this.formatImgSrc(p.main_image)}" alt="Main Image" style="width: 75px; height: 55px; object-fit: cover; border-radius: 6px; border: 1.5px solid var(--color-border); box-shadow: var(--shadow-xs);">
+            </div>
           </td>
           <td>
-            <strong style="color: var(--color-deep-blue);">${this.escapeHtml(p.title)}</strong>
-            <div style="font-size: 0.75rem; color: var(--color-text-secondary);">${this.escapeHtml(p.subtitle || '')}</div>
+            <strong style="color: var(--color-deep-blue); font-size: 0.9rem;">${this.escapeHtml(p.title)}</strong>
+            <div style="font-size: 0.75rem; color: var(--color-text-secondary); margin-top: 2px;">${this.escapeHtml(p.subtitle || '')}</div>
           </td>
-          <td><span class="role-badge-preview badge-school">${subCount} Sub Images</span></td>
+          <td>
+            <span class="role-badge-preview badge-school" style="margin-bottom: 4px; display: inline-block;">${subCount} Sub Images</span>
+            <div style="display: flex; gap: 3px; margin-top: 4px;">${subThumbnails}</div>
+          </td>
           <td>${targetBadges || '<span style="color: #94A3B8;">None</span>'}</td>
           <td>
             <button class="btn-sm btn-action-edit" onclick="adminApp.editImagePackage(${p.id})">Edit</button>
@@ -701,7 +862,7 @@ class AdminApp {
     document.getElementById('packageId').value = '';
 
     if (id) {
-      titleEl.textContent = 'Edit Image Package';
+      titleEl.textContent = 'Edit Image Package (1 Main + 10 Sub Images)';
       const p = (this.siteData.image_packages || []).find(item => item.id === id);
       if (p) {
         document.getElementById('packageId').value = p.id;
@@ -713,7 +874,7 @@ class AdminApp {
         const mainWrap = document.getElementById('mainPreviewWrap');
         const mainFullBtn = document.getElementById('mainViewFullBtn');
         if (mainPrev && p.main_image) {
-          const src = p.main_image.startsWith('/') || p.main_image.startsWith('http') || p.main_image.startsWith('data:') ? p.main_image : '/' + p.main_image;
+          const src = this.formatImgSrc(p.main_image);
           mainPrev.src = src;
           if (mainFullBtn) mainFullBtn.href = src;
           if (mainWrap) mainWrap.style.display = 'block';
@@ -722,7 +883,7 @@ class AdminApp {
         }
 
         const subs = p.sub_images || [];
-        for (let i = 1; i <= 5; i++) {
+        for (let i = 1; i <= 10; i++) {
           const val = subs[i - 1] || '';
           const inputEl = document.getElementById(`subImg${i}`);
           const prevEl = document.getElementById(`subPreview${i}`);
@@ -730,7 +891,7 @@ class AdminApp {
           if (inputEl) inputEl.value = val;
           if (prevEl) {
             if (val) {
-              const src = val.startsWith('/') || val.startsWith('http') || val.startsWith('data:') ? val : '/' + val;
+              const src = this.formatImgSrc(val);
               prevEl.src = src;
               prevEl.style.display = 'block';
               if (vBtn) {
@@ -753,11 +914,11 @@ class AdminApp {
         document.getElementById('chk_academic_environment').checked = !!t.academic_environment;
       }
     } else {
-      titleEl.textContent = 'Upload Image Package (1 Main + 5 Sub Images)';
+      titleEl.textContent = 'Upload Image Package (1 Main + 10 Sub Images)';
       document.getElementById('chk_moments_at_bhavans').checked = true;
       const mainWrap = document.getElementById('mainPreviewWrap');
       if (mainWrap) mainWrap.style.display = 'none';
-      for (let i = 1; i <= 5; i++) {
+      for (let i = 1; i <= 10; i++) {
         const prevEl = document.getElementById(`subPreview${i}`);
         if (prevEl) prevEl.style.display = 'none';
       }
@@ -776,13 +937,13 @@ class AdminApp {
     const subtitle = document.getElementById('packageSubtitle').value.trim();
     const main_image = document.getElementById('mainImageUrl').value.trim();
 
-    const sub_images = [
-      document.getElementById('subImg1').value.trim(),
-      document.getElementById('subImg2').value.trim(),
-      document.getElementById('subImg3').value.trim(),
-      document.getElementById('subImg4').value.trim(),
-      document.getElementById('subImg5').value.trim()
-    ].filter(s => s !== '');
+    const sub_images = [];
+    for (let i = 1; i <= 10; i++) {
+      const el = document.getElementById(`subImg${i}`);
+      if (el && el.value.trim()) {
+        sub_images.push(el.value.trim());
+      }
+    }
 
     const target_sections = {
       welcome_section: document.getElementById('chk_welcome').checked,
@@ -848,7 +1009,150 @@ class AdminApp {
   }
 
   // --------------------------------------------------------------------------
-  // 6. MULTI-ROLE USER MANAGEMENT SECTION (Super Admin Only)
+  // 6. EDUCATION SLIDER (AUTO SLIDES) SECTION
+  // --------------------------------------------------------------------------
+  renderSlidesTable() {
+    const tbody = document.getElementById('slidesTableBody');
+    if (!tbody || !this.siteData) return;
+
+    const slides = this.siteData.auto_slides || [];
+
+    if (slides.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--color-text-secondary); padding: 2rem;">No auto slides found. Click "+ Add New Auto Slide" to create one.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = slides.map(s => `
+      <tr>
+        <td>
+          <img src="${this.formatImgSrc(s.image_url)}" alt="Slide Image" style="width: 80px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid var(--color-border);">
+        </td>
+        <td><strong style="color: var(--color-deep-blue);">${this.escapeHtml(s.title)}</strong></td>
+        <td style="font-size: 0.8125rem; color: var(--color-text-secondary);">${this.escapeHtml(s.subtitle || '-')}</td>
+        <td>
+          ${s.is_active == 1 ? '<span class="role-badge-preview badge-school">ACTIVE</span>' : '<span class="role-badge-preview badge-super-admin" style="background: #FEE2E2; color: #991B1B;">OFF</span>'}
+        </td>
+        <td>
+          <button class="btn-sm btn-action-edit" onclick="adminApp.toggleSlideStatus(${s.id})">${s.is_active == 1 ? 'Disable' : 'Enable'}</button>
+          <button class="btn-sm btn-action-edit" onclick="adminApp.editSlide(${s.id})">Edit</button>
+          <button class="btn-sm btn-action-delete" onclick="adminApp.deleteSlide(${s.id})">Delete</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  openSlideModal(id = null) {
+    const modal = document.getElementById('slideModal');
+    const titleEl = document.getElementById('slideModalTitle');
+    const form = document.getElementById('slideForm');
+
+    form.reset();
+    document.getElementById('slideId').value = '';
+    const slideWrap = document.getElementById('slidePreviewWrap');
+    if (slideWrap) slideWrap.style.display = 'none';
+
+    if (id) {
+      titleEl.textContent = 'Edit Education Auto Slide';
+      const s = (this.siteData.auto_slides || []).find(item => item.id === id);
+      if (s) {
+        document.getElementById('slideId').value = s.id;
+        document.getElementById('slideTitle').value = s.title || '';
+        document.getElementById('slideSubtitle').value = s.subtitle || '';
+        document.getElementById('slideImageUrl').value = s.image_url || '';
+        document.getElementById('slideIsActive').checked = s.is_active == 1;
+
+        const prev = document.getElementById('slideImagePreview');
+        const vBtn = document.getElementById('slideViewFullBtn');
+        if (s.image_url && prev) {
+          const src = this.formatImgSrc(s.image_url);
+          prev.src = src;
+          if (vBtn) vBtn.href = src;
+          if (slideWrap) slideWrap.style.display = 'block';
+        }
+      }
+    } else {
+      titleEl.textContent = 'Upload Education Auto Slide Image';
+      document.getElementById('slideTitle').value = 'EDUCATION ROOTED IN VALUES. DRIVEN BY EXCELLENCE';
+      document.getElementById('slideIsActive').checked = true;
+    }
+
+    modal.classList.add('active');
+  }
+
+  closeSlideModal() {
+    document.getElementById('slideModal').classList.remove('active');
+  }
+
+  saveSlide() {
+    const id = document.getElementById('slideId').value;
+    const title = document.getElementById('slideTitle').value.trim();
+    const subtitle = document.getElementById('slideSubtitle').value.trim();
+    const image_url = document.getElementById('slideImageUrl').value.trim();
+    const is_active = document.getElementById('slideIsActive').checked ? 1 : 0;
+
+    this.confirmAction({
+      title: 'Confirm Auto Slide Save',
+      heading: id ? 'Update Auto Slide?' : 'Add New Auto Slide?',
+      message: 'Are you sure you want to save this slider image for the Education Rooted in Values banner?',
+      icon: '✨',
+      isDanger: false,
+      onConfirm: () => {
+        if (!this.siteData.auto_slides) this.siteData.auto_slides = [];
+
+        if (id) {
+          const idx = this.siteData.auto_slides.findIndex(s => s.id == id);
+          if (idx !== -1) {
+            this.siteData.auto_slides[idx] = { id: parseInt(id), title, subtitle, image_url, is_active };
+          }
+        } else {
+          const newSlide = {
+            id: Date.now(),
+            title, subtitle, image_url, is_active
+          };
+          this.siteData.auto_slides.push(newSlide);
+        }
+
+        this.closeSlideModal();
+        this.saveData('Auto slide saved successfully!');
+        this.verifySuccess({
+          title: 'Auto Slide Saved & Verified!',
+          message: 'The slide image has been updated on the Education Rooted in Values auto slider carousel.'
+        });
+      }
+    });
+  }
+
+  editSlide(id) {
+    this.openSlideModal(id);
+  }
+
+  toggleSlideStatus(id) {
+    const s = (this.siteData.auto_slides || []).find(item => item.id === id);
+    if (!s) return;
+    s.is_active = s.is_active == 1 ? 0 : 1;
+    this.saveData('Slide status updated.');
+  }
+
+  deleteSlide(id) {
+    this.confirmAction({
+      title: 'Confirm Slide Deletion',
+      heading: 'Delete Auto Slide?',
+      message: 'Are you sure you want to delete this education slider image?',
+      icon: '🗑️',
+      isDanger: true,
+      onConfirm: () => {
+        this.siteData.auto_slides = (this.siteData.auto_slides || []).filter(s => s.id !== id);
+        this.saveData('Slide deleted.');
+        this.verifySuccess({
+          title: 'Slide Deleted!',
+          message: 'The auto slide image has been removed.'
+        });
+      }
+    });
+  }
+
+  // --------------------------------------------------------------------------
+  // 7. MULTI-ROLE USER MANAGEMENT SECTION (Super Admin Only)
   // --------------------------------------------------------------------------
   renderUsersTable() {
     const tbody = document.getElementById('usersTableBody');
