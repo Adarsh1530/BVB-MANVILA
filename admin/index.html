@@ -150,10 +150,10 @@
               <div class="panel-title">Institutional Management Quick Actions</div>
             </div>
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
-              <button class="btn-admin-primary" onclick="adminApp.switchTab('notices')">
+              <button class="btn-admin-primary" onclick="adminApp.switchTab('notices'); adminApp.openNoticeModal();">
                 + Publish Latest Notice
               </button>
-              <button class="btn-admin-primary" style="background: linear-gradient(135deg, #1976D2 0%, #0B4EA2 100%);" onclick="adminApp.switchTab('images')">
+              <button class="btn-admin-primary" style="background: linear-gradient(135deg, #1976D2 0%, #0B4EA2 100%);" onclick="adminApp.switchTab('images'); adminApp.openImagePackageModal();">
                 + Upload Image Package (1 Main + 5 Sub)
               </button>
               <button class="btn-admin-primary" style="background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);" onclick="adminApp.switchTab('popup')">
