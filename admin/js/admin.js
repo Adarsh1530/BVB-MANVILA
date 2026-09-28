@@ -223,26 +223,58 @@ class AdminApp {
   // --------------------------------------------------------------------------
   // AUTHENTICATION & LOGIN LOGIC
   // --------------------------------------------------------------------------
-  bindLoginEvents() {
+    bindLoginEvents() {
     const form = document.getElementById('adminLoginForm');
     if (!form) return;
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const username = document.getElementById('loginUsername').value.trim();
-      const password = document.getElementById('loginPassword').value.trim();
-      const role = document.getElementById('loginRoleSelect').value;
+      const usernameInput = document.getElementById('loginUsername');
+      const passwordInput = document.getElementById('loginPassword');
+      const roleSelect = document.getElementById('loginRoleSelect');
 
-      const users = (this.siteData && Array.isArray(this.siteData.users)) ? this.siteData.users : [];
-      const matchedUser = users.find(u => u.username && u.username.toLowerCase() === username.toLowerCase() && u.password === password);
+      if (!usernameInput || !passwordInput) return;
+
+      const username = usernameInput.value.trim();
+      const password = passwordInput.value.trim();
+      const role = roleSelect ? roleSelect.value : 'super admin';
+
+      const defaultUsers = [
+        { id: 1, username: "superadmin", password: "superadmin123", name: "Principal / Director", role: "super admin" },
+        { id: 2, username: "admin", password: "admin123", name: "Administrative Officer", role: "admin" },
+        { id: 3, username: "school", password: "school123", name: "School Office Staff", role: "school" }
+      ];
+
+      const loadedUsers = (this.siteData && Array.isArray(this.siteData.users)) ? this.siteData.users : [];
+      const allUsers = [...defaultUsers, ...loadedUsers];
+
+      const matchedUser = allUsers.find(u => 
+        u.username && u.username.toLowerCase() === username.toLowerCase() && u.password === password
+      );
 
       const alertBox = document.getElementById('loginAlert');
 
       if (matchedUser) {
-        matchedUser.role = role || matchedUser.role; 
-        sessionStorage.setItem('bvb_active_user', JSON.stringify(matchedUser));
-        localStorage.setItem('bvb_active_user', JSON.stringify(matchedUser));
-        window.location.href = this.getAdminPath('index.html');
+        const userToSave = {
+          id: matchedUser.id || Date.now(),
+          username: matchedUser.username,
+          name: matchedUser.name || username.toUpperCase(),
+          role: role || matchedUser.role || 'super admin'
+        };
+
+        sessionStorage.setItem('bvb_active_user', JSON.stringify(userToSave));
+        localStorage.setItem('bvb_active_user', JSON.stringify(userToSave));
+
+        if (alertBox) {
+          alertBox.style.display = 'block';
+          alertBox.style.backgroundColor = '#D1FAE5';
+          alertBox.style.color = '#065F46';
+          alertBox.textContent = '✅ Login successful! Redirecting to Control Center...';
+        }
+
+        setTimeout(() => {
+          window.location.href = this.getAdminPath('index.html');
+        }, 400);
       } else {
         if (alertBox) {
           alertBox.style.display = 'block';
