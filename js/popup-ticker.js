@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 1. Pure Image Entrance Popup Modal Engine
   function initEntrancePopup(popup) {
-    if (!popup || !popup.is_active || popup.is_active == 0) return;
+    if (!popup || !popup.is_active || popup.is_active == 0 || !popup.image_url || popup.image_url.trim() === '') return;
 
     // Session check to prevent repeated popups on every page navigation
     if (sessionStorage.getItem('bvb_popup_dismissed') === '1') return;
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     modalOverlay.className = 'site-entrance-popup-overlay';
     modalOverlay.id = 'siteEntrancePopup';
 
-    const imgSrc = popup.image_url || 'images/main page popup/1.jpg';
+    const imgSrc = popup.image_url;
 
     // Pure image popup card with ONLY the image and top-right close button
     modalOverlay.innerHTML = `

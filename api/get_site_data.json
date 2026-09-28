@@ -26,8 +26,8 @@
     "popup": {
         "id": 1,
         "title": "Welcome to Bhavan's Vivekananda Vidya Mandir, Manvila",
-        "message": "Admissions are now open for LKG to Class XI Science & Commerce streams for 2027\u20132028 session.",
-        "image_url": "uploads/popup/popup-1.jpg",
+        "message": "Admissions are now open for LKG to Class XI Science & Commerce streams for 2027–2028 session.",
+        "image_url": "",
         "button_text": "ADMISSION INFO",
         "button_url": "admissions.html",
         "is_active": 1
@@ -35,11 +35,11 @@
     "notices": [
         {
             "id": 1,
-            "title": "Admissions Open for Academic Session 2027\u20132028 (LKG to Class XI)",
+            "title": "Admissions Open for Academic Session 2027–2028 (LKG to Class XI)",
             "content": "Registration forms for admission to LKG, Class I, Class XI Science & Commerce streams are available online and at the school office.",
             "category": "Admissions",
             "notice_date": "2026-09-15",
-            "pdf_link": "uploads/mandatory_disclosures/Mandatory-Disclosure.pdf",
+            "pdf_link": "",
             "is_ticker": 1
         },
         {
@@ -48,7 +48,7 @@
             "content": "Classes X and XII CBSE Board examination instructions, timetable, and admit card download notifications have been released.",
             "category": "Academics",
             "notice_date": "2026-09-10",
-            "pdf_link": "uploads/mandatory_disclosures/Academic-Calendar.csv",
+            "pdf_link": "",
             "is_ticker": 1
         },
         {
@@ -73,11 +73,11 @@
         },
         {
             "id": 1,
-            "title": "Admissions Open for Academic Session 2027\u20132028 (LKG to Class XI)",
+            "title": "Admissions Open for Academic Session 2027–2028 (LKG to Class XI)",
             "content": "Registration forms for admission to LKG, Class I, Class XI Science & Commerce streams are available online and at the school office.",
             "category": "Admissions",
             "notice_date": "2026-09-15",
-            "pdf_link": "uploads/mandatory_disclosures/Mandatory-Disclosure.pdf",
+            "pdf_link": "",
             "is_ticker": 1
         },
         {
@@ -86,7 +86,7 @@
             "content": "Classes X and XII CBSE Board examination instructions, timetable, and admit card download notifications have been released.",
             "category": "Academics",
             "notice_date": "2026-09-10",
-            "pdf_link": "uploads/mandatory_disclosures/Academic-Calendar.csv",
+            "pdf_link": "",
             "is_ticker": 1
         },
         {
@@ -170,7 +170,7 @@
             "category_name": "Documents & Compliance",
             "title": "COPIES OF AFFILIATION/UPGRADATION LETTER AND RECENT EXTENSION OF AFFILIATION",
             "details": "Valid CBSE Affiliation Extension up to 2028",
-            "file_link": "uploads/mandatory_disclosures/CBSE-Affiliation-Extension.pdf"
+            "file_link": ""
         },
         {
             "id": 9,
@@ -179,7 +179,7 @@
             "category_name": "Documents & Compliance",
             "title": "COPIES OF SOCIETIES/TRUST/COMPANY REGISTRATION/RENEWAL CERTIFICATE",
             "details": "Bharatiya Vidya Bhavan Society Registration",
-            "file_link": "uploads/mandatory_disclosures/Trust-Registration.pdf"
+            "file_link": ""
         },
         {
             "id": 10,
@@ -188,7 +188,7 @@
             "category_name": "Documents & Compliance",
             "title": "COPY OF NO OBJECTION CERTIFICATE (NOC) ISSUED, IF APPLICABLE, BY THE STATE GOVT./UT",
             "details": "NOC Issued by Govt. of Kerala General Education Dept.",
-            "file_link": "uploads/mandatory_disclosures/Govt-NOC.pdf"
+            "file_link": ""
         },
         {
             "id": 11,
@@ -197,7 +197,7 @@
             "category_name": "Documents & Compliance",
             "title": "COPIES OF RECOGNITION CERTIFICATE UNDER RTE ACT, 2009, AND IT'S RENEWAL IF APPLICABLE",
             "details": "RTE Recognition Certificate",
-            "file_link": "uploads/mandatory_disclosures/RTE-Recognition.pdf"
+            "file_link": ""
         },
         {
             "id": 12,
@@ -206,7 +206,7 @@
             "category_name": "Documents & Compliance",
             "title": "COPY OF VALID BUILDING SAFETY CERTIFICATE AS PER THE NATIONAL BUILDING CODE",
             "details": "Approved PWD Building Safety Certificate",
-            "file_link": "uploads/mandatory_disclosures/Building-Safety-Certificate.pdf"
+            "file_link": ""
         },
         {
             "id": 13,
@@ -215,7 +215,7 @@
             "category_name": "Documents & Compliance",
             "title": "COPY OF VALID FIRE SAFETY CERTIFICATE ISSUED BY THE COMPETENT AUTHORITY",
             "details": "Kerala Fire & Rescue Services Safety Clearance",
-            "file_link": "uploads/mandatory_disclosures/Fire-Safety-Certificate.pdf"
+            "file_link": ""
         },
         {
             "id": 14,
@@ -224,7 +224,7 @@
             "category_name": "Documents & Compliance",
             "title": "COPY OF THE DEO CERTIFICATE SUBMITTED BY THE SCHOOL FOR AFFILIATION",
             "details": "DEO Verification & Inspection Report",
-            "file_link": "uploads/mandatory_disclosures/DEO-Certificate.pdf"
+            "file_link": ""
         },
         {
             "id": 15,
@@ -233,7 +233,7 @@
             "category_name": "Documents & Compliance",
             "title": "COPIES OF VALID WATER, HEALTH AND SANITATION CERTIFICATES",
             "details": "Water Fitness & Sanitation Clearance Certificate",
-            "file_link": "uploads/mandatory_disclosures/Sanitation-Certificate.pdf"
+            "file_link": ""
         },
         {
             "id": 16,
@@ -242,7 +242,7 @@
             "category_name": "Documents & Compliance",
             "title": "COMPLETE MANDATORY DISCLOSURE (CBSE SARAS 5.0)",
             "details": "Full Verified SARAS 5.0 Disclosure Document",
-            "file_link": "uploads/mandatory_disclosures/Mandatory-Disclosure.pdf"
+            "file_link": ""
         },
         {
             "id": 17,
@@ -251,7 +251,7 @@
             "category_name": "Result & Academics",
             "title": "FEE STRUCTURE OF THE SCHOOL",
             "details": "Annual Academic Fee Structure 2027-28",
-            "file_link": "uploads/mandatory_disclosures/Fee-Structure.pdf"
+            "file_link": ""
         },
         {
             "id": 18,
@@ -260,83 +260,44 @@
             "category_name": "Result & Academics",
             "title": "ANNUAL ACADEMIC CALENDER",
             "details": "School Academic Calendar & Activity Schedule",
-            "file_link": "uploads/mandatory_disclosures/Academic-Calendar.csv"
+            "file_link": ""
         }
     ],
-    "image_packages": [
-        {
-            "id": 2,
-            "title": "Investiture & Student Council Leadership Ceremony",
-            "subtitle": "Empowering Student Leaders",
-            "main_image": "uploads/auto_slides/investiture-1.jpg",
-            "sub_images": [
-                "uploads/auto_slides/investiture-1.jpg",
-                "uploads/auto_slides/investiture-2.jpg",
-                "uploads/auto_slides/investiture-oath.jpg",
-                "uploads/auto_slides/cultural-fest.jpg"
-            ],
-            "target_sections": {
-                "welcome_section": true,
-                "whats_happening": true,
-                "life_at_bhavans": true,
-                "moments_at_bhavans": true,
-                "campus_discovery": true,
-                "academic_environment": true
-            }
-        },
-        {
-            "id": 1,
-            "title": "Annual Sports & Athletic Meet Highlights",
-            "subtitle": "Celebrated at Manvila Campus Grounds",
-            "main_image": "uploads/gallery/school-parliament.jpg",
-            "sub_images": [
-                "uploads/gallery/school-parliament.jpg",
-                "uploads/gallery/adharva-fest.jpg"
-            ],
-            "target_sections": {
-                "welcome_section": true,
-                "whats_happening": true,
-                "life_at_bhavans": true,
-                "moments_at_bhavans": true,
-                "campus_discovery": true,
-                "academic_environment": true
-            }
-        }
-    ],
+    "image_packages": [],
     "auto_slides": [
         {
             "id": 1,
             "title": "EDUCATION ROOTED IN VALUES. DRIVEN BY EXCELLENCE",
             "subtitle": "Nurturing Future Leaders with Academic Rigor and Indian Cultural Heritage",
-            "image_url": "uploads/auto_slides/campus-view.jpg",
+            "image_url": "",
             "is_active": 1
         },
         {
             "id": 2,
             "title": "State-of-the-Art Science & Digital Learning Labs",
             "subtitle": "Empowering students through hands-on discovery and modern technology",
-            "image_url": "uploads/auto_slides/investiture-1.jpg",
+            "image_url": "",
             "is_active": 1
         },
         {
             "id": 3,
             "title": "Serene 2.89 Acres Campus Grounds",
             "subtitle": "Safe, green, and inspiring environment for holistic child development",
-            "image_url": "uploads/auto_slides/investiture-2.jpg",
+            "image_url": "",
             "is_active": 1
         },
         {
             "id": 4,
             "title": "Investiture & Student Leadership Ceremonies",
             "subtitle": "Developing confidence, discipline, and ethical leadership",
-            "image_url": "uploads/auto_slides/investiture-oath.jpg",
+            "image_url": "",
             "is_active": 1
         },
         {
             "id": 5,
             "title": "All Kerala Bhavan's Youth & Cultural Fest",
             "subtitle": "Celebrating artistic talents and cultural excellence",
-            "image_url": "uploads/auto_slides/cultural-fest.jpg",
+            "image_url": "",
             "is_active": 1
         }
     ],
