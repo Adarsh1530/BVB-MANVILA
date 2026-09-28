@@ -67,10 +67,8 @@ class AdminApp {
       const isLoginPage = window.location.pathname.endsWith('login.html') || window.location.pathname.endsWith('login');
 
       if (!this.currentUser && !isLoginPage) {
-        // Fallback default admin user if session state is missing to avoid crashing
-        this.currentUser = { id: 1, username: 'superadmin', name: 'Principal / Director', role: 'super admin' };
-        sessionStorage.setItem('bvb_active_user', JSON.stringify(this.currentUser));
-        localStorage.setItem('bvb_active_user', JSON.stringify(this.currentUser));
+        window.location.href = this.getAdminPath('login.html');
+        return;
       }
 
       if (this.currentUser && isLoginPage) {
@@ -241,28 +239,16 @@ class AdminApp {
       const alertBox = document.getElementById('loginAlert');
 
       if (matchedUser) {
-        matchedUser.role = role; 
+        matchedUser.role = role || matchedUser.role; 
         sessionStorage.setItem('bvb_active_user', JSON.stringify(matchedUser));
         localStorage.setItem('bvb_active_user', JSON.stringify(matchedUser));
         window.location.href = this.getAdminPath('index.html');
       } else {
-        if (username && password) {
-          const newUser = {
-            id: Date.now(),
-            username: username,
-            name: username.toUpperCase(),
-            role: role
-          };
-          sessionStorage.setItem('bvb_active_user', JSON.stringify(newUser));
-          localStorage.setItem('bvb_active_user', JSON.stringify(newUser));
-          window.location.href = this.getAdminPath('index.html');
-        } else {
-          if (alertBox) {
-            alertBox.style.display = 'block';
-            alertBox.style.backgroundColor = '#FEE2E2';
-            alertBox.style.color = '#991B1B';
-            alertBox.textContent = 'Invalid username or password. Please try again.';
-          }
+        if (alertBox) {
+          alertBox.style.display = 'block';
+          alertBox.style.backgroundColor = '#FEE2E2';
+          alertBox.style.color = '#991B1B';
+          alertBox.textContent = '❌ Invalid username or password. Please enter valid administrative credentials.';
         }
       }
     });
@@ -279,7 +265,8 @@ class AdminApp {
   // --------------------------------------------------------------------------
   setupDashboardUI() {
     if (!this.currentUser) {
-      this.currentUser = { username: 'superadmin', name: 'Principal / Director', role: 'super admin' };
+      window.location.href = this.getAdminPath('login.html');
+      return;
     }
 
     const userNameEl = document.getElementById('sidebarUserName');
