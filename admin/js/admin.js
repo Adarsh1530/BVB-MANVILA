@@ -17,12 +17,12 @@ class AdminApp {
     const isLoginPage = window.location.pathname.endsWith('login.html') || window.location.pathname.endsWith('login');
 
     if (!this.currentUser && !isLoginPage) {
-      window.location.href = '/admin/login.html';
+      window.location.href = 'login.html';
       return;
     }
 
     if (this.currentUser && isLoginPage) {
-      window.location.href = '/admin/index.html';
+      window.location.href = 'index.html';
       return;
     }
 
@@ -40,48 +40,94 @@ class AdminApp {
   }
 
   async loadData() {
-    // Attempt fetching live PHP/MySQL endpoint first
+    let data = null;
+
+    const isValidData = (d) => {
+      return d && typeof d === 'object' && (
+        (Array.isArray(d.notices) && d.notices.length > 0) ||
+        (Array.isArray(d.mandatory_disclosures) && d.mandatory_disclosures.length > 0) ||
+        (Array.isArray(d.image_packages) && d.image_packages.length > 0)
+      );
+    };
+
+    // 1. Try fetching live PHP API endpoints first (relative and root)
     try {
-      const res = await fetch('/api/get_site_data.php');
-      if (res.ok) {
-        this.siteData = await res.json();
-        localStorage.setItem('bvb_site_data', JSON.stringify(this.siteData));
-        return;
+      let res = await fetch('../api/get_site_data.php').catch(() => null);
+      if (!res || !res.ok) {
+        res = await fetch('api/get_site_data.php').catch(() => null);
       }
-    } catch (err) {
-      console.log('MySQL API fetch notice (fallback to static JSON):', err);
+      if (!res || !res.ok) {
+        res = await fetch('/api/get_site_data.php').catch(() => null);
+      }
+      if (res && res.ok) {
+        const json = await res.json();
+        if (isValidData(json)) {
+          data = json;
+        }
+      }
+    } catch (e) {
+      console.log('PHP API fetch notice:', e);
     }
 
-    const localData = localStorage.getItem('bvb_site_data');
-    if (localData) {
+    // 2. Try fetching static JSON endpoint (relative and root)
+    if (!data) {
       try {
-        this.siteData = JSON.parse(localData);
-        return;
+        let res = await fetch('../api/get_site_data.json').catch(() => null);
+        if (!res || !res.ok) {
+          res = await fetch('api/get_site_data.json').catch(() => null);
+        }
+        if (!res || !res.ok) {
+          res = await fetch('/api/get_site_data.json').catch(() => null);
+        }
+        if (res && res.ok) {
+          const json = await res.json();
+          if (json) data = json;
+        }
       } catch (e) {
-        console.error('Local state parse error, fetching fresh state:', e);
+        console.log('JSON fetch notice:', e);
       }
     }
 
-    try {
-      const res = await fetch('/api/get_site_data.json');
-      if (res.ok) {
-        this.siteData = await res.json();
-        localStorage.setItem('bvb_site_data', JSON.stringify(this.siteData));
+    // 3. Check LocalStorage fallback or custom edited state
+    const existingLocal = localStorage.getItem('bvb_site_data');
+    if (existingLocal) {
+      try {
+        const parsedLocal = JSON.parse(existingLocal);
+        if (!data || isValidData(parsedLocal)) {
+          data = parsedLocal;
+        }
+      } catch (e) {
+        console.error('Local state parse error:', e);
       }
-    } catch (err) {
-      console.error('Failed to load initial site data JSON:', err);
     }
+
+    this.siteData = data || {};
+    if (!this.siteData.notices) this.siteData.notices = [];
+    if (!this.siteData.mandatory_disclosures) this.siteData.mandatory_disclosures = [];
+    if (!this.siteData.image_packages) this.siteData.image_packages = [];
+    if (!this.siteData.auto_slides) this.siteData.auto_slides = [];
+    if (!this.siteData.users) this.siteData.users = [];
+    if (!this.siteData.popup) this.siteData.popup = { is_active: 1, title: '', message: '', image_url: '' };
+
+    localStorage.setItem('bvb_site_data', JSON.stringify(this.siteData));
   }
 
   saveData(message = 'Changes saved successfully!') {
     localStorage.setItem('bvb_site_data', JSON.stringify(this.siteData));
     
     // Synchronize to MySQL API endpoint
-    fetch('/api/admin_api.php', {
+    const payload = JSON.stringify({ action: 'sync_data', data: this.siteData });
+    fetch('../api/admin_api.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'sync_data', data: this.siteData })
-    }).catch(e => console.log('PHP MySQL sync notice:', e));
+      body: payload
+    }).catch(() => {
+      fetch('/api/admin_api.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: payload
+      }).catch(e => console.log('PHP MySQL sync notice:', e));
+    });
 
     this.showToast(message, 'success');
     this.renderAll();
@@ -100,8 +146,8 @@ class AdminApp {
       const password = document.getElementById('loginPassword').value.trim();
       const role = document.getElementById('loginRoleSelect').value;
 
-      const users = this.siteData ? this.siteData.users : [];
-      const matchedUser = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
+      const users = (this.siteData && Array.isArray(this.siteData.users)) ? this.siteData.users : [];
+      const matchedUser = users.find(u => u.username && u.username.toLowerCase() === username.toLowerCase() && u.password === password);
 
       const alertBox = document.getElementById('loginAlert');
 
@@ -109,7 +155,7 @@ class AdminApp {
         matchedUser.role = role; 
         sessionStorage.setItem('bvb_active_user', JSON.stringify(matchedUser));
         localStorage.setItem('bvb_active_user', JSON.stringify(matchedUser));
-        window.location.href = '/admin/index.html';
+        window.location.href = 'index.html';
       } else {
         if (username && password) {
           const newUser = {
@@ -120,12 +166,14 @@ class AdminApp {
           };
           sessionStorage.setItem('bvb_active_user', JSON.stringify(newUser));
           localStorage.setItem('bvb_active_user', JSON.stringify(newUser));
-          window.location.href = '/admin/index.html';
+          window.location.href = 'index.html';
         } else {
-          alertBox.style.display = 'block';
-          alertBox.style.backgroundColor = '#FEE2E2';
-          alertBox.style.color = '#991B1B';
-          alertBox.textContent = 'Invalid username or password. Please try again.';
+          if (alertBox) {
+            alertBox.style.display = 'block';
+            alertBox.style.backgroundColor = '#FEE2E2';
+            alertBox.style.color = '#991B1B';
+            alertBox.textContent = 'Invalid username or password. Please try again.';
+          }
         }
       }
     });
@@ -134,7 +182,7 @@ class AdminApp {
   logout() {
     sessionStorage.removeItem('bvb_active_user');
     localStorage.removeItem('bvb_active_user');
-    window.location.href = '/admin/login.html';
+    window.location.href = 'login.html';
   }
 
   // --------------------------------------------------------------------------
