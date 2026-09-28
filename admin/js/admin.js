@@ -200,16 +200,17 @@ class AdminApp {
 
     // 4. Fallback to hardcoded default seed data if no valid data is available
     if (!isValidData(data)) {
+      localStorage.removeItem('bvb_site_data');
       data = JSON.parse(JSON.stringify(BVB_DEFAULT_SEED_DATA));
     }
 
     this.siteData = data;
-    if (!this.siteData.notices) this.siteData.notices = [];
-    if (!this.siteData.mandatory_disclosures) this.siteData.mandatory_disclosures = [];
-    if (!this.siteData.image_packages) this.siteData.image_packages = [];
-    if (!this.siteData.auto_slides) this.siteData.auto_slides = [];
-    if (!this.siteData.users) this.siteData.users = [];
-    if (!this.siteData.popup) this.siteData.popup = { is_active: 1, title: '', message: '', image_url: '' };
+    if (!this.siteData.notices || this.siteData.notices.length === 0) this.siteData.notices = JSON.parse(JSON.stringify(BVB_DEFAULT_SEED_DATA.notices));
+    if (!this.siteData.mandatory_disclosures || this.siteData.mandatory_disclosures.length === 0) this.siteData.mandatory_disclosures = JSON.parse(JSON.stringify(BVB_DEFAULT_SEED_DATA.mandatory_disclosures));
+    if (!this.siteData.image_packages || this.siteData.image_packages.length === 0) this.siteData.image_packages = JSON.parse(JSON.stringify(BVB_DEFAULT_SEED_DATA.image_packages));
+    if (!this.siteData.auto_slides || this.siteData.auto_slides.length === 0) this.siteData.auto_slides = JSON.parse(JSON.stringify(BVB_DEFAULT_SEED_DATA.auto_slides));
+    if (!this.siteData.users || this.siteData.users.length === 0) this.siteData.users = JSON.parse(JSON.stringify(BVB_DEFAULT_SEED_DATA.users));
+    if (!this.siteData.popup) this.siteData.popup = JSON.parse(JSON.stringify(BVB_DEFAULT_SEED_DATA.popup));
 
     localStorage.setItem('bvb_site_data', JSON.stringify(this.siteData));
   }
@@ -1748,6 +1749,15 @@ class AdminApp {
 }
 
 // Global App Initialization
-document.addEventListener('DOMContentLoaded', () => {
-  window.adminApp = new AdminApp();
-});
+window.adminApp = null;
+const initAdminApp = () => {
+  if (!window.adminApp) {
+    window.adminApp = new AdminApp();
+  }
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAdminApp);
+} else {
+  initAdminApp();
+}
