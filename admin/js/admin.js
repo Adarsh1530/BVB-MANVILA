@@ -541,15 +541,11 @@ class AdminApp {
     const elTitle = document.getElementById('popupTitleInput');
     const elMessage = document.getElementById('popupMessageInput');
     const elImg = document.getElementById('popupImageUrlInput');
-    const elBtnText = document.getElementById('popupButtonTextInput');
-    const elBtnUrl = document.getElementById('popupButtonUrlInput');
 
     if (elActive) elActive.value = p.is_active || 1;
     if (elTitle) elTitle.value = p.title || '';
     if (elMessage) elMessage.value = p.message || '';
     if (elImg) elImg.value = p.image_url || '';
-    if (elBtnText) elBtnText.value = p.button_text || '';
-    if (elBtnUrl) elBtnUrl.value = p.button_url || '';
 
     const popupPrevWrap = document.getElementById('popupPreviewWrap');
     const popupPrevImg = document.getElementById('popupImagePreview');
@@ -573,14 +569,16 @@ class AdminApp {
       icon: '🔔',
       isDanger: false,
       onConfirm: () => {
+        const btnTextEl = document.getElementById('popupButtonTextInput');
+        const btnUrlEl = document.getElementById('popupButtonUrlInput');
         const newPopup = {
           id: Date.now(),
           is_active: parseInt(document.getElementById('popupActiveSelect').value),
           title: document.getElementById('popupTitleInput').value.trim(),
           message: document.getElementById('popupMessageInput').value.trim(),
           image_url: document.getElementById('popupImageUrlInput').value.trim(),
-          button_text: document.getElementById('popupButtonTextInput').value.trim(),
-          button_url: document.getElementById('popupButtonUrlInput').value.trim(),
+          button_text: btnTextEl ? btnTextEl.value.trim() : '',
+          button_url: btnUrlEl ? btnUrlEl.value.trim() : '',
           created_at: new Date().toISOString().replace('T', ' ').split('.')[0]
         };
 
@@ -605,7 +603,7 @@ class AdminApp {
     const history = this.siteData.popup_history || [];
 
     if (history.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--color-text-secondary); padding: 1.5rem;">No popup history logs found yet.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--color-text-secondary); padding: 1.5rem;">No popup history logs found yet.</td></tr>`;
       return;
     }
 
@@ -615,8 +613,7 @@ class AdminApp {
           <img src="${this.formatImgSrc(item.image_url)}" alt="Popup" style="width: 60px; height: 45px; object-fit: cover; border-radius: 6px; border: 1px solid var(--color-border);">
         </td>
         <td><strong style="color: var(--color-deep-blue);">${this.escapeHtml(item.title)}</strong></td>
-        <td style="font-size: 0.8125rem; color: var(--color-text-secondary); max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${this.escapeHtml(item.message)}</td>
-        <td><a href="${this.escapeHtml(item.button_url || '#')}" target="_blank" style="color: var(--color-primary); font-weight: 600;">${this.escapeHtml(item.button_text || 'Link')}</a></td>
+        <td style="font-size: 0.8125rem; color: var(--color-text-secondary); max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${this.escapeHtml(item.message)}</td>
         <td>
           ${item.is_active == 1 ? '<span class="role-badge-preview badge-school">ACTIVE</span>' : '<span class="role-badge-preview badge-super-admin" style="background: #FEE2E2; color: #991B1B;">INACTIVE</span>'}
         </td>
