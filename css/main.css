@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Raphael';
+  src: url('../assets/fonts/raphael.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ==========================================================================
    Bhavan's Vivekananda Vidya Mandir - Main Stylesheet
    ========================================================================== */
@@ -283,25 +291,36 @@ ul, ol {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  line-height: 1;
 }
 
-.logo-title {
-  font-family: var(--font-heading);
-  font-size: 1rem;
-  font-weight: 800;
+.logo-top-text {
+  font-family: 'Raphael', 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
   color: var(--color-deep-blue);
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+
+.logo-title-bhavan {
+  font-family: 'Raphael', serif;
+  font-size: 1.95rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  line-height: 0.95;
+  margin-top: 1px;
+  margin-bottom: 2px;
+  letter-spacing: 0.02em;
 }
 
 .logo-sub {
   font-size: 0.65rem;
-  font-weight: 600;
-  color: var(--color-primary);
+  font-weight: 700;
+  color: var(--color-text-secondary);
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  line-height: 1.2;
+  line-height: 1.1;
   white-space: nowrap;
 }
 
