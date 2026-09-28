@@ -713,6 +713,7 @@ body {
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
   transition: all var(--transition-fast);
   padding: 1.5rem 1rem;
   overflow-y: auto;
@@ -721,6 +722,7 @@ body {
 .admin-modal-overlay.active {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;
 }
 
 .admin-modal {
@@ -802,9 +804,11 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  pointer-events: none;
 }
 
 .admin-toast {
+  pointer-events: auto;
   padding: 0.85rem 1.25rem;
   border-radius: var(--radius-sm);
   background: var(--color-deep-blue);
