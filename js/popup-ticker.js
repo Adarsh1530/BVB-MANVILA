@@ -4,7 +4,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  fetch('api/get_site_data.php')
+  fetch('api/get_site_data.php?t=' + Date.now())
     .then(res => {
       if (!res.ok) throw new Error('PHP endpoint unavailable');
       return res.json();
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     })
     .catch(err => {
-      fetch('api/get_site_data.json')
+      fetch('api/get_site_data.json?t=' + Date.now())
         .then(res => res.json())
         .then(data => {
           if (data.status === 'success') {

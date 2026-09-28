@@ -107,12 +107,12 @@ class AdminApp {
 
     // 1. Try fetching live PHP API endpoints first (relative and root)
     try {
-      let res = await fetch('../api/get_site_data.php').catch(() => null);
+      let res = await fetch('../api/get_site_data.php?t=' + Date.now()).catch(() => null);
       if (!res || !res.ok) {
-        res = await fetch('api/get_site_data.php').catch(() => null);
+        res = await fetch('api/get_site_data.php?t=' + Date.now()).catch(() => null);
       }
       if (!res || !res.ok) {
-        res = await fetch('/api/get_site_data.php').catch(() => null);
+        res = await fetch('/api/get_site_data.php?t=' + Date.now()).catch(() => null);
       }
       if (res && res.ok) {
         const json = await res.json();
@@ -127,12 +127,12 @@ class AdminApp {
     // 2. Try fetching static JSON endpoint (relative and root)
     if (!data) {
       try {
-        let res = await fetch('../api/get_site_data.json').catch(() => null);
+        let res = await fetch('../api/get_site_data.json?t=' + Date.now()).catch(() => null);
         if (!res || !res.ok) {
-          res = await fetch('api/get_site_data.json').catch(() => null);
+          res = await fetch('api/get_site_data.json?t=' + Date.now()).catch(() => null);
         }
         if (!res || !res.ok) {
-          res = await fetch('/api/get_site_data.json').catch(() => null);
+          res = await fetch('/api/get_site_data.json?t=' + Date.now()).catch(() => null);
         }
         if (res && res.ok) {
           const json = await res.json();

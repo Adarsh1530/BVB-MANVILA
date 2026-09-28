@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // 2. Fetch PHP MySQL API endpoint with fallback to JSON
-    fetch('api/get_site_data.php')
+    fetch('api/get_site_data.php?t=' + Date.now())
       .then(res => res.json())
       .then(data => {
         if (data && data.status === 'success') {
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
     function fallbackJsonFetch() {
-      fetch('api/get_site_data.json')
+      fetch('api/get_site_data.json?t=' + Date.now())
         .then(res => res.json())
         .then(data => {
           if (data && data.status === 'success') {
