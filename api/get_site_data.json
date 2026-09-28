@@ -25,80 +25,17 @@
     ],
     "popup": {
         "id": 1,
-        "title": "Welcome to Bhavan's Vivekananda Vidya Mandir, Manvila",
-        "message": "Admissions are now open for LKG to Class XI Science & Commerce streams for 2027–2028 session.",
+        "title": "",
+        "message": "",
         "image_url": "",
         "button_text": "ADMISSION INFO",
         "button_url": "admissions.html",
-        "is_active": 1
+        "is_active": 0
     },
-    "notices": [
-        {
-            "id": 1,
-            "title": "Admissions Open for Academic Session 2027–2028 (LKG to Class XI)",
-            "content": "Registration forms for admission to LKG, Class I, Class XI Science & Commerce streams are available online and at the school office.",
-            "category": "Admissions",
-            "notice_date": "2026-09-15",
-            "pdf_link": "",
-            "is_ticker": 1
-        },
-        {
-            "id": 2,
-            "title": "Annual CBSE Board Examination Schedule & Guidelines Released",
-            "content": "Classes X and XII CBSE Board examination instructions, timetable, and admit card download notifications have been released.",
-            "category": "Academics",
-            "notice_date": "2026-09-10",
-            "pdf_link": "",
-            "is_ticker": 1
-        },
-        {
-            "id": 3,
-            "title": "Adharva Inter-School Cultural Fest Winners Announced",
-            "content": "Bhavan's Manvila won 1st Place overall champion trophy at the All Kerala Bhavan's Youth Festival.",
-            "category": "Achievements",
-            "notice_date": "2026-09-01",
-            "pdf_link": "",
-            "is_ticker": 1
-        }
-    ],
-    "ticker": [
-        {
-            "id": 1790577087113,
-            "title": "Automated CRUD Verification Notice 2027",
-            "content": "Verification testing for admin panel functionality",
-            "category": "Admissions",
-            "notice_date": "2026-09-28",
-            "pdf_link": "",
-            "is_ticker": 1
-        },
-        {
-            "id": 1,
-            "title": "Admissions Open for Academic Session 2027–2028 (LKG to Class XI)",
-            "content": "Registration forms for admission to LKG, Class I, Class XI Science & Commerce streams are available online and at the school office.",
-            "category": "Admissions",
-            "notice_date": "2026-09-15",
-            "pdf_link": "",
-            "is_ticker": 1
-        },
-        {
-            "id": 2,
-            "title": "Annual CBSE Board Examination Schedule & Guidelines Released",
-            "content": "Classes X and XII CBSE Board examination instructions, timetable, and admit card download notifications have been released.",
-            "category": "Academics",
-            "notice_date": "2026-09-10",
-            "pdf_link": "",
-            "is_ticker": 1
-        },
-        {
-            "id": 3,
-            "title": "Adharva Inter-School Cultural Fest Winners Announced",
-            "content": "Bhavan's Manvila won 1st Place overall champion trophy at the All Kerala Bhavan's Youth Festival.",
-            "category": "Achievements",
-            "notice_date": "2026-09-01",
-            "pdf_link": "",
-            "is_ticker": 1
-        }
-    ],
+    "popup_history": [],
+    "auto_slides": [],
+    "notices": [],
+    "ticker": [],
     "mandatory_disclosures": [
         {
             "id": 1,
@@ -106,7 +43,7 @@
             "category_code": "A",
             "category_name": "General Information",
             "title": "NAME OF THE SCHOOL",
-            "details": "BHAVANS VIVEKANANDA VIDYA MANDIR MANVILA TRIVANDRUM KERALA",
+            "details": "",
             "file_link": ""
         },
         {
@@ -115,7 +52,7 @@
             "category_code": "A",
             "category_name": "General Information",
             "title": "AFFILIATION NO. (IF APPLICABLE)",
-            "details": "930776",
+            "details": "",
             "file_link": ""
         },
         {
@@ -124,7 +61,7 @@
             "category_code": "A",
             "category_name": "General Information",
             "title": "SCHOOL CODE (IF APPLICABLE)",
-            "details": "75738",
+            "details": "",
             "file_link": ""
         },
         {
@@ -133,7 +70,7 @@
             "category_code": "A",
             "category_name": "General Information",
             "title": "COMPLETE ADDRESS WITH PIN CODE",
-            "details": "BHAVANS VIVEKANANDA VIDYA MANDIR, MANVILA, PANGAPPARA P.O., TRIVANDRUM - 695581",
+            "details": "",
             "file_link": ""
         },
         {
@@ -142,7 +79,7 @@
             "category_code": "A",
             "category_name": "General Information",
             "title": "PRINCIPAL NAME & QUALIFICATION",
-            "details": "MS. DEEPA CHANDRAN (M.Sc., B.Ed.)",
+            "details": "",
             "file_link": ""
         },
         {
@@ -151,7 +88,7 @@
             "category_code": "A",
             "category_name": "General Information",
             "title": "SCHOOL EMAIL ID",
-            "details": "bhavansvvm@gmail.com",
+            "details": "",
             "file_link": ""
         },
         {
@@ -160,7 +97,7 @@
             "category_code": "A",
             "category_name": "General Information",
             "title": "CONTACT DETAILS (LANDLINE/MOBILE)",
-            "details": "0471 2594559",
+            "details": "",
             "file_link": ""
         },
         {
@@ -169,7 +106,7 @@
             "category_code": "B",
             "category_name": "Documents & Compliance",
             "title": "COPIES OF AFFILIATION/UPGRADATION LETTER AND RECENT EXTENSION OF AFFILIATION",
-            "details": "Valid CBSE Affiliation Extension up to 2028",
+            "details": "",
             "file_link": ""
         },
         {
@@ -178,7 +115,7 @@
             "category_code": "B",
             "category_name": "Documents & Compliance",
             "title": "COPIES OF SOCIETIES/TRUST/COMPANY REGISTRATION/RENEWAL CERTIFICATE",
-            "details": "Bharatiya Vidya Bhavan Society Registration",
+            "details": "",
             "file_link": ""
         },
         {
@@ -187,7 +124,7 @@
             "category_code": "B",
             "category_name": "Documents & Compliance",
             "title": "COPY OF NO OBJECTION CERTIFICATE (NOC) ISSUED, IF APPLICABLE, BY THE STATE GOVT./UT",
-            "details": "NOC Issued by Govt. of Kerala General Education Dept.",
+            "details": "",
             "file_link": ""
         },
         {
@@ -196,7 +133,7 @@
             "category_code": "B",
             "category_name": "Documents & Compliance",
             "title": "COPIES OF RECOGNITION CERTIFICATE UNDER RTE ACT, 2009, AND IT'S RENEWAL IF APPLICABLE",
-            "details": "RTE Recognition Certificate",
+            "details": "",
             "file_link": ""
         },
         {
@@ -205,7 +142,7 @@
             "category_code": "B",
             "category_name": "Documents & Compliance",
             "title": "COPY OF VALID BUILDING SAFETY CERTIFICATE AS PER THE NATIONAL BUILDING CODE",
-            "details": "Approved PWD Building Safety Certificate",
+            "details": "",
             "file_link": ""
         },
         {
@@ -214,7 +151,7 @@
             "category_code": "B",
             "category_name": "Documents & Compliance",
             "title": "COPY OF VALID FIRE SAFETY CERTIFICATE ISSUED BY THE COMPETENT AUTHORITY",
-            "details": "Kerala Fire & Rescue Services Safety Clearance",
+            "details": "",
             "file_link": ""
         },
         {
@@ -223,7 +160,7 @@
             "category_code": "B",
             "category_name": "Documents & Compliance",
             "title": "COPY OF THE DEO CERTIFICATE SUBMITTED BY THE SCHOOL FOR AFFILIATION",
-            "details": "DEO Verification & Inspection Report",
+            "details": "",
             "file_link": ""
         },
         {
@@ -232,7 +169,7 @@
             "category_code": "B",
             "category_name": "Documents & Compliance",
             "title": "COPIES OF VALID WATER, HEALTH AND SANITATION CERTIFICATES",
-            "details": "Water Fitness & Sanitation Clearance Certificate",
+            "details": "",
             "file_link": ""
         },
         {
@@ -241,7 +178,7 @@
             "category_code": "B",
             "category_name": "Documents & Compliance",
             "title": "COMPLETE MANDATORY DISCLOSURE (CBSE SARAS 5.0)",
-            "details": "Full Verified SARAS 5.0 Disclosure Document",
+            "details": "",
             "file_link": ""
         },
         {
@@ -250,7 +187,7 @@
             "category_code": "C",
             "category_name": "Result & Academics",
             "title": "FEE STRUCTURE OF THE SCHOOL",
-            "details": "Annual Academic Fee Structure 2027-28",
+            "details": "",
             "file_link": ""
         },
         {
@@ -259,47 +196,9 @@
             "category_code": "C",
             "category_name": "Result & Academics",
             "title": "ANNUAL ACADEMIC CALENDER",
-            "details": "School Academic Calendar & Activity Schedule",
+            "details": "",
             "file_link": ""
         }
     ],
-    "image_packages": [],
-    "auto_slides": [
-        {
-            "id": 1,
-            "title": "EDUCATION ROOTED IN VALUES. DRIVEN BY EXCELLENCE",
-            "subtitle": "Nurturing Future Leaders with Academic Rigor and Indian Cultural Heritage",
-            "image_url": "",
-            "is_active": 1
-        },
-        {
-            "id": 2,
-            "title": "State-of-the-Art Science & Digital Learning Labs",
-            "subtitle": "Empowering students through hands-on discovery and modern technology",
-            "image_url": "",
-            "is_active": 1
-        },
-        {
-            "id": 3,
-            "title": "Serene 2.89 Acres Campus Grounds",
-            "subtitle": "Safe, green, and inspiring environment for holistic child development",
-            "image_url": "",
-            "is_active": 1
-        },
-        {
-            "id": 4,
-            "title": "Investiture & Student Leadership Ceremonies",
-            "subtitle": "Developing confidence, discipline, and ethical leadership",
-            "image_url": "",
-            "is_active": 1
-        },
-        {
-            "id": 5,
-            "title": "All Kerala Bhavan's Youth & Cultural Fest",
-            "subtitle": "Celebrating artistic talents and cultural excellence",
-            "image_url": "",
-            "is_active": 1
-        }
-    ],
-    "popup_history": []
+    "image_packages": []
 }

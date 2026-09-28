@@ -46,7 +46,7 @@ if ($pdo) {
         $popup_history = $pdo->query("SELECT id, title, message, image_url, button_text, button_url, is_active, created_at FROM popup_history ORDER BY id DESC")->fetchAll();
 
         // Only return MySQL data if site content records (notices, disclosures, or packages) actually exist
-        if (!empty($notices) || !empty($disclosures) || !empty($image_packages) || !empty($slides)) {
+        if ($pdo) {
             echo json_encode([
                 'status' => 'success',
                 'users' => $users ?: [],

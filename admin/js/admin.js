@@ -7,83 +7,38 @@ const BVB_DEFAULT_SEED_DATA = {
   ],
   popup: {
     id: 1,
-    title: "Welcome to Bhavan's Vivekananda Vidya Mandir, Manvila",
-    message: "Admissions are now open for LKG to Class XI Science & Commerce streams for 2027–2028 session.",
+    title: "",
+    message: "",
     image_url: "",
     button_text: "ADMISSION INFO",
     button_url: "admissions.html",
-    is_active: 1
+    is_active: 0
   },
-  popup_history: [
-    {
-      id: 1,
-      title: "Welcome to Bhavan's Vivekananda Vidya Mandir, Manvila",
-      message: "Admissions are now open for LKG to Class XI Science & Commerce streams for 2027–2028 session.",
-      image_url: "",
-      button_text: "ADMISSION INFO",
-      button_url: "admissions.html",
-      is_active: 1,
-      created_at: "2026-09-25 10:00:00"
-    }
-  ],
-  auto_slides: [
-    { id: 1, title: "EDUCATION ROOTED IN VALUES. DRIVEN BY EXCELLENCE", subtitle: "Main School Building • Manvila Campus", image_url: "", is_active: 1 },
-    { id: 2, title: "Serene 2.89 Acres Campus Grounds", subtitle: "Campus Assembly & Sports Grounds", image_url: "", is_active: 1 },
-    { id: 3, title: "Bhishma & Vyasa Academic Blocks", subtitle: "State-of-the-Art Science & Digital Labs", image_url: "", is_active: 1 },
-    { id: 4, title: "Investiture & Leadership Ceremonies", subtitle: "Empowering Student Leaders", image_url: "", is_active: 1 },
-    { id: 5, title: "All Kerala Bhavan's Youth & Cultural Fest", subtitle: "Celebrating Cultural Heritage", image_url: "", is_active: 1 }
-  ],
-  notices: [
-    { id: 1, title: "Admissions Open for Academic Session 2027–2028 (LKG to Class XI)", content: "Registration forms for admission to LKG, Class I, Class XI Science & Commerce streams are available online and at the school office.", category: "Admissions", notice_date: "2026-09-15", pdf_link: "", is_ticker: 1 },
-    { id: 2, title: "Annual CBSE Board Examination Schedule & Guidelines Released", content: "Classes X and XII CBSE Board examination instructions, timetable, and admit card download notifications have been released.", category: "Academics", notice_date: "2026-09-10", pdf_link: "", is_ticker: 1 },
-    { id: 3, title: "Adharva Inter-School Cultural Fest Winners Announced", content: "Bhavan's Manvila won 1st Place overall champion trophy at the All Kerala Bhavan's Youth Festival.", category: "Achievements", notice_date: "2026-09-01", pdf_link: "", is_ticker: 1 }
-  ],
+  popup_history: [],
+  auto_slides: [],
+  notices: [],
+  ticker: [],
   mandatory_disclosures: [
-    { id: 1, sl_no: "1", category_code: "A", category_name: "General Information", title: "NAME OF THE SCHOOL", details: "BHAVANS VIVEKANANDA VIDYA MANDIR MANVILA TRIVANDRUM KERALA", file_link: "" },
-    { id: 2, sl_no: "2", category_code: "A", category_name: "General Information", title: "AFFILIATION NO. (IF APPLICABLE)", details: "930776", file_link: "" },
-    { id: 3, sl_no: "3", category_code: "A", category_name: "General Information", title: "SCHOOL CODE (IF APPLICABLE)", details: "75738", file_link: "" },
-    { id: 4, sl_no: "4", category_code: "A", category_name: "General Information", title: "COMPLETE ADDRESS WITH PIN CODE", details: "BHAVANS VIVEKANANDA VIDYA MANDIR, MANVILA, PANGAPPARA P.O., TRIVANDRUM - 695581", file_link: "" },
-    { id: 5, sl_no: "5", category_code: "A", category_name: "General Information", title: "PRINCIPAL NAME & QUALIFICATION", details: "MS. DEEPA CHANDRAN (M.Sc., B.Ed.)", file_link: "" },
-    { id: 6, sl_no: "6", category_code: "A", category_name: "General Information", title: "SCHOOL EMAIL ID", details: "bhavansvvm@gmail.com", file_link: "" },
-    { id: 7, sl_no: "7", category_code: "A", category_name: "General Information", title: "CONTACT DETAILS (LANDLINE/MOBILE)", details: "0471 2594559", file_link: "" },
-    { id: 8, sl_no: "1", category_code: "B", category_name: "Documents & Compliance", title: "COPIES OF AFFILIATION/UPGRADATION LETTER AND RECENT EXTENSION OF AFFILIATION", details: "Valid CBSE Affiliation Extension up to 2028", file_link: "" },
-    { id: 9, sl_no: "2", category_code: "B", category_name: "Documents & Compliance", title: "COPIES OF SOCIETIES/TRUST/COMPANY REGISTRATION/RENEWAL CERTIFICATE", details: "Bharatiya Vidya Bhavan Society Registration", file_link: "" },
-    { id: 10, sl_no: "3", category_code: "B", category_name: "Documents & Compliance", title: "COPY OF NO OBJECTION CERTIFICATE (NOC) ISSUED, IF APPLICABLE, BY THE STATE GOVT./UT", details: "NOC Issued by Govt. of Kerala General Education Dept.", file_link: "" },
-    { id: 11, sl_no: "4", category_code: "B", category_name: "Documents & Compliance", title: "COPIES OF RECOGNITION CERTIFICATE UNDER RTE ACT, 2009, AND IT'S RENEWAL IF APPLICABLE", details: "RTE Recognition Certificate", file_link: "" },
-    { id: 12, sl_no: "5", category_code: "B", category_name: "Documents & Compliance", title: "COPY OF VALID BUILDING SAFETY CERTIFICATE AS PER THE NATIONAL BUILDING CODE", details: "Approved PWD Building Safety Certificate", file_link: "" },
-    { id: 13, sl_no: "6", category_code: "B", category_name: "Documents & Compliance", title: "COPY OF VALID FIRE SAFETY CERTIFICATE ISSUED BY THE COMPETENT AUTHORITY", details: "Kerala Fire & Rescue Services Safety Clearance", file_link: "" },
-    { id: 14, sl_no: "7", category_code: "B", category_name: "Documents & Compliance", title: "COPY OF THE DEO CERTIFICATE SUBMITTED BY THE SCHOOL FOR AFFILIATION", details: "DEO Verification & Inspection Report", file_link: "" },
-    { id: 15, sl_no: "8", category_code: "B", category_name: "Documents & Compliance", title: "COPIES OF VALID WATER, HEALTH AND SANITATION CERTIFICATES", details: "Water Fitness & Sanitation Clearance Certificate", file_link: "" },
-    { id: 16, sl_no: "11", category_code: "B", category_name: "Documents & Compliance", title: "COMPLETE MANDATORY DISCLOSURE (CBSE SARAS 5.0)", details: "Full Verified SARAS 5.0 Disclosure Document", file_link: "" },
-    { id: 17, sl_no: "1", category_code: "C", category_name: "Result & Academics", title: "FEE STRUCTURE OF THE SCHOOL", details: "Annual Academic Fee Structure 2027-28", file_link: "" },
-    { id: 18, sl_no: "2", category_code: "C", category_name: "Result & Academics", title: "ANNUAL ACADEMIC CALENDER", details: "School Academic Calendar & Activity Schedule", file_link: "" }
+    { id: 1, sl_no: "1", category_code: "A", category_name: "General Information", title: "NAME OF THE SCHOOL", details: "", file_link: "" },
+    { id: 2, sl_no: "2", category_code: "A", category_name: "General Information", title: "AFFILIATION NO. (IF APPLICABLE)", details: "", file_link: "" },
+    { id: 3, sl_no: "3", category_code: "A", category_name: "General Information", title: "SCHOOL CODE (IF APPLICABLE)", details: "", file_link: "" },
+    { id: 4, sl_no: "4", category_code: "A", category_name: "General Information", title: "COMPLETE ADDRESS WITH PIN CODE", details: "", file_link: "" },
+    { id: 5, sl_no: "5", category_code: "A", category_name: "General Information", title: "PRINCIPAL NAME & QUALIFICATION", details: "", file_link: "" },
+    { id: 6, sl_no: "6", category_code: "A", category_name: "General Information", title: "SCHOOL EMAIL ID", details: "", file_link: "" },
+    { id: 7, sl_no: "7", category_code: "A", category_name: "General Information", title: "CONTACT DETAILS (LANDLINE/MOBILE)", details: "", file_link: "" },
+    { id: 8, sl_no: "1", category_code: "B", category_name: "Documents & Compliance", title: "COPIES OF AFFILIATION/UPGRADATION LETTER AND RECENT EXTENSION OF AFFILIATION", details: "", file_link: "" },
+    { id: 9, sl_no: "2", category_code: "B", category_name: "Documents & Compliance", title: "COPIES OF SOCIETIES/TRUST/COMPANY REGISTRATION/RENEWAL CERTIFICATE", details: "", file_link: "" },
+    { id: 10, sl_no: "3", category_code: "B", category_name: "Documents & Compliance", title: "COPY OF NO OBJECTION CERTIFICATE (NOC) ISSUED, IF APPLICABLE, BY THE STATE GOVT./UT", details: "", file_link: "" },
+    { id: 11, sl_no: "4", category_code: "B", category_name: "Documents & Compliance", title: "COPIES OF RECOGNITION CERTIFICATE UNDER RTE ACT, 2009, AND IT'S RENEWAL IF APPLICABLE", details: "", file_link: "" },
+    { id: 12, sl_no: "5", category_code: "B", category_name: "Documents & Compliance", title: "COPY OF VALID BUILDING SAFETY CERTIFICATE AS PER THE NATIONAL BUILDING CODE", details: "", file_link: "" },
+    { id: 13, sl_no: "6", category_code: "B", category_name: "Documents & Compliance", title: "COPY OF VALID FIRE SAFETY CERTIFICATE ISSUED BY THE COMPETENT AUTHORITY", details: "", file_link: "" },
+    { id: 14, sl_no: "7", category_code: "B", category_name: "Documents & Compliance", title: "COPY OF THE DEO CERTIFICATE SUBMITTED BY THE SCHOOL FOR AFFILIATION", details: "", file_link: "" },
+    { id: 15, sl_no: "8", category_code: "B", category_name: "Documents & Compliance", title: "COPIES OF VALID WATER, HEALTH AND SANITATION CERTIFICATES", details: "", file_link: "" },
+    { id: 16, sl_no: "11", category_code: "B", category_name: "Documents & Compliance", title: "COMPLETE MANDATORY DISCLOSURE (CBSE SARAS 5.0)", details: "", file_link: "" },
+    { id: 17, sl_no: "1", category_code: "C", category_name: "Result & Academics", title: "FEE STRUCTURE OF THE SCHOOL", details: "", file_link: "" },
+    { id: 18, sl_no: "2", category_code: "C", category_name: "Result & Academics", title: "ANNUAL ACADEMIC CALENDER", details: "", file_link: "" }
   ],
-  image_packages: [
-    {
-      id: 1,
-      title: "Annual Sports & Athletic Meet Highlights",
-      subtitle: "Celebrated at Manvila Campus Grounds",
-      main_image: "",
-      sub_images: [
-        "",
-        ""
-      ],
-      target_sections: { welcome_section: true, whats_happening: true, life_at_bhavans: true, moments_at_bhavans: true, campus_discovery: true, academic_environment: true }
-    },
-    {
-      id: 2,
-      title: "Investiture & Student Council Leadership Ceremony",
-      subtitle: "Empowering Student Leaders",
-      main_image: "",
-      sub_images: [
-        "",
-        "",
-        "",
-        ""
-      ],
-      target_sections: { welcome_section: true, whats_happening: true, life_at_bhavans: true, moments_at_bhavans: true, campus_discovery: true, academic_environment: true }
-    }
-  ]
+  image_packages: []
 };
 
 class AdminApp {
@@ -147,11 +102,7 @@ class AdminApp {
     let data = null;
 
     const isValidData = (d) => {
-      return d && typeof d === 'object' && (
-        (Array.isArray(d.notices) && d.notices.length > 0) ||
-        (Array.isArray(d.mandatory_disclosures) && d.mandatory_disclosures.length > 0) ||
-        (Array.isArray(d.image_packages) && d.image_packages.length > 0)
-      );
+      return d && typeof d === 'object' && Array.isArray(d.mandatory_disclosures);
     };
 
     // 1. Try fetching live PHP API endpoints first (relative and root)
@@ -216,10 +167,10 @@ class AdminApp {
     }
 
     this.siteData = data;
-    if (!this.siteData.notices || this.siteData.notices.length === 0) this.siteData.notices = JSON.parse(JSON.stringify(BVB_DEFAULT_SEED_DATA.notices));
-    if (!this.siteData.mandatory_disclosures || this.siteData.mandatory_disclosures.length === 0) this.siteData.mandatory_disclosures = JSON.parse(JSON.stringify(BVB_DEFAULT_SEED_DATA.mandatory_disclosures));
-    if (!this.siteData.image_packages || this.siteData.image_packages.length === 0) this.siteData.image_packages = JSON.parse(JSON.stringify(BVB_DEFAULT_SEED_DATA.image_packages));
-    if (!this.siteData.auto_slides || this.siteData.auto_slides.length === 0) this.siteData.auto_slides = JSON.parse(JSON.stringify(BVB_DEFAULT_SEED_DATA.auto_slides));
+    if (!this.siteData.notices) this.siteData.notices = [];
+    if (!this.siteData.mandatory_disclosures) this.siteData.mandatory_disclosures = JSON.parse(JSON.stringify(BVB_DEFAULT_SEED_DATA.mandatory_disclosures));
+    if (!this.siteData.image_packages) this.siteData.image_packages = [];
+    if (!this.siteData.auto_slides) this.siteData.auto_slides = [];
     if (!this.siteData.users || this.siteData.users.length === 0) this.siteData.users = JSON.parse(JSON.stringify(BVB_DEFAULT_SEED_DATA.users));
     if (!this.siteData.popup) this.siteData.popup = JSON.parse(JSON.stringify(BVB_DEFAULT_SEED_DATA.popup));
 
