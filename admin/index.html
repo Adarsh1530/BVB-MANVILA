@@ -492,10 +492,12 @@
             <label class="form-label">Document Details / Description</label>
             <input type="text" id="disclosureDetails" class="form-control" placeholder="e.g. Approved by Public Works Dept.">
           </div>
-          <div class="form-group">
-            <label class="form-label">Document PDF / File (Choose File from Computer or Enter Link Path)</label>
-            <input type="file" id="disclosureFileInput" accept=".pdf,.doc,.docx,.csv" class="form-control" style="margin-bottom: 0.5rem;">
-            <input type="text" id="disclosureFileLink" class="form-control" placeholder="assets/documents/mandatory-disclosure/building-fitness.pdf">
+          <div class="form-group" style="background: var(--color-ultra-light-blue); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--color-border);">
+            <label class="form-label" style="color: var(--color-deep-blue); font-size: 0.875rem;">
+              📄 Upload Document (PDF or JPEG format under 1 MB)
+            </label>
+            <input type="file" id="disclosureFileInput" accept=".pdf,image/jpeg,image/jpg,.jpg,.jpeg" class="form-control" style="max-width: 340px; margin-bottom: 0.5rem;">
+            <input type="text" id="disclosureFileLink" class="form-control" placeholder="File path or Data URL (e.g. assets/documents/mandatory-disclosure/building-fitness.pdf)">
           </div>
         </div>
         <div class="modal-footer">

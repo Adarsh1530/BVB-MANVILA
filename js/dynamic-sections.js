@@ -200,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const docsB = disclosures.filter(d => d.category_code === 'B');
       if (tbodyB && docsB.length > 0) {
         tbodyB.innerHTML = docsB.map((d, idx) => {
-          const btnLabel = d.sl_no === '11' ? 'DOWNLOAD SARAS REPORT (PDF)' : `VIEW ${escapeHtml(d.title.toUpperCase())} (PDF)`;
+          const btnLabel = d.sl_no === '11' ? 'DOWNLOAD SARAS REPORT' : `VIEW ${escapeHtml(d.title.toUpperCase())} DOCUMENT`;
           const isMainBtn = d.sl_no === '11';
           return `
           <tr style="border-bottom: 1px solid var(--color-border); ${idx % 2 === 1 ? 'background: #F8FAFC;' : ''}">

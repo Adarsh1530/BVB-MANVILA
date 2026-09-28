@@ -329,17 +329,30 @@ class AdminApp {
       });
     });
 
-    // Disclosure PDF File Picker
+    // Disclosure PDF / JPEG File Picker (PDF or JPEG format under 1 MB limit)
     const discFilePicker = document.getElementById('disclosureFileInput');
     if (discFilePicker) {
       discFilePicker.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (file) {
-          if (file.size > 5242880) { // 5 MB limit
-            alert('⚠️ File size exceeds 5 MB limit! Please choose a smaller document file.');
+          const maxSize = 1048576; // 1 MB limit
+          const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+          const isJpeg = file.type === 'image/jpeg' || file.type === 'image/jpg' || file.name.toLowerCase().endsWith('.jpg') || file.name.toLowerCase().endsWith('.jpeg');
+
+          if (!isPdf && !isJpeg) {
+            alert('⚠️ Invalid file format! Only PDF (.pdf) and JPEG (.jpg, .jpeg) document files are allowed for Mandatory Disclosures.');
+            this.showToast('Only PDF and JPEG files are allowed.', 'error');
             discFilePicker.value = '';
             return;
           }
+
+          if (file.size > maxSize) {
+            alert('⚠️ File size exceeds 1 MB limit! Please choose a smaller document file (under 1 MB).');
+            this.showToast('Document file size exceeds 1 MB limit!', 'error');
+            discFilePicker.value = '';
+            return;
+          }
+
           const reader = new FileReader();
           reader.onload = (evt) => {
             const linkInput = document.getElementById('disclosureFileLink');
