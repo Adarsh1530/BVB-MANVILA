@@ -172,6 +172,24 @@
         },
         {
             "id": 16,
+            "sl_no": "9",
+            "category_code": "B",
+            "category_name": "Documents & Compliance",
+            "title": "COPY OF GRANTED EXTENSION / AFFILIATION LETTER",
+            "details": "",
+            "file_link": "uploads/mandatory_disclosures/granted_extension.pdf"
+        },
+        {
+            "id": 17,
+            "sl_no": "10",
+            "category_code": "B",
+            "category_name": "Documents & Compliance",
+            "title": "COPY OF SCHOOL TRANSPORT SAFETY CERTIFICATE",
+            "details": "",
+            "file_link": "uploads/mandatory_disclosures/transport_safety.pdf"
+        },
+        {
+            "id": 18,
             "sl_no": "11",
             "category_code": "B",
             "category_name": "Documents & Compliance",
@@ -180,7 +198,7 @@
             "file_link": "uploads/mandatory_disclosures/saras_mandatory_disclosure.pdf"
         },
         {
-            "id": 17,
+            "id": 19,
             "sl_no": "1",
             "category_code": "C",
             "category_name": "Result & Academics",
@@ -189,13 +207,31 @@
             "file_link": "uploads/mandatory_disclosures/fee_structure.pdf"
         },
         {
-            "id": 18,
+            "id": 20,
             "sl_no": "2",
             "category_code": "C",
             "category_name": "Result & Academics",
             "title": "ANNUAL ACADEMIC CALENDER",
             "details": "",
             "file_link": "uploads/mandatory_disclosures/academic_calendar.pdf"
+        },
+        {
+            "id": 21,
+            "sl_no": "3",
+            "category_code": "C",
+            "category_name": "Result & Academics",
+            "title": "LIST OF SCHOOL MANAGEMENT COMMITTEE (SMC)",
+            "details": "",
+            "file_link": "uploads/mandatory_disclosures/smc_committee.pdf"
+        },
+        {
+            "id": 22,
+            "sl_no": "4",
+            "category_code": "C",
+            "category_name": "Result & Academics",
+            "title": "LIST OF PARENTS TEACHERS ASSOCIATION (PTA) MEMBERS",
+            "details": "",
+            "file_link": "uploads/mandatory_disclosures/pta_members.pdf"
         }
     ],
     "image_packages": [],

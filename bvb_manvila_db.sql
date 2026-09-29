@@ -104,17 +104,21 @@ INSERT INTO `mandatory_disclosures` (`id`, `sl_no`, `category_code`, `category_n
 (5, '5', 'A', 'General Information', 'PRINCIPAL NAME & QUALIFICATION', 'Smt. Deepa V (M.Sc., B.Ed.)', ''),
 (6, '6', 'A', 'General Information', 'SCHOOL EMAIL ID', 'bhavansvvm@gmail.com', ''),
 (7, '7', 'A', 'General Information', 'CONTACT DETAILS (LANDLINE/MOBILE)', '0471 2594559 / 8590066808', ''),
-(8, '1', 'B', 'Documents & Compliance', 'COPIES OF AFFILIATION/UPGRADATION LETTER AND RECENT EXTENSION OF AFFILIATION', '', ''),
-(9, '2', 'B', 'Documents & Compliance', 'COPIES OF SOCIETIES/TRUST/COMPANY REGISTRATION/RENEWAL CERTIFICATE', '', ''),
-(10, '3', 'B', 'Documents & Compliance', 'COPY OF NO OBJECTION CERTIFICATE (NOC) ISSUED, IF APPLICABLE, BY THE STATE GOVT./UT', '', ''),
-(11, '4', 'B', 'Documents & Compliance', 'COPIES OF RECOGNITION CERTIFICATE UNDER RTE ACT, 2009, AND IT\'S RENEWAL IF APPLICABLE', '', ''),
-(12, '5', 'B', 'Documents & Compliance', 'COPY OF VALID BUILDING SAFETY CERTIFICATE AS PER THE NATIONAL BUILDING CODE', '', ''),
-(13, '6', 'B', 'Documents & Compliance', 'COPY OF VALID FIRE SAFETY CERTIFICATE ISSUED BY THE COMPETENT AUTHORITY', '', ''),
-(14, '7', 'B', 'Documents & Compliance', 'COPY OF THE DEO CERTIFICATE SUBMITTED BY THE SCHOOL FOR AFFILIATION', '', ''),
-(15, '8', 'B', 'Documents & Compliance', 'COPIES OF VALID WATER, HEALTH AND SANITATION CERTIFICATES', '', ''),
-(16, '11', 'B', 'Documents & Compliance', 'COMPLETE MANDATORY DISCLOSURE (CBSE SARAS 5.0)', '', ''),
-(17, '1', 'C', 'Result & Academics', 'FEE STRUCTURE OF THE SCHOOL', '', ''),
-(18, '2', 'C', 'Result & Academics', 'ANNUAL ACADEMIC CALENDER', '', '')
+(8, '1', 'B', 'Documents & Compliance', 'COPIES OF AFFILIATION/UPGRADATION LETTER AND RECENT EXTENSION OF AFFILIATION', '', 'uploads/mandatory_disclosures/affiliation_letter.pdf'),
+(9, '2', 'B', 'Documents & Compliance', 'COPIES OF SOCIETIES/TRUST/COMPANY REGISTRATION/RENEWAL CERTIFICATE', '', 'uploads/mandatory_disclosures/trust_registration.pdf'),
+(10, '3', 'B', 'Documents & Compliance', 'COPY OF NO OBJECTION CERTIFICATE (NOC) ISSUED, IF APPLICABLE, BY THE STATE GOVT./UT', '', 'uploads/mandatory_disclosures/noc_certificate.pdf'),
+(11, '4', 'B', 'Documents & Compliance', 'COPIES OF RECOGNITION CERTIFICATE UNDER RTE ACT, 2009, AND IT\'S RENEWAL IF APPLICABLE', '', 'uploads/mandatory_disclosures/rte_recognition.pdf'),
+(12, '5', 'B', 'Documents & Compliance', 'COPY OF VALID BUILDING SAFETY CERTIFICATE AS PER THE NATIONAL BUILDING CODE', '', 'uploads/mandatory_disclosures/building_safety.pdf'),
+(13, '6', 'B', 'Documents & Compliance', 'COPY OF VALID FIRE SAFETY CERTIFICATE ISSUED BY THE COMPETENT AUTHORITY', '', 'uploads/mandatory_disclosures/fire_safety.pdf'),
+(14, '7', 'B', 'Documents & Compliance', 'COPY OF THE DEO CERTIFICATE SUBMITTED BY THE SCHOOL FOR AFFILIATION', '', 'uploads/mandatory_disclosures/deo_certificate.pdf'),
+(15, '8', 'B', 'Documents & Compliance', 'COPIES OF VALID WATER, HEALTH AND SANITATION CERTIFICATES', '', 'uploads/mandatory_disclosures/water_sanitation.pdf'),
+(16, '9', 'B', 'Documents & Compliance', 'COPY OF GRANTED EXTENSION / AFFILIATION LETTER', '', 'uploads/mandatory_disclosures/granted_extension.pdf'),
+(17, '10', 'B', 'Documents & Compliance', 'COPY OF SCHOOL TRANSPORT SAFETY CERTIFICATE', '', 'uploads/mandatory_disclosures/transport_safety.pdf'),
+(18, '11', 'B', 'Documents & Compliance', 'COMPLETE MANDATORY DISCLOSURE (CBSE SARAS 5.0)', '', 'uploads/mandatory_disclosures/saras_mandatory_disclosure.pdf'),
+(19, '1', 'C', 'Result & Academics', 'FEE STRUCTURE OF THE SCHOOL', '', 'uploads/mandatory_disclosures/fee_structure.pdf'),
+(20, '2', 'C', 'Result & Academics', 'ANNUAL ACADEMIC CALENDER', '', 'uploads/mandatory_disclosures/academic_calendar.pdf'),
+(21, '3', 'C', 'Result & Academics', 'LIST OF SCHOOL MANAGEMENT COMMITTEE (SMC)', '', 'uploads/mandatory_disclosures/smc_committee.pdf'),
+(22, '4', 'C', 'Result & Academics', 'LIST OF PARENTS TEACHERS ASSOCIATION (PTA) MEMBERS', '', 'uploads/mandatory_disclosures/pta_members.pdf')
 ON DUPLICATE KEY UPDATE `id`=`id`;
 
 -- --------------------------------------------------------
