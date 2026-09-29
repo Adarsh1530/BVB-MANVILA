@@ -576,6 +576,45 @@ class AdminApp {
         }
       });
     }
+
+    // Notice PDF File Picker (Folder / Local File Explorer uploader)
+    const noticeFilePicker = document.getElementById('noticeFileInput');
+    if (noticeFilePicker) {
+      noticeFilePicker.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const maxSize = 5242880; // 5 MB limit
+          const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+
+          if (!isPdf) {
+            alert('⚠️ Invalid file format! Only PDF (.pdf) files are allowed for Notice attachments.');
+            this.showToast('Only PDF files are allowed.', 'error');
+            noticeFilePicker.value = '';
+            return;
+          }
+
+          if (file.size > maxSize) {
+            alert('⚠️ File size exceeds 5 MB limit! Please choose a smaller PDF document.');
+            this.showToast('PDF file size exceeds 5 MB limit!', 'error');
+            noticeFilePicker.value = '';
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.onload = async (evt) => {
+            const linkInput = document.getElementById('noticePdfLink');
+            if (linkInput) linkInput.value = evt.target.result;
+
+            const fileUrl = await this.uploadFileApi(file, 'notices');
+            if (fileUrl && linkInput) {
+              linkInput.value = fileUrl;
+              this.showToast('Notice PDF uploaded successfully!', 'success');
+            }
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
   }
 
   async uploadFileApi(file, category = 'general') {
