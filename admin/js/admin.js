@@ -501,7 +501,7 @@ class AdminApp {
 
     // Sub-Images Individual File Pickers (Slots 1 to 10 in Image Package Modal)
     document.querySelectorAll('.sub-file-picker').forEach(picker => {
-      picker.addEventListener('change', (e) => {
+      picker.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         const targetId = picker.getAttribute('data-target');
         const prevId = picker.getAttribute('data-preview');
@@ -513,7 +513,7 @@ class AdminApp {
             return;
           }
           const reader = new FileReader();
-          reader.onload = (evt) => {
+          reader.onload = async (evt) => {
             const hiddenInput = document.getElementById(targetId);
             const prevImg = document.getElementById(prevId);
             const viewBtn = document.getElementById(viewBtnId);
@@ -526,6 +526,13 @@ class AdminApp {
             if (viewBtn) {
               viewBtn.href = evt.target.result;
               viewBtn.style.display = 'inline-flex';
+            }
+
+            // Upload sub-image file directly to uploads/gallery/ server directory
+            const fileUrl = await this.uploadFileApi(file, 'gallery');
+            if (fileUrl) {
+              if (hiddenInput) hiddenInput.value = fileUrl;
+              if (viewBtn) viewBtn.href = this.formatImgSrc(fileUrl);
             }
           };
           reader.readAsDataURL(file);

@@ -17,6 +17,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 $jsonFile = __DIR__ . '/get_site_data.json';
 require_once __DIR__ . '/../admin/config/db.php';
 
+/**
+ * Helper: Automatically decode and save base64 image string into physical uploads folder
+ */
+function saveBase64ImageIfNeeded($imgStr, $folder = 'gallery') {
+    if (empty($imgStr) || !is_string($imgStr)) return '';
+    $imgStr = trim($imgStr);
+    if (preg_match('/^data:image\/(jpeg|png|jpg|gif|webp);base64,/', $imgStr, $matches)) {
+        $ext = ($matches[1] === 'png') ? 'png' : (($matches[1] === 'gif') ? 'gif' : 'jpg');
+        $base64Data = substr($imgStr, strpos($imgStr, ',') + 1);
+        $decoded = base64_decode($base64Data);
+        if ($decoded !== false) {
+            $targetDir = __DIR__ . '/../uploads/' . $folder . '/';
+            if (!file_exists($targetDir)) {
+                @mkdir($targetDir, 0755, true);
+            }
+            $filename = time() . '_' . substr(md5(uniqid()), 0, 8) . '.' . $ext;
+            $filePath = $targetDir . $filename;
+            if (@file_put_contents($filePath, $decoded) !== false) {
+                return 'uploads/' . $folder . '/' . $filename;
+            }
+        }
+    }
+    return $imgStr;
+}
+
 // GET REQUEST: Return site data
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (file_exists($jsonFile)) {
@@ -58,13 +83,16 @@ if ($data && isset($data['action']) && $data['action'] === 'sync_data' && isset(
             // Sync Active Popup
             if (isset($updatedData['popup']) && is_array($updatedData['popup'])) {
                 $p = $updatedData['popup'];
+                $popupImg = saveBase64ImageIfNeeded($p['image_url'] ?? '', 'popup');
+                $updatedData['popup']['image_url'] = $popupImg;
+
                 $stmt = $pdo->prepare("INSERT INTO `popups` (`id`, `title`, `message`, `image_url`, `button_text`, `button_url`, `is_active`) 
                     VALUES (1, :title, :message, :image_url, :button_text, :button_url, :is_active) 
                     ON DUPLICATE KEY UPDATE `title` = VALUES(`title`), `message` = VALUES(`message`), `image_url` = VALUES(`image_url`), `button_text` = VALUES(`button_text`), `button_url` = VALUES(`button_url`), `is_active` = VALUES(`is_active`)");
                 $stmt->execute([
                     ':title' => $p['title'] ?? '',
                     ':message' => $p['message'] ?? '',
-                    ':image_url' => $p['image_url'] ?? '',
+                    ':image_url' => $popupImg,
                     ':button_text' => $p['button_text'] ?? 'ADMISSION INFO',
                     ':button_url' => $p['button_url'] ?? 'admissions.html',
                     ':is_active' => isset($p['is_active']) ? (int)$p['is_active'] : 1
@@ -107,18 +135,32 @@ if ($data && isset($data['action']) && $data['action'] === 'sync_data' && isset(
                 }
             }
 
-            // Sync Image Packages
+            // Sync Image Packages & Convert Base64 Sub-Images to Files in uploads/gallery/
             if (isset($updatedData['image_packages']) && is_array($updatedData['image_packages'])) {
                 $pdo->exec("TRUNCATE TABLE `image_packages`");
-                foreach ($updatedData['image_packages'] as $pkg) {
+                foreach ($updatedData['image_packages'] as $idx => $pkg) {
+                    $mainImg = saveBase64ImageIfNeeded($pkg['main_image'] ?? '', 'gallery');
+                    $updatedData['image_packages'][$idx]['main_image'] = $mainImg;
+
+                    $subImgs = $pkg['sub_images'] ?? [];
+                    $cleanSubImgs = [];
+                    if (is_array($subImgs)) {
+                        foreach ($subImgs as $sImg) {
+                            if (!empty($sImg)) {
+                                $cleanSubImgs[] = saveBase64ImageIfNeeded($sImg, 'gallery');
+                            }
+                        }
+                    }
+                    $updatedData['image_packages'][$idx]['sub_images'] = $cleanSubImgs;
+
                     $stmt = $pdo->prepare("INSERT INTO `image_packages` (`id`, `title`, `subtitle`, `main_image`, `sub_images`, `target_sections`) 
                         VALUES (:id, :title, :subtitle, :main_image, :sub_images, :target_sections)");
                     $stmt->execute([
                         ':id' => $pkg['id'],
                         ':title' => $pkg['title'] ?? '',
                         ':subtitle' => $pkg['subtitle'] ?? '',
-                        ':main_image' => $pkg['main_image'] ?? '',
-                        ':sub_images' => json_encode($pkg['sub_images'] ?? []),
+                        ':main_image' => $mainImg,
+                        ':sub_images' => json_encode($cleanSubImgs, JSON_UNESCAPED_SLASHES),
                         ':target_sections' => json_encode($pkg['target_sections'] ?? [])
                     ]);
                 }
@@ -127,14 +169,17 @@ if ($data && isset($data['action']) && $data['action'] === 'sync_data' && isset(
             // Sync Auto Slides
             if (isset($updatedData['auto_slides']) && is_array($updatedData['auto_slides'])) {
                 $pdo->exec("TRUNCATE TABLE `auto_slides`");
-                foreach ($updatedData['auto_slides'] as $slide) {
+                foreach ($updatedData['auto_slides'] as $idx => $slide) {
+                    $slideImg = saveBase64ImageIfNeeded($slide['image_url'] ?? '', 'auto_slides');
+                    $updatedData['auto_slides'][$idx]['image_url'] = $slideImg;
+
                     $stmt = $pdo->prepare("INSERT INTO `auto_slides` (`id`, `title`, `subtitle`, `image_url`, `is_active`) 
                         VALUES (:id, :title, :subtitle, :image_url, :is_active)");
                     $stmt->execute([
                         ':id' => $slide['id'],
                         ':title' => $slide['title'] ?? '',
                         ':subtitle' => $slide['subtitle'] ?? '',
-                        ':image_url' => $slide['image_url'] ?? '',
+                        ':image_url' => $slideImg,
                         ':is_active' => isset($slide['is_active']) ? (int)$slide['is_active'] : 1
                     ]);
                 }
@@ -143,14 +188,17 @@ if ($data && isset($data['action']) && $data['action'] === 'sync_data' && isset(
             // Sync Popup History
             if (isset($updatedData['popup_history']) && is_array($updatedData['popup_history'])) {
                 $pdo->exec("TRUNCATE TABLE `popup_history`");
-                foreach ($updatedData['popup_history'] as $ph) {
+                foreach ($updatedData['popup_history'] as $idx => $ph) {
+                    $phImg = saveBase64ImageIfNeeded($ph['image_url'] ?? '', 'popup');
+                    $updatedData['popup_history'][$idx]['image_url'] = $phImg;
+
                     $stmt = $pdo->prepare("INSERT INTO `popup_history` (`id`, `title`, `message`, `image_url`, `button_text`, `button_url`, `is_active`) 
                         VALUES (:id, :title, :message, :image_url, :button_text, :button_url, :is_active)");
                     $stmt->execute([
                         ':id' => $ph['id'],
                         ':title' => $ph['title'] ?? '',
                         ':message' => $ph['message'] ?? '',
-                        ':image_url' => $ph['image_url'] ?? '',
+                        ':image_url' => $phImg,
                         ':button_text' => $ph['button_text'] ?? 'ADMISSION INFO',
                         ':button_url' => $ph['button_url'] ?? 'admissions.html',
                         ':is_active' => isset($ph['is_active']) ? (int)$ph['is_active'] : 1
