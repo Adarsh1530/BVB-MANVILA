@@ -274,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Section A
       const tbodyA = document.getElementById('discTbodyA');
-      const docsA = disclosures.filter(d => d.category_code === 'A' && d.details && d.details.trim() !== '');
+      const docsA = disclosures.filter(d => d.category_code === 'A');
       if (tbodyA && docsA.length > 0) {
         tbodyA.innerHTML = docsA.map((d, idx) => `
           <tr style="border-bottom: 1px solid var(--color-border); ${idx % 2 === 1 ? 'background: #F8FAFC;' : ''}">
