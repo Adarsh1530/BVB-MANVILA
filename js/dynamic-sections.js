@@ -92,6 +92,32 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    
+    // B.2 Render ACADEMIC ENVIRONMENT (Left Side Admin Uploaded Image)
+    const envMedias = document.querySelectorAll('.academic-env-media');
+    const envPkg = packages.find(p => p.target_sections && (p.target_sections.academic_environment || p.target_sections.academic));
+    if (envMedias.length > 0) {
+      if (envPkg && envPkg.main_image) {
+        envMedias.forEach(media => {
+          media.innerHTML = `
+            <div class="card card-bordered" style="padding: 0; overflow: hidden; border-radius: var(--radius-xl); box-shadow: var(--shadow-lg);">
+              <img src="${escapeHtml(envPkg.main_image)}" alt="${escapeHtml(envPkg.title || 'Academic Environment Showcase')}" style="width: 100%; height: 100%; min-height: 380px; object-fit: cover; display: block;" loading="lazy">
+            </div>
+          `;
+        });
+      } else {
+        envMedias.forEach(media => {
+          media.innerHTML = `
+            <div style="text-align: center; padding: 3rem 1.5rem; color: var(--color-text-secondary); background: #F8FAFC; border-radius: var(--radius-xl); border: 2px dashed var(--color-border); min-height: 380px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+              <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 0.75rem; color: var(--color-primary);"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+              <h4 style="color: var(--color-deep-blue); margin-bottom: 0.35rem; font-size: 1.1rem; font-weight: 800;">Academic Environment Image</h4>
+              <p style="font-size: 0.85rem; max-width: 320px; margin: 0 auto; color: var(--color-text-secondary);">Upload an image package targeted for "ACADEMIC ENVIRONMENT" from the Admin Panel to display it live here.</p>
+            </div>
+          `;
+        });
+      }
+    }
+
     // B. Render CAMPUS DISCOVERY
     const campusGrids = document.querySelectorAll('.campus-grid');
     const campusPkgs = packages.filter(p => p.target_sections && p.target_sections.campus_discovery);
