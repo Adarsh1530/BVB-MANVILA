@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Section A
       const tbodyA = document.getElementById('discTbodyA');
-      const docsA = disclosures.filter(d => d.category_code === 'A');
+      const docsA = disclosures.filter(d => d.category_code === 'A' && d.details && d.details.trim() !== '');
       if (tbodyA && docsA.length > 0) {
         tbodyA.innerHTML = docsA.map((d, idx) => `
           <tr style="border-bottom: 1px solid var(--color-border); ${idx % 2 === 1 ? 'background: #F8FAFC;' : ''}">
@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Section D
       const tbodyD = document.getElementById('discTbodyD');
-      const docsD = disclosures.filter(d => d.category_code === 'D');
+      const docsD = disclosures.filter(d => d.category_code === 'D' && d.details && d.details.trim() !== '');
       if (tbodyD && docsD.length > 0) {
         tbodyD.innerHTML = docsD.map((d, idx) => `
           <tr style="border-bottom: 1px solid var(--color-border); ${idx % 2 === 1 ? 'background: #F8FAFC;' : ''}">
@@ -300,7 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Section E
       const tbodyE = document.getElementById('discTbodyE');
-      const docsE = disclosures.filter(d => d.category_code === 'E');
+      const docsE = disclosures.filter(d => d.category_code === 'E' && d.details && d.details.trim() !== '');
       if (tbodyE && docsE.length > 0) {
         tbodyE.innerHTML = docsE.map((d, idx) => `
           <tr style="border-bottom: 1px solid var(--color-border); ${idx % 2 === 1 ? 'background: #F8FAFC;' : ''}">

@@ -841,7 +841,7 @@ class AdminApp {
     const elMessage = document.getElementById('popupMessageInput');
     const elImg = document.getElementById('popupImageUrlInput');
 
-    if (elActive) elActive.value = p.is_active || 1;
+    if (elActive) elActive.value = (p.is_active !== undefined && p.is_active !== null) ? p.is_active : 0;
     if (elTitle) elTitle.value = p.title || '';
     if (elMessage) elMessage.value = p.message || '';
     if (elImg) elImg.value = p.image_url || '';
