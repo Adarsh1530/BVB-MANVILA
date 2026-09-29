@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // B.1 Render WELCOME TO VIVEKANANDA VIDYA MANDIR (Admin Uploaded Image)
     const welcomeImgCards = document.querySelectorAll('.welcome-img-card');
-    const welcomePkg = packages.find(p => p.target_sections && (p.target_sections.welcome || p.target_sections.welcome_to_bhavans));
+    const welcomePkg = packages.find(p => p.target_sections && (p.target_sections.welcome || p.target_sections.welcome_section || p.target_sections.welcome_to_bhavans || p.target_sections.welcome_to_bhavan));
     if (welcomeImgCards.length > 0) {
       if (welcomePkg && welcomePkg.main_image) {
         welcomeImgCards.forEach(card => {
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       } else {
         welcomeImgCards.forEach(card => {
-          card.innerHTML = '';
+          card.innerHTML = `<img src="assets/images/campus/downloaded/campus-1.jpg" alt="Bhavan's Vivekananda Vidya Mandir" loading="lazy" onerror="this.src='assets/images/bvb-manvila-logo.png'">`;
         });
       }
     }

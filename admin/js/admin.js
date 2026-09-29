@@ -1361,7 +1361,7 @@ class AdminApp {
         }
 
         const t = p.target_sections || {};
-        document.getElementById('chk_welcome').checked = !!t.welcome_section;
+        document.getElementById('chk_welcome').checked = !!(t.welcome || t.welcome_section || t.welcome_to_bhavans);
         document.getElementById('chk_whats_happening').checked = !!t.whats_happening;
         document.getElementById('chk_life_at_bhavans').checked = !!t.life_at_bhavans;
         document.getElementById('chk_moments_at_bhavans').checked = !!t.moments_at_bhavans;
@@ -1401,7 +1401,9 @@ class AdminApp {
     }
 
     const target_sections = {
+      welcome: document.getElementById('chk_welcome').checked,
       welcome_section: document.getElementById('chk_welcome').checked,
+      welcome_to_bhavans: document.getElementById('chk_welcome').checked,
       whats_happening: document.getElementById('chk_whats_happening').checked,
       life_at_bhavans: document.getElementById('chk_life_at_bhavans').checked,
       moments_at_bhavans: document.getElementById('chk_moments_at_bhavans').checked,
