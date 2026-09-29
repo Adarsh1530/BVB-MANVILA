@@ -105,7 +105,7 @@
             "category_name": "Documents & Compliance",
             "title": "COPIES OF AFFILIATION/UPGRADATION LETTER AND RECENT EXTENSION OF AFFILIATION",
             "details": "",
-            "file_link": ""
+            "file_link": "uploads/mandatory_disclosures/affiliation_letter.pdf"
         },
         {
             "id": 9,
@@ -114,7 +114,7 @@
             "category_name": "Documents & Compliance",
             "title": "COPIES OF SOCIETIES/TRUST/COMPANY REGISTRATION/RENEWAL CERTIFICATE",
             "details": "",
-            "file_link": ""
+            "file_link": "uploads/mandatory_disclosures/trust_registration.pdf"
         },
         {
             "id": 10,
@@ -123,7 +123,7 @@
             "category_name": "Documents & Compliance",
             "title": "COPY OF NO OBJECTION CERTIFICATE (NOC) ISSUED, IF APPLICABLE, BY THE STATE GOVT./UT",
             "details": "",
-            "file_link": ""
+            "file_link": "uploads/mandatory_disclosures/noc_certificate.pdf"
         },
         {
             "id": 11,
@@ -132,7 +132,7 @@
             "category_name": "Documents & Compliance",
             "title": "COPIES OF RECOGNITION CERTIFICATE UNDER RTE ACT, 2009, AND IT'S RENEWAL IF APPLICABLE",
             "details": "",
-            "file_link": ""
+            "file_link": "uploads/mandatory_disclosures/rte_recognition.pdf"
         },
         {
             "id": 12,
@@ -141,7 +141,7 @@
             "category_name": "Documents & Compliance",
             "title": "COPY OF VALID BUILDING SAFETY CERTIFICATE AS PER THE NATIONAL BUILDING CODE",
             "details": "",
-            "file_link": ""
+            "file_link": "uploads/mandatory_disclosures/building_safety.pdf"
         },
         {
             "id": 13,
@@ -150,7 +150,7 @@
             "category_name": "Documents & Compliance",
             "title": "COPY OF VALID FIRE SAFETY CERTIFICATE ISSUED BY THE COMPETENT AUTHORITY",
             "details": "",
-            "file_link": ""
+            "file_link": "uploads/mandatory_disclosures/fire_safety.pdf"
         },
         {
             "id": 14,
@@ -159,7 +159,7 @@
             "category_name": "Documents & Compliance",
             "title": "COPY OF THE DEO CERTIFICATE SUBMITTED BY THE SCHOOL FOR AFFILIATION",
             "details": "",
-            "file_link": ""
+            "file_link": "uploads/mandatory_disclosures/deo_certificate.pdf"
         },
         {
             "id": 15,
@@ -168,7 +168,7 @@
             "category_name": "Documents & Compliance",
             "title": "COPIES OF VALID WATER, HEALTH AND SANITATION CERTIFICATES",
             "details": "",
-            "file_link": ""
+            "file_link": "uploads/mandatory_disclosures/water_sanitation.pdf"
         },
         {
             "id": 16,
@@ -177,7 +177,7 @@
             "category_name": "Documents & Compliance",
             "title": "COMPLETE MANDATORY DISCLOSURE (CBSE SARAS 5.0)",
             "details": "",
-            "file_link": ""
+            "file_link": "uploads/mandatory_disclosures/saras_mandatory_disclosure.pdf"
         },
         {
             "id": 17,
@@ -186,7 +186,7 @@
             "category_name": "Result & Academics",
             "title": "FEE STRUCTURE OF THE SCHOOL",
             "details": "",
-            "file_link": ""
+            "file_link": "uploads/mandatory_disclosures/fee_structure.pdf"
         },
         {
             "id": 18,
@@ -195,7 +195,7 @@
             "category_name": "Result & Academics",
             "title": "ANNUAL ACADEMIC CALENDER",
             "details": "",
-            "file_link": ""
+            "file_link": "uploads/mandatory_disclosures/academic_calendar.pdf"
         }
     ],
     "image_packages": [],
