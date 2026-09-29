@@ -248,19 +248,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const docsB = disclosures.filter(d => d.category_code === 'B');
       if (tbodyB && docsB.length > 0) {
         tbodyB.innerHTML = docsB.map((d, idx) => {
-          const btnLabel = d.sl_no === '11' ? 'DOWNLOAD SARAS REPORT' : `VIEW ${escapeHtml(d.title.toUpperCase())} DOCUMENT`;
-          const isMainBtn = d.sl_no === '11';
           return `
           <tr style="border-bottom: 1px solid var(--color-border); ${idx % 2 === 1 ? 'background: #F8FAFC;' : ''}">
             <td style="padding: 1rem 1.5rem;">${escapeHtml(d.sl_no)}</td>
             <td style="padding: 1rem 1.5rem; font-weight: 500;">${escapeHtml(d.title)}</td>
             <td style="padding: 1rem 1.5rem;">
               ${d.file_link ? `
-                <a href="${escapeHtml(d.file_link)}" target="_blank" rel="noopener" class="btn ${isMainBtn ? 'btn-primary' : 'btn-outline'} btn-sm">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
-                  ${btnLabel}
+                <a href="${escapeHtml(d.file_link)}" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="display: inline-flex; align-items: center; gap: 0.35rem; text-decoration: none;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                  📄 VIEW DOCUMENT (PDF)
                 </a>
-              ` : '<span style="color: #94A3B8;">Text Record</span>'}
+              ` : '<span style="color: var(--color-text-secondary); font-size: 0.85rem;">—</span>'}
             </td>
           </tr>
         `;
@@ -277,10 +275,11 @@ document.addEventListener('DOMContentLoaded', () => {
             <td style="padding: 1rem 1.5rem; font-weight: 500;">${escapeHtml(d.title)}</td>
             <td style="padding: 1rem 1.5rem;">
               ${d.file_link ? `
-                <a href="${escapeHtml(d.file_link)}" target="_blank" rel="noopener" class="btn btn-outline btn-sm">
-                  VIEW DETAILS / DOCUMENT
+                <a href="${escapeHtml(d.file_link)}" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="display: inline-flex; align-items: center; gap: 0.35rem; text-decoration: none;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                  📄 VIEW DOCUMENT (PDF)
                 </a>
-              ` : '<span style="color: #94A3B8;">Text Record</span>'}
+              ` : '<span style="color: var(--color-text-secondary); font-size: 0.85rem;">—</span>'}
             </td>
           </tr>
         `).join('');
