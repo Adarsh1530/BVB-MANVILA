@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+const fs = require('fs');
+
+const cleanEventsHtml = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -147,3 +149,7 @@
   <script src="js/main.js"></script>
 </body>
 </html>
+`;
+
+fs.writeFileSync('events.html', cleanEventsHtml, 'utf8');
+console.log('events.html cleanly rewritten!');
