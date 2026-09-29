@@ -21,13 +21,6 @@
             "password": "school123",
             "name": "School Office Staff",
             "role": "school"
-        },
-        {
-            "id": 1790577087113,
-            "username": "test_admin_user",
-            "password": "password123",
-            "name": "Test Administrator",
-            "role": "admin"
         }
     ],
     "popup": {
