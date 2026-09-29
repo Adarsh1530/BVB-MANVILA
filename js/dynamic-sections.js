@@ -8,23 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
   loadAndRenderSiteData();
 
   function loadAndRenderSiteData() {
-    // 1. Try loading from LocalStorage state if edited in Admin Panel
-    const localData = localStorage.getItem('bvb_site_data');
-    if (localData) {
-      try {
-        const data = JSON.parse(localData);
-        renderSiteContent(data);
-        return;
-      } catch (e) {
-        console.error('LocalStorage parse error:', e);
-      }
-    }
-
-    // 2. Fetch PHP MySQL API endpoint with fallback to JSON
+    // 1. Always attempt fetching fresh data from PHP MySQL API endpoint first
     fetch('api/get_site_data.php?t=' + Date.now())
       .then(res => res.json())
       .then(data => {
         if (data && data.status === 'success') {
+          localStorage.setItem('bvb_site_data', JSON.stringify(data));
           renderSiteContent(data);
         } else {
           fallbackJsonFetch();
@@ -40,10 +29,28 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(res => res.json())
         .then(data => {
           if (data && data.status === 'success') {
+            localStorage.setItem('bvb_site_data', JSON.stringify(data));
             renderSiteContent(data);
+          } else {
+            fallbackLocalStorage();
           }
         })
-        .catch(err => console.log('Dynamic sections fetch note:', err));
+        .catch(err => {
+          console.log('JSON fetch fallback to local storage:', err);
+          fallbackLocalStorage();
+        });
+    }
+
+    function fallbackLocalStorage() {
+      const localData = localStorage.getItem('bvb_site_data');
+      if (localData) {
+        try {
+          const data = JSON.parse(localData);
+          renderSiteContent(data);
+        } catch (e) {
+          console.error('LocalStorage parse error:', e);
+        }
+      }
     }
   }
 
@@ -276,13 +283,21 @@ document.addEventListener('DOMContentLoaded', () => {
       const tbodyA = document.getElementById('discTbodyA');
       const docsA = disclosures.filter(d => d.category_code === 'A');
       if (tbodyA && docsA.length > 0) {
-        tbodyA.innerHTML = docsA.map((d, idx) => `
+        tbodyA.innerHTML = docsA.map((d, idx) => {
+          let detailHtml = escapeHtml(d.details);
+          if (d.title.toUpperCase().includes('EMAIL')) {
+            detailHtml = `<a href="mailto:${escapeHtml(d.details)}" style="color: var(--color-primary-blue); font-weight: 500;">${escapeHtml(d.details)}</a>`;
+          } else if (d.title.toUpperCase().includes('AFFILIATION NO')) {
+            detailHtml = `<span class="badge badge-green">${escapeHtml(d.details)}</span>`;
+          }
+          return `
           <tr style="border-bottom: 1px solid var(--color-border); ${idx % 2 === 1 ? 'background: #F8FAFC;' : ''}">
             <td style="padding: 1rem 1.5rem; font-weight: 600;">${escapeHtml(d.sl_no)}</td>
             <td style="padding: 1rem 1.5rem; font-weight: 600;">${escapeHtml(d.title)}</td>
-            <td style="padding: 1rem 1.5rem;">${escapeHtml(d.details)}</td>
+            <td style="padding: 1rem 1.5rem;">${detailHtml}</td>
           </tr>
-        `).join('');
+        `;
+        }).join('');
       }
 
       // Section B
