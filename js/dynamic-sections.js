@@ -76,6 +76,22 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    
+    // B.1 Render WELCOME TO VIVEKANANDA VIDYA MANDIR (Admin Uploaded Image)
+    const welcomeImgCards = document.querySelectorAll('.welcome-img-card');
+    const welcomePkg = packages.find(p => p.target_sections && (p.target_sections.welcome || p.target_sections.welcome_to_bhavans));
+    if (welcomeImgCards.length > 0) {
+      if (welcomePkg && welcomePkg.main_image) {
+        welcomeImgCards.forEach(card => {
+          card.innerHTML = `<img src="${escapeHtml(welcomePkg.main_image)}" alt="${escapeHtml(welcomePkg.title || 'Bhavan\'s Vivekananda Vidya Mandir')}" loading="lazy">`;
+        });
+      } else {
+        welcomeImgCards.forEach(card => {
+          card.innerHTML = '';
+        });
+      }
+    }
+
     // B. Render CAMPUS DISCOVERY
     const campusGrids = document.querySelectorAll('.campus-grid');
     const campusPkgs = packages.filter(p => p.target_sections && p.target_sections.campus_discovery);
