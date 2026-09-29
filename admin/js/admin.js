@@ -860,6 +860,44 @@ class AdminApp {
     }
   }
 
+  removeActivePopupImage() {
+    this.confirmAction({
+      title: 'Confirm Remove Image',
+      heading: 'Remove Entrance Popup Image?',
+      message: 'Are you sure you want to remove the current popup announcement image? This will disable the entrance popup modal on the website.',
+      icon: '🗑️',
+      isDanger: true,
+      onConfirm: () => {
+        const elImg = document.getElementById('popupImageUrlInput');
+        if (elImg) elImg.value = '';
+
+        const popupFileInput = document.getElementById('popupFileInput');
+        if (popupFileInput) popupFileInput.value = '';
+
+        const popupActiveSelect = document.getElementById('popupActiveSelect');
+        if (popupActiveSelect) popupActiveSelect.value = '0';
+
+        const popupPrevWrap = document.getElementById('popupPreviewWrap');
+        if (popupPrevWrap) popupPrevWrap.style.display = 'none';
+
+        this.siteData.popup = {
+          id: Date.now(),
+          is_active: 0,
+          title: document.getElementById('popupTitleInput') ? document.getElementById('popupTitleInput').value.trim() : '',
+          message: document.getElementById('popupMessageInput') ? document.getElementById('popupMessageInput').value.trim() : '',
+          image_url: '',
+          button_text: '',
+          button_url: ''
+        };
+
+        this.saveData('Popup image removed and modal disabled.');
+        this.renderPopupForm();
+        this.renderPopupHistoryTable();
+        this.showToast('Popup image removed and disabled.', 'success');
+      }
+    });
+  }
+
   savePopupConfig() {
     this.confirmAction({
       title: 'Confirm Entrance Popup Save',
@@ -870,12 +908,16 @@ class AdminApp {
       onConfirm: () => {
         const btnTextEl = document.getElementById('popupButtonTextInput');
         const btnUrlEl = document.getElementById('popupButtonUrlInput');
+        const imageUrl = document.getElementById('popupImageUrlInput').value.trim();
+        const isActiveSelect = parseInt(document.getElementById('popupActiveSelect').value);
+        const isActive = imageUrl === '' ? 0 : isActiveSelect;
+
         const newPopup = {
           id: Date.now(),
-          is_active: parseInt(document.getElementById('popupActiveSelect').value),
+          is_active: isActive,
           title: document.getElementById('popupTitleInput').value.trim(),
           message: document.getElementById('popupMessageInput').value.trim(),
-          image_url: document.getElementById('popupImageUrlInput').value.trim(),
+          image_url: imageUrl,
           button_text: btnTextEl ? btnTextEl.value.trim() : '',
           button_url: btnUrlEl ? btnUrlEl.value.trim() : '',
           created_at: new Date().toISOString().replace('T', ' ').split('.')[0]
@@ -883,13 +925,17 @@ class AdminApp {
 
         this.siteData.popup = newPopup;
 
-        if (!this.siteData.popup_history) this.siteData.popup_history = [];
-        this.siteData.popup_history.unshift(newPopup);
+        if (imageUrl !== '') {
+          if (!this.siteData.popup_history) this.siteData.popup_history = [];
+          this.siteData.popup_history.unshift(newPopup);
+        }
 
-        this.saveData('Entrance Popup settings saved and logged!');
+        this.saveData('Entrance Popup settings saved!');
+        this.renderPopupForm();
+        this.renderPopupHistoryTable();
         this.verifySuccess({
-          title: 'Entrance Popup Updated & Logged!',
-          message: 'The entrance announcement popup modal settings and uploaded image log have been updated.'
+          title: 'Entrance Popup Updated!',
+          message: 'The entrance announcement popup modal settings have been updated.'
         });
       }
     });
@@ -932,12 +978,15 @@ class AdminApp {
     if (!item) return;
     item.is_active = item.is_active == 1 ? 0 : 1;
 
-    // If activated, set as active popup
     if (item.is_active == 1) {
       this.siteData.popup = item;
+    } else if (this.siteData.popup && (this.siteData.popup.id === id || this.siteData.popup.image_url === item.image_url)) {
+      this.siteData.popup.is_active = 0;
     }
 
     this.saveData('Popup status updated.');
+    this.renderPopupForm();
+    this.renderPopupHistoryTable();
   }
 
   editPopupHistory(id) {
@@ -950,6 +999,7 @@ class AdminApp {
   }
 
   deletePopupHistory(id) {
+    const deletedItem = (this.siteData.popup_history || []).find(p => p.id === id);
     this.confirmAction({
       title: 'Confirm Popup Log Deletion',
       heading: 'Delete Popup Log Entry?',
@@ -958,7 +1008,22 @@ class AdminApp {
       isDanger: true,
       onConfirm: () => {
         this.siteData.popup_history = (this.siteData.popup_history || []).filter(p => p.id !== id);
+
+        if (this.siteData.popup && (this.siteData.popup.id === id || (deletedItem && this.siteData.popup.image_url === deletedItem.image_url))) {
+          this.siteData.popup = {
+            id: Date.now(),
+            is_active: 0,
+            title: '',
+            message: '',
+            image_url: '',
+            button_text: '',
+            button_url: ''
+          };
+          this.renderPopupForm();
+        }
+
         this.saveData('Popup log entry deleted.');
+        this.renderPopupHistoryTable();
       }
     });
   }

@@ -21,6 +21,13 @@
             "password": "school123",
             "name": "School Office Staff",
             "role": "school"
+        },
+        {
+            "id": 1790577087113,
+            "username": "test_admin_user",
+            "password": "password123",
+            "name": "Test Administrator",
+            "role": "admin"
         }
     ],
     "popup": {
@@ -28,8 +35,8 @@
         "title": "",
         "message": "",
         "image_url": "",
-        "button_text": "ADMISSION INFO",
-        "button_url": "admissions.html",
+        "button_text": "",
+        "button_url": "",
         "is_active": 0
     },
     "notices": [],
